@@ -1,15 +1,15 @@
 AI Delivery Playbook
-Built primarily for Frontend Web + Mobile (React Native) delivery — generalized so other stacks can adapt it.
+Built with frontend and mobile delivery in mind, but designed to be technology-agnostic and extensible.
 
 Prerequisites
 ========
 Setup
 -----
-Atomic Skills depend on MCP servers being configured
+Capabilities depend on MCP servers being configured
 (chrome-devtools, issue tracker, design tool, ...)
 See docs/mcp-servers.md
 
-Atomic Skills also depend on project conventions
+Capabilities also depend on project conventions
 being documented (branching, testing, styling, ...)
 See CLAUDE.md
 
@@ -17,8 +17,8 @@ See CLAUDE.md
 
 Level 1
 ========
-Atomic Skills
--------------
+Capabilities
+------------
 analyze-story
 create-task
 implement-task
@@ -44,10 +44,20 @@ design-system-update
 
 Level 3
 ========
-Engineering Lifecycle
----------------------
+Software Delivery Lifecycle
+----------------------------
 Requirements
 Architecture
 Implementation
 Verification
 Release
+
+↓
+
+Level 4
+========
+Worked Examples
+----------------
+Real traces of a workflow run end to end —
+trigger → workflow → capabilities → tools → human confirmation.
+See examples/
