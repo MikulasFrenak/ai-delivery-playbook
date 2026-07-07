@@ -19,7 +19,7 @@ The skills in [`skills/`](./skills/) (e.g. `create-task`, `analyze-story`) assum
 | `workflows/` | 2 — Workflows | Multi-skill sequences for a delivery scenario |
 | `lifecycle/` | 3 — Software Delivery Lifecycle | Stage-level docs (Requirements → Release) |
 | `examples/` | 4 — Worked Examples | Real traces of a workflow run end to end |
-| `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `vocabulary.md`) |
+| `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `vocabulary.md`, `future-considerations.md`) |
 
 See [`architecture.md`](./architecture.md) for how these levels relate.
 
