@@ -5,7 +5,7 @@ This file serves two purposes:
 1. It's the Claude Code guide for working **in this repo** (the playbook itself).
 2. It's a **template** of cross-cutting conventions to copy into your own project's `CLAUDE.md`. Sections marked *Example* show a real pattern distilled from a production adoption — replace the specifics with your own stack, tooling, and package names.
 
-This playbook is built primarily with **Frontend Web and Mobile (React Native)** delivery in mind — that's why the examples throughout lean on components, views, screens, and design tokens rather than backend services. The underlying structure (skills → workflows → lifecycle) generalizes to any stack; only the concrete examples are FE/mobile-flavored.
+This playbook is built with **frontend and mobile delivery** in mind, but designed to be technology-agnostic and extensible — that's why the examples throughout lean on components, views, screens, and design tokens rather than backend services, even though the underlying structure (capabilities → workflows → lifecycle) generalizes to any stack. Extending it to a backend or infra capability (e.g. `verify-mobile`, `verify-ios`, `deploy-kubernetes`) means following the same shape, not inventing a new one.
 
 The skills in [`skills/`](./skills/) (e.g. `create-task`, `analyze-story`) assume a `CLAUDE.md` exists at the repo root and, for monorepos, at each package root — they read these before exploring code or writing a plan. Keep this file (and per-package equivalents) accurate for that reason, not just as documentation.
 
@@ -15,9 +15,10 @@ The skills in [`skills/`](./skills/) (e.g. `create-task`, `analyze-story`) assum
 
 | Path | Level | Purpose |
 |---|---|---|
-| `skills/` | 1 — Atomic Skills | One `<name>.md` per skill, invoked as `/<name>` |
+| `skills/` | 1 — Capabilities | One `<name>.md` per skill, invoked as `/<name>` |
 | `workflows/` | 2 — Workflows | Multi-skill sequences for a delivery scenario |
-| `lifecycle/` | 3 — Engineering Lifecycle | Stage-level docs (Requirements → Release) |
+| `lifecycle/` | 3 — Software Delivery Lifecycle | Stage-level docs (Requirements → Release) |
+| `examples/` | 4 — Worked Examples | Real traces of a workflow run end to end |
 | `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `vocabulary.md`) |
 
 See [`architecture.md`](./architecture.md) for how these levels relate.

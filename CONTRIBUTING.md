@@ -28,7 +28,7 @@ For branching, commit format, and PR conventions, see [`CLAUDE.md`](./CLAUDE.md)
 
 3. **Register it in three places** — easy to miss one:
    - The skill file itself, in `skills/<name>.md`
-   - `architecture.md`'s Level 1 "Atomic Skills" list
+   - `architecture.md`'s Level 1 "Capabilities" list
    - `CLAUDE.md`'s "Skills in this playbook" table
 
 4. **If it fits into an existing workflow**, update that workflow's `uses_skills` frontmatter and its numbered sequence in `workflows/*.md`. If it changes the step numbering of a skill another doc already cites by step number (e.g. `implement-task` Step 4), grep for that reference and update it — stale step-number cross-references are the easiest thing to miss in this repo.

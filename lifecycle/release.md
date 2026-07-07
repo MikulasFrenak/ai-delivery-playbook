@@ -1,6 +1,6 @@
 ---
 name: release
-level: 3 - Engineering Lifecycle
+level: 3 - Software Delivery Lifecycle
 status: documented
 ---
 
