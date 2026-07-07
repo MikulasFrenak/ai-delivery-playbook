@@ -35,6 +35,8 @@ For branching, commit format, and PR conventions, see [`CLAUDE.md`](./CLAUDE.md)
 
 5. **If it serves a lifecycle stage**, add it to the relevant `lifecycle/*.md`'s "Skills used" list.
 
+6. **Use the terms in [`docs/vocabulary.md`](./docs/vocabulary.md) consistently** — ticket vs. task file, capability vs. skill, etc. A one-word inconsistency here is exactly the kind of thing that survives review and drifts for months (see `docs/vocabulary.md`'s own opening paragraph for how that happened once already).
+
 ## Before opening a PR
 
 Run [`/public-repo-check`](./skills/public-repo-check.md) if you touched anything that could plausibly carry a secret, UUID, real hostname, or org-specific name — new MCP config, a new example, a new skill sourced from a real project.

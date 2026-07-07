@@ -18,7 +18,7 @@ The skills in [`skills/`](./skills/) (e.g. `create-task`, `analyze-story`) assum
 | `skills/` | 1 — Atomic Skills | One `<name>.md` per skill, invoked as `/<name>` |
 | `workflows/` | 2 — Workflows | Multi-skill sequences for a delivery scenario |
 | `lifecycle/` | 3 — Engineering Lifecycle | Stage-level docs (Requirements → Release) |
-| `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`) |
+| `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `vocabulary.md`) |
 
 See [`architecture.md`](./architecture.md) for how these levels relate.
 

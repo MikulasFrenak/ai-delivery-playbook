@@ -38,15 +38,15 @@ Run this skill when you pick up a new ticket and want to scope it before writing
 
 ## Workflow
 
-### Step 1: Get the Task ID and Target Package
+### Step 1: Get the Ticket ID and Target Package
 
-If the user provided a task/ticket ID (e.g. `PROJ-1234`), use it. Otherwise ask: _"What is the task ID? If there's no ticket yet, say 'create one' and I'll file it."_
+If the user provided a ticket ID (e.g. `PROJ-1234`), use it. Otherwise ask: _"What is the ticket ID? If there's no ticket yet, say 'create one' and I'll file it."_
 
 If the user replies that no ticket exists yet (e.g. _"create one"_, _"no ticket"_, _"file it"_), branch to **Step 1a** below. Otherwise continue.
 
 Determine the target package (for a monorepo) or the working directory (for a single-repo project):
 - If the user specified it — use it.
-- If the task ID prefix or naming convention maps to a known package — infer it.
+- If the ticket ID prefix or naming convention maps to a known package — infer it.
 - Otherwise ask: _"Which package/directory does this task belong to?"_
 
 **Resolve `<package-root>`.** For monorepos, packages may live under different roots depending on convention (e.g. `apps/`, `packages/`, `services/`). Check the repo's own docs/config for the layout, then confirm the target directory exists before proceeding. For single-repo projects, `<package-root>` is the repo root.
@@ -72,7 +72,7 @@ Run only when the user has confirmed there is no existing ticket. Use whichever 
 
 4. **Verify** the ticket landed where expected (correct project, correct iteration) by re-fetching it. Report the new ID + URL to the user.
 
-5. Continue with **Step 2** using the freshly created task ID.
+5. Continue with **Step 2** using the freshly created ticket ID.
 
 ---
 

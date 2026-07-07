@@ -40,7 +40,7 @@ Keep all of these as reference throughout Steps 4–11. Anything a package's own
 
 ### Step 1: Get the Ticket ID and Content
 
-If the user provided a ticket ID, use it. Otherwise ask: _"What is the task ID?"_
+If the user provided a ticket ID, use it. Otherwise ask: _"What is the ticket ID?"_
 
 **Fetch the ticket via the configured issue-tracker MCP.** If it's not connected or the lookup fails, ask the user to paste the ticket content as a fallback.
 
