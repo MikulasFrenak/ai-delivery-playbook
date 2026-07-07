@@ -13,7 +13,7 @@ status: documented
 **Exit criteria:** A chosen approach is recorded and the user has explicitly agreed to it — nobody starts writing code on an unconfirmed approach.
 
 **Skills used:**
-- [`create-task`](../skills/create-task.md) Step 3b and [`implement-task`](../skills/implement-task.md) Step 1b both bake in the same research-and-present-options step: search for current best practices, present 2–3 approaches with trade-offs, recommend one, wait for go-ahead.
+- [`create-task`](../skills/create-task.md) Step 4 and [`implement-task`](../skills/implement-task.md) Step 1b both bake in the same research-and-present-options step: search for current best practices, present 2–3 approaches with trade-offs, recommend one, wait for go-ahead.
 - [`analyze-story`](../skills/analyze-story.md) — for Story-sized tickets, this is where the real architectural decisions get made: the Event Model diagram, the backend/FE split, and the splittability assessment are all decisions about *how* the system will be shaped, not just what it should do. Its output (`analysis.md` + `event-model.drawio`) is this stage's artifact for a Story, produced before any subtasks are created.
 
 **Gap:** for a plain Task (not a Story), this playbook has no standalone architecture-decision skill — the research step embedded in `create-task`/`implement-task` is what covers this stage instead, and it doesn't produce a durable artifact beyond the task file. If a project needs to preserve architecture decisions beyond that (e.g. an ADR log), that's a skill this playbook doesn't have yet.

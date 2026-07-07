@@ -12,7 +12,27 @@ Run this skill when you pick up a new ticket and want to scope it before writing
 
 `/implement-task` reads this file in its own Step 2 — run this first if you want the planning separate from execution.
 
-**Follow the steps in order. Do not start writing the file until Step 5 is complete.**
+**Follow the steps in order. Do not start writing the file until Step 6 is complete.**
+
+---
+
+## Inputs
+
+- Ticket ID, or a request to create one
+- Target package/directory (for a monorepo) or none (single-repo project)
+- Optional design links
+- Optional issue-tracker integration (falls back to pasted ticket content if not connected)
+
+## Output
+
+- `<package-root>/.tasks/TICKET-ID.md`
+
+## Guardrails
+
+- Do not implement code — this skill is planning-only.
+- Do not invent acceptance criteria, files-to-touch, or answers to open questions — leave a `?` with a note on what's needed instead.
+- Do not overwrite an existing task file without asking first (Step 1).
+- Do not create a tracker ticket without explicit user confirmation of the drafted summary/description (Step 1a).
 
 ---
 
@@ -91,7 +111,7 @@ This determines which template to use in Step 6.
 
 ---
 
-### Step 3b: Read Docs & Research Best Patterns
+### Step 4: Read Docs & Research Best Patterns
 
 Now that the task type and requirements are clear, gather context before touching the codebase.
 
@@ -107,11 +127,11 @@ Now that the task type and requirements are clear, gather context before touchin
 - State clearly which one you recommend and why
 - Note any conflict with project conventions (repo convention docs override external best practices)
 
-**Wait for the user's go-ahead** on the approach before proceeding to Step 4.
+**Wait for the user's go-ahead** on the approach before proceeding to Step 5.
 
 ---
 
-### Step 4: Explore the Codebase
+### Step 5: Explore the Codebase
 
 Before writing the file, read enough code to give real answers. Do not fill in placeholders.
 
@@ -141,7 +161,7 @@ From this exploration, produce:
 
 ---
 
-### Step 5: Write the Task File
+### Step 6: Write the Task File
 
 Create `<package-root>/.tasks/TICKET-ID.md` (use the package detected in Step 1) using the appropriate template below.
 
@@ -307,7 +327,7 @@ _Add findings here as you investigate and implement._
 
 ---
 
-### Step 6: Report
+### Step 7: Report
 
 Tell the user:
 - Where the file was written: `<package-root>/.tasks/TICKET-ID.md`
