@@ -14,6 +14,8 @@ being documented (branching, testing, styling, ...)
 See CLAUDE.md
 
 ↓
+required by
+↓
 
 Level 1
 ========
@@ -30,6 +32,8 @@ public-repo-check
 ...
 
 ↓
+combined into
+↓
 
 Level 2
 ========
@@ -40,6 +44,8 @@ bugfix
 design-system-update
 ...
 
+↓
+executed during
 ↓
 
 Level 3
@@ -52,6 +58,8 @@ Implementation
 Verification
 Release
 
+↓
+demonstrated by
 ↓
 
 Level 4
