@@ -1,4 +1,7 @@
 # ai-delivery-playbook
-AI-powered engineering skills, workflows and templates for modern software delivery — built primarily for Frontend Web and Mobile (React Native) delivery, generalized so any stack can adapt it.
 
-See [`architecture.md`](./architecture.md) for how it's structured, and [`CONTRIBUTING.md`](./CONTRIBUTING.md) if you want to add a skill or workflow.
+Composable AI skills and engineering workflows for the complete software delivery lifecycle.
+
+Built with frontend and mobile delivery in mind, but designed to be technology-agnostic and extensible.
+
+See [`architecture.md`](./architecture.md) for how it's structured, [`examples/`](./examples/) for real worked runs, and [`CONTRIBUTING.md`](./CONTRIBUTING.md) if you want to add a skill or workflow.
