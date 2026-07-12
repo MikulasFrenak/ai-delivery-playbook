@@ -11,7 +11,7 @@ See docs/mcp-servers.md
 
 Capabilities also depend on project conventions
 being documented (branching, testing, styling, ...)
-See CLAUDE.md
+See AGENTS.md
 
 ↓
 required by
@@ -29,6 +29,7 @@ commit
 pr-update
 code-doc
 public-repo-check
+generate-agents-md
 ...
 
 ↓

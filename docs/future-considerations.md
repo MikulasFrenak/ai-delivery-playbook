@@ -14,14 +14,8 @@ Proposed principles: human in the loop, composable, tool-agnostic, reproducible,
 
 Worth doing eventually — several of these principles are already *implicit* in how this playbook has been built (e.g. `disable-model-invocation: true` by default is "human in the loop"; the skill/workflow/lifecycle split is "composable"). Writing them down explicitly would make that intentional rather than incidental. Deferred because writing a constitution before the thing it constrains has had much real-world use risks describing principles that don't actually hold up once tested.
 
-## Reframing "Capability" as tool-agnostic
+## Resolved: "Capability" reframing and README rewrite
 
-The suggestion: describe a Capability as an abstract unit of engineering behavior, implementable as a Claude Skill, a Codex agent, a Gemini CLI command, a Cursor rule, etc. — with Claude Code as this repo's current implementation, not the only possible one.
+Both items previously tracked here — reframing Capability as an abstract, tool-agnostic unit of engineering behavior, and the README identity rewrite gated on that reframing — landed via the `AGENTS.md`/`CLAUDE.md` split (`/generate-agents-md`) once a real second consumer (review-spa, zensmash) existed to generalize from. `AGENTS.md` now carries the tool-agnostic Capability framing and conventions; `CLAUDE.md` is a thin `@AGENTS.md` import plus only genuinely Claude Code-specific mechanics.
 
-The framing idea is reasonable and cheap to *state*. What's out of scope is actually rewriting the 9 existing skill files to be multi-tool — they're currently coupled to real Claude Code mechanics (`disable-model-invocation` frontmatter, slash-command invocation, MCP tool-search patterns) that don't have a settled equivalent in other tools yet. Doing that rewrite now would be speculative generalization with no second implementation to generalize *from* — the same trap this playbook's own anonymization work (AIPB-01 onward) was careful to avoid by always generalizing from something real.
-
-## README "open framework" identity rewrite
-
-Proposed replacement for the identity sentence added in AIPB-03: *"AI Delivery Playbook is an open framework for designing repeatable AI-assisted software delivery processes. It provides composable capabilities, reusable workflows, lifecycle guidance and worked examples that can be adapted to any engineering team."*
-
-Not adopted yet because it describes a bigger ambition (a cross-tool, cross-team methodology) than what's actually built (a Claude-Code-specific playbook with one stack's worth of examples). Revisit once the tool-agnostic reframing above has actually happened — the README should describe what the repo is, not what it aspires to become.
+Deliberately **not** done as part of that: rewriting the 8 existing skill files themselves to be multi-tool. They remain coupled to real Claude Code mechanics (`disable-model-invocation` frontmatter, slash-command invocation) that still don't have a settled equivalent in other tools. That stays out of scope for the same reason it always was — speculative generalization with no second implementation of *that specific mechanic* to generalize from, unlike the CLAUDE.md/AGENTS.md split itself.

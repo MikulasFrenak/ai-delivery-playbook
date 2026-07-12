@@ -7,7 +7,7 @@
 - **Add a new workflow** — a workflow composes existing skills into a sequence for a delivery scenario (see `workflows/*.md` for the pattern); it shouldn't introduce new mechanics of its own.
 - **Report a gap** — several docs in this repo already call out known gaps explicitly (e.g. `lifecycle/architecture.md`, `lifecycle/release.md`) rather than papering over them. If you find another one, add it the same way instead of forcing a fit.
 
-For branching, commit format, and PR conventions, see [`CLAUDE.md`](./CLAUDE.md) — this file doesn't repeat those, to avoid the two drifting out of sync.
+For branching, commit format, and PR conventions, see [`AGENTS.md`](./AGENTS.md) — this file doesn't repeat those, to avoid the two drifting out of sync.
 
 ## Adding a new skill
 
@@ -19,7 +19,7 @@ For branching, commit format, and PR conventions, see [`CLAUDE.md`](./CLAUDE.md)
    description: One sentence on what it does and when to run it, ending with "NEVER auto-invoke — only run when user explicitly types /your-skill-name."
    ---
    ```
-   Default to `disable-model-invocation: true` even if the skill seems harmless — see `CLAUDE.md`'s Skill Invocation Policy for why.
+   Default to `disable-model-invocation: true` even if the skill seems harmless — see `CLAUDE.md`'s Skill Invocation Policy for why (that policy stays in `CLAUDE.md` — it's Claude Code-specific mechanics, not a tool-agnostic convention).
 
 2. **If it's generalized from a real project's skill**, anonymize it before it lands here:
    - Strip company names, internal project codenames, ticket-ID prefixes, and internal URLs to generic placeholders (`<your-org>`, `TICKET-ID`, `<component-library>`)
@@ -29,7 +29,7 @@ For branching, commit format, and PR conventions, see [`CLAUDE.md`](./CLAUDE.md)
 3. **Register it in three places** — easy to miss one:
    - The skill file itself, in `skills/<name>.md`
    - `architecture.md`'s Level 1 "Capabilities" list
-   - `CLAUDE.md`'s "Skills in this playbook" table
+   - `AGENTS.md`'s "Capabilities in this playbook" table (not `CLAUDE.md` — that file only carries Claude-only mechanics now, see `/generate-agents-md`)
 
 4. **If it fits into an existing workflow**, update that workflow's `uses_skills` frontmatter and its numbered sequence in `workflows/*.md`. If it changes the step numbering of a skill another doc already cites by step number (e.g. `implement-task` Step 4), grep for that reference and update it — stale step-number cross-references are the easiest thing to miss in this repo.
 
