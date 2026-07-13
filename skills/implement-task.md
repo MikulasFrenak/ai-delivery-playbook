@@ -131,6 +131,8 @@ Create the component following the package's file/folder convention. Universal r
 #### 5f. i18n Strings
 Add all user-visible strings to the package's **primary** locale/resource file only. If the project has a translation-sync pipeline (e.g. a service that auto-syncs new keys to other languages), do not manually add placeholder entries to every other locale file — that creates review noise for no benefit.
 
+The "i18n mechanism" doesn't have to mean an i18n library. A handful of locales and a few dozen strings is often better served by a plain hand-written `Record<Locale, Strings>` dictionary than by pulling in i18next/react-intl/FormatJS — no ICU parsing, no lazy bundle loading, no runtime negotiation to configure. Reach for a real library only once the project actually needs what one buys you: real plural/gender rules per language, translator-facing tooling, or lazy-loaded per-locale bundles. Don't add the dependency preemptively "because it's a translation feature."
+
 #### 5g. Wire Up in the View/Module
 Import and render the new component following the package's existing composition pattern — a plain functional import for a modern package, or through the legacy wrapper identified in Step 4 if this package still has class-component modules. Keep new logic in the wrapper/hook layer, not inside a class component you're not otherwise converting.
 
