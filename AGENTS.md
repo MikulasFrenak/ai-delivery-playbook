@@ -69,6 +69,15 @@ Adapt to your own team's actual policy, but decide and document explicitly:
 - Whether `AGENTS.md`/`CLAUDE.md`-only changes go on their own branch type (keeps doc updates decoupled from long-lived feature branches)
 - PR merge strategy (squash vs merge commit) and whether the source branch auto-deletes
 
+**Branch cleanup after merge (recommended default):** a squash-merged branch's commits are never ancestors of the new squash commit on the base branch, so git always shows it as diverged ("N ahead, M behind") even though its content fully landed — this is expected, not a sign anything went wrong, and the branch is safe to delete once the PR shows merged.
+- **Remote:** turn on the host's "automatically delete head branches" repo setting (GitHub: Settings → General → Pull Requests) once, rather than remembering to delete it by hand on every PR.
+- **Local:** the host can't reach your local clone, so this step is always manual. After confirming the PR is merged (`gh pr view <n> --json state,mergedAt` / equivalent):
+  ```bash
+  git checkout <base-branch> && git pull
+  git branch -d <branch>              # safe delete; -D if git complains it's "not fully merged" post-squash and you've confirmed it via the PR state above
+  git fetch --prune                   # clean up stale remote-tracking refs for branches already deleted on the host
+  ```
+
 ---
 
 ## Testing Infrastructure *(template)*
