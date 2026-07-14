@@ -176,6 +176,8 @@ For any non-trivial task, don't start writing code immediately:
 3. State which approach you recommend and why, then compare it against this repo's own conventions and flag any conflicts.
 4. **Wait for explicit go-ahead** before touching any code.
 
+**An agent's own "verified" claim is not verification.** When an agent reports it confirmed a factual claim (a coordinate, a version number, a pricing figure) via web research, treat that as a first pass, not ground truth — a real case: an agent corrected a wrong geographic coordinate with high stated confidence, and the correction was itself wrong by several kilometers. Spot-check at least one fact from any research pass against an independent source yourself before trusting it broadly, especially before it propagates into other agents' work or gets treated as settled.
+
 This applies to new features, architecture decisions, reviewer feedback, or anything that would meaningfully change existing behaviour. (The `create-task` and `analyze-story` capabilities already bake this step into their own workflow — this rule is what they're following.)
 
 ---
@@ -201,6 +203,17 @@ State which one of these this project actually uses — don't leave it to be inf
 | Bootstrap (legacy) / global CSS | Specificity wars and `!important` creep — treat any new addition here as tech debt, not precedent for more |
 | Inline `style={{...}}` / `style="..."` | No hover/focus/media-query support, no theme tokens, no static analysis or reuse — acceptable only for a one-off computed value (e.g. a measured width); never a substitute for a real styling approach |
 | React Native `StyleSheet.create` / `styled-components/native` / NativeWind | No cascade and no shared global stylesheet by default — shared values (color, spacing) must come from an explicit theme/token import, not CSS custom properties; `Platform.select`/`.ios.tsx`/`.android.tsx` splits are the normal way to diverge per platform, not a special case to avoid |
+
+### Agent Orchestration
+
+- **Never run two agents that write to the same file(s) concurrently.** If a second research/writing task touches a file another agent might still be writing to, wait for the first to finish before starting the second — don't rely on "read current state first" instructions to the second agent as a substitute, since that only narrows the race window, it doesn't close it. A real case: launching a second data-gathering agent while a first was still appending to the same JSON file risked one agent's writes silently clobbering the other's; the fix was strictly serializing them, not making the second one "smarter."
+- Background/parallel agents are for genuinely independent work (different files, different research questions) — if you're unsure whether two tasks are independent, that's a signal to serialize them.
+
+### Responsive / Mobile UI
+
+- Prefer a JS-level guard (e.g. a `useIsMobile()`-style hook backed by `matchMedia`) that actually branches what renders, over CSS-only responsive hiding (e.g. utility classes like `hidden sm:flex`). CSS-only hiding still mounts the hidden content — fine for pure layout, but wrong once "mobile vs. desktop" needs to be a first-class branch (different component entirely, avoided data fetch, etc.), and it's easy to reach for the CSS version by default and paint yourself into a corner.
+- Keep the JS breakpoint and the CSS framework's breakpoint numerically identical (e.g. both at 640px) — a hook re-implementing "mobile" at a different pixel value than the CSS breakpoints in the same codebase will disagree with itself at the boundary.
+- If you introduce this hook, also add a test-environment polyfill for `matchMedia` before you need it — jsdom does not implement it at all (throws, doesn't just report `false`), so any component test that renders something using the hook will fail until one exists.
 
 ### Cross-module navigation — example: micro-frontend architecture
 
