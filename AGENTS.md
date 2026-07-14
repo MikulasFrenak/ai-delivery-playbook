@@ -215,6 +215,12 @@ State which one of these this project actually uses — don't leave it to be inf
 - Keep the JS breakpoint and the CSS framework's breakpoint numerically identical (e.g. both at 640px) — a hook re-implementing "mobile" at a different pixel value than the CSS breakpoints in the same codebase will disagree with itself at the boundary.
 - If you introduce this hook, also add a test-environment polyfill for `matchMedia` before you need it — jsdom does not implement it at all (throws, doesn't just report `false`), so any component test that renders something using the hook will fail until one exists.
 
+### Cross-repo CI / `repository_dispatch`
+
+- A fine-grained PAT used for cross-repo automation must have the target repo explicitly selected under "Repository access" — scoping permissions correctly isn't enough if the repo itself isn't in the token's allowlist.
+- If a CI step wraps the call in `curl -sf`, a bad token fails silently with just an opaque exit code and no response body in the log — a real case cost a manual reproduction to diagnose. Drop `-f` (or capture and print the body on failure) so the actual API error shows up in the Actions log.
+- To isolate "bad token" from "bad endpoint," reproduce the exact same call with a known-good credential (e.g. your own `gh api`) — if that succeeds, the problem is specifically the stored secret.
+
 ### Cross-module navigation — example: micro-frontend architecture
 
 - Route to other modules via a shared enum/constants file — never hardcode path strings
