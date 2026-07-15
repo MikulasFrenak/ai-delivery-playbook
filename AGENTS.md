@@ -217,6 +217,13 @@ State which one of these this project actually uses — don't leave it to be inf
 - Keep the JS breakpoint and the CSS framework's breakpoint numerically identical (e.g. both at 640px) — a hook re-implementing "mobile" at a different pixel value than the CSS breakpoints in the same codebase will disagree with itself at the boundary.
 - If you introduce this hook, also add a test-environment polyfill for `matchMedia` before you need it — jsdom does not implement it at all (throws, doesn't just report `false`), so any component test that renders something using the hook will fail until one exists.
 
+### Watchdogs, observers & postponed rendering
+
+- **A load watchdog must only count time the page is actually visible.** Browsers legitimately postpone work in background tabs and lazy iframes (`loading="lazy"` embeds), so a naive `setTimeout`-since-mount timer declares failure on content that was never given a chance to load. A real case: a map app's 6s `tilesloaded` watchdog fired routinely inside a portfolio's lazy iframe embed and on cold caches — "map randomly doesn't load, refresh fixes it." Arm the timer only while `document.visibilityState === "visible"` and re-arm on `visibilitychange`.
+- **Split transient failures from hard failures, and give transient ones a retry path.** Auth/quota rejection (e.g. `gm_authFailure`) deserves a dead-end message; a timeout deserves a "try again" that remounts the loader. A fallback with no way back turns every false positive into a full-page failure until refresh.
+- **Stabilize watchdog callbacks** (`useCallback`/refs) — an inline `onFail={() => ...}` recreated on every render silently resets the timer whenever unrelated state changes.
+- **Mount-time observers must survive remounts.** A scroll-reveal `IntersectionObserver` set up once on app mount never sees elements React re-creates later — e.g. when switching locale re-keys localized lists. Symptom: freshly remounted sections stuck at `opacity: 0`. Re-run the scan whenever the re-keying dependency (locale, route, data version) changes, and scan only not-yet-revealed elements so visible content doesn't blink.
+
 ### Cross-repo CI / `repository_dispatch`
 
 - A fine-grained PAT used for cross-repo automation must have the target repo explicitly selected under "Repository access" — scoping permissions correctly isn't enough if the repo itself isn't in the token's allowlist.
