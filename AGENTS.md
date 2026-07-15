@@ -5,9 +5,9 @@ This file serves two purposes:
 1. It's the agent guide for working **in this repo** (the playbook itself) — for any AI coding tool (Claude Code, Codex, Copilot, Cursor, Aider, Ollama-driven agents, etc).
 2. It's a **template** of cross-cutting conventions to copy into your own project's `AGENTS.md`. Sections marked *Example* show a real pattern distilled from a production adoption — replace the specifics with your own stack, tooling, and package names.
 
-This playbook is built with **frontend and mobile delivery** in mind, but designed to be technology- and tool-agnostic and extensible — that's why the examples throughout lean on components, views, screens, and design tokens rather than backend services, even though the underlying structure (capabilities → workflows → lifecycle) generalizes to any stack. Extending it to a backend or infra capability (e.g. `verify-mobile`, `verify-ios`, `deploy-kubernetes`) means following the same shape, not inventing a new one.
+This playbook is built with **frontend and mobile delivery** in mind, but designed to be technology- and tool-agnostic and extensible — that's why the examples throughout lean on components, views, screens, and design tokens rather than backend services, even though the underlying structure (skills → workflows → lifecycle) generalizes to any stack. Extending it to a backend or infra skill (e.g. `verify-mobile`, `verify-ios`, `deploy-kubernetes`) means following the same shape, not inventing a new one.
 
-Every capability below assumes an `AGENTS.md` exists at the repo root and, for monorepos, at each package root — read these before exploring code or writing a plan. Keep this file (and per-package equivalents) accurate for that reason, not just as documentation.
+Every skill below assumes an `AGENTS.md` exists at the repo root and, for monorepos, at each package root — read these before exploring code or writing a plan. Keep this file (and per-package equivalents) accurate for that reason, not just as documentation.
 
 If you're using Claude Code specifically, also read `CLAUDE.md` — it's a thin file that imports this one and adds Claude Code-only mechanics (skill invocation, `.claude/settings.json` handling) on top.
 
@@ -17,8 +17,8 @@ If you're using Claude Code specifically, also read `CLAUDE.md` — it's a thin 
 
 | Path | Level | Purpose |
 |---|---|---|
-| `skills/` | 1 — Capabilities | One `<name>.md` per capability. Written as Claude Code skills today (invoked as `/<name>`) — see "Capabilities" below for how other tools use the same content |
-| `workflows/` | 2 — Workflows | Multi-capability sequences for a delivery scenario |
+| `skills/` | 1 — Skills | One `<name>.md` per skill. Written as Claude Code skills today (invoked as `/<name>`) — see "Skills" below for how other tools use the same content |
+| `workflows/` | 2 — Workflows | Multi-skill sequences for a delivery scenario |
 | `lifecycle/` | 3 — Software Delivery Lifecycle | Stage-level docs (Requirements → Release) |
 | `examples/` | 4 — Worked Examples | Real traces of a workflow run end to end |
 | `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `vocabulary.md`, `future-considerations.md`) |
@@ -50,7 +50,9 @@ chore/TICKET-ID/short-kebab-desc     # ticketed, non-feature work: deps, refacto
 trivial/short-kebab-desc             # tooling, docs, config (no ticket)
 ```
 
-`chore/` vs `trivial/`: both cover non-feature, non-bugfix work — the difference is whether it's tracked by a ticket. If it has a ticket (matches the `create-task` capability's Chore template), it's `chore/`. If it's small enough that filing a ticket would be overhead, it's `trivial/`.
+**One working branch until merge.** Fixes and follow-ups to work that hasn't merged yet land on the *same* branch as new commits — don't open a new branch per fix. Parallel branches over the same files just manufacture merge conflicts. A new branch starts only for independent work, after the previous one merges.
+
+`chore/` vs `trivial/`: both cover non-feature, non-bugfix work — the difference is whether it's tracked by a ticket. If it has a ticket (matches the `create-task` skill's Chore template), it's `chore/`. If it's small enough that filing a ticket would be overhead, it's `trivial/`.
 
 Commit format:
 
@@ -134,19 +136,19 @@ Expose the store on `window` only from the CT harness entry point, not from prod
 
 ---
 
-## Capabilities
+## Skills
 
-A **Capability** is an abstract unit of engineering behavior — "analyze a story," "implement a ticket," "verify a change in the browser." This playbook documents each one in prose (in `workflows/*.md` and `lifecycle/*.md`), so any agent can follow it by reading the doc, regardless of tool.
+A **Skill** is a single unit of engineering behavior — "analyze a story," "implement a ticket," "verify a change in the browser." This playbook documents each one in prose (in `workflows/*.md` and `lifecycle/*.md`), so any agent can follow it by reading the doc, regardless of tool. Agents running skills work **as part of the team**, not instead of it: humans and agents collaborate on the final result, and every workflow ends at a human checkpoint.
 
-`skills/` is **Claude Code's implementation** of these capabilities — one `<name>.md` per skill, invoked with a slash command (`/analyze-story`, `/create-task`, etc). It's the concrete, tested implementation this repo ships today, not the only possible one. The same capability could equally be a Cursor rule, a Codex custom prompt, an Aider convention, or just followed directly from the workflow/lifecycle prose by any agent (including a bare local model) that reads this file. If you adopt this playbook with a non-Claude tool, treat `skills/*.md` as a detailed reference implementation to translate into your tool's own mechanism — the *sequence and judgment calls* they encode are the reusable part, not the slash-command wrapper.
+`skills/` is **Claude Code's implementation** of these skills — one `<name>.md` per skill, invoked with a slash command (`/analyze-story`, `/create-task`, etc). It's the concrete, tested implementation this repo ships today, not the only possible one. The same skill could equally be a Cursor rule, a Codex custom prompt, an Aider convention, or just followed directly from the workflow/lifecycle prose by any agent (including a bare local model) that reads this file. If you adopt this playbook with a non-Claude tool, treat `skills/*.md` as a detailed reference implementation to translate into your tool's own mechanism — the *sequence and judgment calls* they encode are the reusable part, not the slash-command wrapper.
 
 ### MCP Invocation Policy
 
-**Never call any MCP tool automatically.** MCP servers (issue tracker, design tool, code-quality scanner, feature-flag service, browser automation, observability, etc. — see [`docs/mcp-servers.md`](./docs/mcp-servers.md)) consume tokens and may trigger external side effects. Only invoke one when the user explicitly asks for it in the current message, or by running a capability whose own instructions document that MCP usage. Don't infer intent and call MCPs speculatively. This applies regardless of which tool is driving the agent — MCP is a cross-tool protocol, not Claude-specific.
+**Never call any MCP tool automatically.** MCP servers (issue tracker, design tool, code-quality scanner, feature-flag service, browser automation, observability, etc. — see [`docs/mcp-servers.md`](./docs/mcp-servers.md)) consume tokens and may trigger external side effects. Only invoke one when the user explicitly asks for it in the current message, or by running a skill whose own instructions document that MCP usage. Don't infer intent and call MCPs speculatively. This applies regardless of which tool is driving the agent — MCP is a cross-tool protocol, not Claude-specific.
 
-### Capabilities in this playbook
+### Skills in this playbook
 
-| Capability | When to use |
+| Skill | When to use |
 |---|---|
 | [`/analyze-story`](./skills/analyze-story.md) | Deep-analyze a Story ticket — Event Model diagram, FE/backend breakdown, splittability, create subtasks. Run this *before* `create-task` when starting from a Story |
 | [`/create-task`](./skills/create-task.md) | Create `.tasks/TICKET-ID.md` from a ticket (or from one of `analyze-story`'s subtasks) — planning only, no code |
@@ -157,7 +159,7 @@ A **Capability** is an abstract unit of engineering behavior — "analyze a stor
 | [`/code-doc`](./skills/code-doc.md) | Create or update a `doc.md` for a component, module, or feature section after implementing or changing it |
 | [`/public-repo-check`](./skills/public-repo-check.md) | Scan working tree + git history for secrets, UUIDs, and org-specific naming before pushing to a public remote |
 | [`/generate-agents-md`](./skills/generate-agents-md.md) | Split a repo's `CLAUDE.md` into a tool-agnostic `AGENTS.md` + a thin Claude-only `CLAUDE.md` import shim, following this repo's own split |
-| ... | Add your own following the same capability-doc pattern |
+| ... | Add your own following the same skill-doc pattern |
 
 ### Task file lifecycle
 
@@ -168,11 +170,11 @@ A **Capability** is an abstract unit of engineering behavior — "analyze a stor
 | PR not open yet | Keep & update — ongoing work, file is active context |
 | PR already open | Delete in the same commit — ticket is done |
 
-The file's content is preserved in git history on the branch forever, so deleting it from the working tree loses nothing. Claude Code's [`/commit`](./skills/commit.md) capability enforces this automatically — it checks for an open PR/MR and stages the deletion if one exists, rather than relying on manual cleanup. Any other tool implementing the `commit` capability should follow the same rule.
+The file's content is preserved in git history on the branch forever, so deleting it from the working tree loses nothing. Claude Code's [`/commit`](./skills/commit.md) skill enforces this automatically — it checks for an open PR/MR and stages the deletion if one exists, rather than relying on manual cleanup. Any other tool implementing the `commit` skill should follow the same rule.
 
-### Design-tool capabilities
+### Design-tool skills
 
-If your design tool exposes two MCP servers — one local/read (desktop app) and one remote/write (cloud, diagram/file generation) — keep that split explicit in your capability instructions, since read and write operations often need different auth and different tools. See the Figma example in [`docs/mcp-servers.md`](./docs/mcp-servers.md).
+If your design tool exposes two MCP servers — one local/read (desktop app) and one remote/write (cloud, diagram/file generation) — keep that split explicit in your skill instructions, since read and write operations often need different auth and different tools. See the Figma example in [`docs/mcp-servers.md`](./docs/mcp-servers.md).
 
 ---
 
@@ -187,7 +189,7 @@ For any non-trivial task, don't start writing code immediately:
 
 **An agent's own "verified" claim is not verification.** When an agent reports it confirmed a factual claim (a coordinate, a version number, a pricing figure) via web research, treat that as a first pass, not ground truth — a real case: an agent corrected a wrong geographic coordinate with high stated confidence, and the correction was itself wrong by several kilometers. Spot-check at least one fact from any research pass against an independent source yourself before trusting it broadly, especially before it propagates into other agents' work or gets treated as settled.
 
-This applies to new features, architecture decisions, reviewer feedback, or anything that would meaningfully change existing behaviour. (The `create-task` and `analyze-story` capabilities already bake this step into their own workflow — this rule is what they're following.)
+This applies to new features, architecture decisions, reviewer feedback, or anything that would meaningfully change existing behaviour. (The `create-task` and `analyze-story` skills already bake this step into their own workflow — this rule is what they're following.)
 
 ---
 
@@ -224,6 +226,19 @@ State which one of these this project actually uses — don't leave it to be inf
 - Keep the JS breakpoint and the CSS framework's breakpoint numerically identical (e.g. both at 640px) — a hook re-implementing "mobile" at a different pixel value than the CSS breakpoints in the same codebase will disagree with itself at the boundary.
 - If you introduce this hook, also add a test-environment polyfill for `matchMedia` before you need it — jsdom does not implement it at all (throws, doesn't just report `false`), so any component test that renders something using the hook will fail until one exists.
 
+### Watchdogs, observers & postponed rendering
+
+- **A load watchdog must only count time the page is actually visible.** Browsers legitimately postpone work in background tabs and lazy iframes (`loading="lazy"` embeds), so a naive `setTimeout`-since-mount timer declares failure on content that was never given a chance to load. A real case: a map app's 6s `tilesloaded` watchdog fired routinely inside a portfolio's lazy iframe embed and on cold caches — "map randomly doesn't load, refresh fixes it." Arm the timer only while `document.visibilityState === "visible"` and re-arm on `visibilitychange`.
+- **Split transient failures from hard failures, and give transient ones a retry path.** Auth/quota rejection (e.g. `gm_authFailure`) deserves a dead-end message; a timeout deserves a "try again" that remounts the loader. A fallback with no way back turns every false positive into a full-page failure until refresh.
+- **Stabilize watchdog callbacks** (`useCallback`/refs) — an inline `onFail={() => ...}` recreated on every render silently resets the timer whenever unrelated state changes.
+- **Mount-time observers must survive remounts.** A scroll-reveal `IntersectionObserver` set up once on app mount never sees elements React re-creates later — e.g. when switching locale re-keys localized lists. Symptom: freshly remounted sections stuck at `opacity: 0`. Re-run the scan whenever the re-keying dependency (locale, route, data version) changes, and scan only not-yet-revealed elements so visible content doesn't blink.
+
+### Cross-repo CI / `repository_dispatch`
+
+- A fine-grained PAT used for cross-repo automation must have the target repo explicitly selected under "Repository access" — scoping permissions correctly isn't enough if the repo itself isn't in the token's allowlist.
+- If a CI step wraps the call in `curl -sf`, a bad token fails silently with just an opaque exit code and no response body in the log — a real case cost a manual reproduction to diagnose. Drop `-f` (or capture and print the body on failure) so the actual API error shows up in the Actions log.
+- To isolate "bad token" from "bad endpoint," reproduce the exact same call with a known-good credential (e.g. your own `gh api`) — if that succeeds, the problem is specifically the stored secret.
+
 ### Cross-module navigation — example: micro-frontend architecture
 
 - Route to other modules via a shared enum/constants file — never hardcode path strings
@@ -251,7 +266,7 @@ These are all MCP-backed in this playbook — see [`docs/mcp-servers.md`](./docs
 
 ## Public Repo Hygiene
 
-This playbook is meant to be public. If you're generalizing a capability or doc sourced from a real (private) project into this repo — or maintaining any other repo intended to go public — run [`/public-repo-check`](./skills/public-repo-check.md) before pushing.
+This playbook is meant to be public. If you're generalizing a skill or doc sourced from a real (private) project into this repo — or maintaining any other repo intended to go public — run [`/public-repo-check`](./skills/public-repo-check.md) before pushing.
 
 Never commit to a public repo:
 - Real secrets, tokens, API keys, or private-key material
@@ -260,7 +275,7 @@ Never commit to a public repo:
 - A company name, internal project codename, product/ticket-ID prefix, or any other identifier that ties this content back to a specific organization
 - Personal file-system paths or personal emails
 
-When generalizing a capability sourced from a real project — as every skill in `skills/` was — the source material's specific names are the most common leak: package names, ticket-ID prefixes, internal URLs, tools tied to one org's licensing. Strip them to generic placeholders (`<your-org>`, `TICKET-ID`, `<component-library>`) the same way the existing skills do; use those files as the reference pattern for how much to anonymize, rather than deciding case-by-case.
+When generalizing a skill sourced from a real project — as every one in `skills/` was — the source material's specific names are the most common leak: package names, ticket-ID prefixes, internal URLs, tools tied to one org's licensing. Strip them to generic placeholders (`<your-org>`, `TICKET-ID`, `<component-library>`) the same way the existing skills do; use those files as the reference pattern for how much to anonymize, rather than deciding case-by-case.
 
 ---
 

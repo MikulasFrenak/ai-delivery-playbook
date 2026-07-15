@@ -28,14 +28,14 @@ For branching, commit format, and PR conventions, see [`AGENTS.md`](./AGENTS.md)
 
 3. **Register it in three places** — easy to miss one:
    - The skill file itself, in `skills/<name>.md`
-   - `architecture.md`'s Level 1 "Capabilities" list
-   - `AGENTS.md`'s "Capabilities in this playbook" table (not `CLAUDE.md` — that file only carries Claude-only mechanics now, see `/generate-agents-md`)
+   - `architecture.md`'s Level 1 "Skills" list
+   - `AGENTS.md`'s "Skills in this playbook" table (not `CLAUDE.md` — that file only carries Claude-only mechanics now, see `/generate-agents-md`)
 
 4. **If it fits into an existing workflow**, update that workflow's `uses_skills` frontmatter and its numbered sequence in `workflows/*.md`. If it changes the step numbering of a skill another doc already cites by step number (e.g. `implement-task` Step 4), grep for that reference and update it — stale step-number cross-references are the easiest thing to miss in this repo.
 
 5. **If it serves a lifecycle stage**, add it to the relevant `lifecycle/*.md`'s "Skills used" list.
 
-6. **Use the terms in [`docs/vocabulary.md`](./docs/vocabulary.md) consistently** — ticket vs. task file, capability vs. skill, etc. A one-word inconsistency here is exactly the kind of thing that survives review and drifts for months (see `docs/vocabulary.md`'s own opening paragraph for how that happened once already).
+6. **Use the terms in [`docs/vocabulary.md`](./docs/vocabulary.md) consistently** — ticket vs. task file, "skill" (never "capability" — retired in AIPB-08), etc. A one-word inconsistency here is exactly the kind of thing that survives review and drifts for months (see `docs/vocabulary.md`'s own opening paragraph for how that happened once already).
 
 ## Before opening a PR
 

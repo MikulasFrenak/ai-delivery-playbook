@@ -2,7 +2,7 @@
 
 # Claude Code addendum
 
-Everything else — repo layout, branching/commits, testing, capabilities, cross-cutting rules, public-repo hygiene — lives in [`AGENTS.md`](./AGENTS.md) above. This file only adds mechanics specific to Claude Code itself.
+Everything else — repo layout, branching/commits, testing, skills, cross-cutting rules, public-repo hygiene — lives in [`AGENTS.md`](./AGENTS.md) above. This file only adds mechanics specific to Claude Code itself.
 
 ## Claude Code Settings
 
@@ -14,7 +14,7 @@ Everything else — repo layout, branching/commits, testing, capabilities, cross
 
 ## Skill Invocation Policy
 
-Skill definitions in this playbook live in [`skills/`](./skills/) — Claude Code's implementation of the Capabilities described in `AGENTS.md`. In a real project, Claude Code looks for them under `.claude/skills/` (or `.claude/commands/` for older setups) — copy accordingly when adopting a skill from here.
+Skill definitions in this playbook live in [`skills/`](./skills/) — Claude Code's implementation of the skills described in `AGENTS.md`. In a real project, Claude Code looks for them under `.claude/skills/` (or `.claude/commands/` for older setups) — copy accordingly when adopting a skill from here.
 
 **Never auto-invoke a skill from its description alone.** Every skill file in this playbook sets `disable-model-invocation: true` for exactly this reason — a skill only runs when the user explicitly types its slash command. Don't invoke one based on pattern-matching the user's request.
 
