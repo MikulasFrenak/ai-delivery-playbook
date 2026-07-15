@@ -5,11 +5,11 @@ Prerequisites
 ========
 Setup
 -----
-Capabilities depend on MCP servers being configured
+Skills depend on MCP servers being configured
 (chrome-devtools, issue tracker, design tool, ...)
 See docs/mcp-servers.md
 
-Capabilities also depend on project conventions
+Skills also depend on project conventions
 being documented (branching, testing, styling, ...)
 See AGENTS.md
 
@@ -19,8 +19,8 @@ required by
 
 Level 1
 ========
-Capabilities
-------------
+Skills
+------
 analyze-story
 create-task
 implement-task
@@ -68,5 +68,5 @@ Level 4
 Worked Examples
 ----------------
 Real traces of a workflow run end to end —
-trigger → workflow → capabilities → tools → human confirmation.
+trigger → workflow → skills → tools → human confirmation.
 See examples/

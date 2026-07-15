@@ -42,7 +42,7 @@ For each section, decide:
 | Branching & commit conventions | Skill-invocation policy (`disable-model-invocation`, slash-command-only invocation) |
 | Testing setup, styling rules, cross-cutting conventions | `.claude/skills/` or `.claude/commands/` directory mechanics |
 | Public-repo hygiene, research-before-implementing policy | MCP *server config* mechanics specific to Claude Code's own approval UX (the policy "never call MCP automatically" itself is tool-agnostic and belongs in `AGENTS.md` — only Claude-Code-specific plumbing stays here) |
-| A "Capabilities" section describing what `skills/*.md` do, framed so any tool can follow the same sequence from prose alone | A pointer line: "`skills/` is Claude Code's implementation of the Capabilities described in `AGENTS.md`" |
+| A "Skills" section describing what `skills/*.md` do, framed so any tool can follow the same sequence from prose alone | A pointer line: "`skills/` is Claude Code's implementation of the skills described in `AGENTS.md`" |
 
 When unsure whether something is Claude-specific, default to `AGENTS.md` — the cost of a tool-agnostic file containing one irrelevant paragraph for non-Claude tools is low; the cost of Copilot/Cursor/Codex never seeing an important convention because it got left in `CLAUDE.md` is high.
 
