@@ -152,6 +152,7 @@ A **Skill** is a single unit of engineering behavior — "analyze a story," "imp
 |---|---|
 | [`/analyze-story`](./skills/analyze-story.md) | Deep-analyze a Story ticket — Event Model diagram, FE/backend breakdown, splittability, create subtasks. Run this *before* `create-task` when starting from a Story |
 | [`/create-task`](./skills/create-task.md) | Create `.tasks/TICKET-ID.md` from a ticket (or from one of `analyze-story`'s subtasks) — planning only, no code |
+| [`/design-brief`](./skills/design-brief.md) | Turn a Figma node into a Design Brief mapped to this project's own color/spacing/typography tokens and component library — run before implementing a UI task with a design link |
 | [`/implement-task`](./skills/implement-task.md) | Full implementation flow for a ticket — reads the task file, design, implements, tests, docs, commit |
 | [`/verify-browser`](./skills/verify-browser.md) | Verify a change in the live browser via Chrome DevTools MCP (web only — see the skill for the native-mobile gap) |
 | [`/commit`](./skills/commit.md) | Generate a commit message from the current diff, run the quality gate, commit, and offer to create/update the PR/MR |
@@ -159,6 +160,9 @@ A **Skill** is a single unit of engineering behavior — "analyze a story," "imp
 | [`/code-doc`](./skills/code-doc.md) | Create or update a `doc.md` for a component, module, or feature section after implementing or changing it |
 | [`/public-repo-check`](./skills/public-repo-check.md) | Scan working tree + git history for secrets, UUIDs, and org-specific naming before pushing to a public remote |
 | [`/generate-agents-md`](./skills/generate-agents-md.md) | Split a repo's `CLAUDE.md` into a tool-agnostic `AGENTS.md` + a thin Claude-only `CLAUDE.md` import shim, following this repo's own split |
+| [`/diagram`](./skills/diagram.md) | Generate a draw.io flow/activity/swimlane diagram from a module's code — useful for documenting a non-obvious multi-step or multi-actor flow |
+| [`/postmortem`](./skills/postmortem.md) | Turn `.tasks/.postmortems/TICKET-ID.md` incident notes into a blameless post-mortem, in Confluence wiki markup by default |
+| [`/test-scaffold`](./skills/test-scaffold.md) | Scaffold a component/CT test driven by the issue tracker's own Test Case work items, written in user language rather than implementation detail |
 | ... | Add your own following the same skill-doc pattern |
 
 ### Task file lifecycle

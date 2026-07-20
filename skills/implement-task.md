@@ -77,7 +77,7 @@ Check whether `<package-root>/.tasks/TICKET-ID.md` exists (use the package detec
 
 ### Step 3: Read the Design
 
-If this playbook (or your project) has a design-brief skill that turns a Figma link into a token-mapped brief, run it now with the design link from the task file header. Otherwise, fetch the design directly via the Figma MCP.
+Run [`/design-brief`](./design-brief.md) now with the design link from the task file header — it turns the raw Figma node into a brief mapped to this project's own tokens/components. If this playbook's `design-brief` skill isn't available for some reason, fetch the design directly via the Figma MCP instead.
 
 The task file header may contain two design links — use the right one:
 
@@ -168,7 +168,7 @@ If a failure needs real diagnosis rather than a quick fix, and delegating that d
 
 **Unit tests** — write for any new pure function or utility, next to the source file, covering normal cases, edge cases, and boundary values.
 
-**Component tests** — if this playbook has a test-scaffolding skill, run it to scaffold a spec for the new component. Otherwise write one following the package's existing spec convention:
+**Component tests** — run [`/test-scaffold`](./test-scaffold.md) to scaffold a spec for the new component, driven by the issue tracker's own Test Case work items where this project's tracker supports them. Otherwise write one following the package's existing spec convention:
 - Use the package's own test-utilities import, not a raw framework import, if the package documents one
 - Use the package's QA-selector attribute for targeting, not framework defaults
 - Cover default render, key interactions, and QA-selector targeting

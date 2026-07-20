@@ -110,9 +110,9 @@ This gives the user a chance to review before anything is written to git.
 
 ### Step 2.6: Design Verification (Optional — only when the task has a design link)
 
-If the task file contains a `Figma (UI / implementation):` link and this playbook (or your project) has a design-brief skill, ask the user:
+If the task file contains a `Figma (UI / implementation):` link, ask the user:
 
-> Run the design-brief skill to pull the latest screenshot and verify the implementation matches the design?
+> Run [`/design-brief`](./design-brief.md) to pull the latest screenshot and verify the implementation matches the design?
 
 - **Yes** → run it, then compare against a screenshot from [`/verify-browser`](./verify-browser.md). Flag any visual mismatches before committing.
 - **No / skip** → proceed to Step 2.7.
@@ -211,6 +211,16 @@ If diagnosing a failure from one of these needs real interpretation (not just re
 **A test type not runnable locally** (missing browser binary, platform issue): note in the commit message that it will be validated in CI — don't silently skip it without saying so.
 
 **Never bypass a pre-commit hook** (`--no-verify` or equivalent) as a default move. Only skip a hook when this repo's `CLAUDE.md` documents that hook as currently broken/known-bad, and say so explicitly in your output — silently bypassing hooks hides exactly the kind of failure they exist to catch.
+
+**Quick Bail-Out Rules** — don't proceed to Step 5 (commit) if any of these are true:
+
+| Condition | Action |
+|---|---|
+| Lint has errors | Fix (or auto-fix) and rerun before continuing |
+| Type-check has new errors (pre-existing ones are fine) | Fix before committing |
+| A code-quality MCP (if configured) reports blocker/critical issues in lines you authored | Fix before committing |
+| Unit or component tests fail | Diagnose and fix the root cause — never skip or delete a failing test |
+| A test type genuinely can't run locally (missing browser binary, platform gap) | Note it explicitly in the commit message as CI-validated — don't silently skip |
 
 ---
 
