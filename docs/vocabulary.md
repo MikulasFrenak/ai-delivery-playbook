@@ -13,6 +13,7 @@ This exists because terminology drift is a real, recurring failure mode here: an
 | **Workflow** | — | Level 2 — a documented sequence composing existing skills for a delivery scenario (e.g. `feature-delivery`) | "Pipeline" |
 | **Lifecycle stage** | — | Level 3 — one stage of the Software Delivery Lifecycle (Requirements → Release), documented in `lifecycle/*.md` | "Phase" |
 | **Worked Example** | — | Level 4 — a real, after-the-fact trace of a workflow run, in `examples/*.md`. Not hypothetical | "Playbook" (confusing — this repo is already called a playbook) |
+| **Verification fan-out** | — | Running independent, read-only checks (lint, type-check, tests, build) concurrently — as parallel shell jobs, or as separate agents when a check needs real diagnosis — because none of them consumes another's output. See "Independent Verification Fan-Out" in `AGENTS.md`'s Agent Orchestration section | "Parallelization" (too generic — this is specifically about *independent, read-only* steps; don't use the term for anything that writes shared state) |
 
 ## Branch types
 
