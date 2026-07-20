@@ -286,6 +286,74 @@ claude                       # restart Claude Code — tools appear in the tool 
 
 ---
 
+## Complete example `.mcp.json`
+
+All of the servers above in one ready-to-adapt file. Swap the `<...>` placeholders for your own hostnames and keep secrets in environment variables — never commit real URLs of internal systems or tokens (see the public-repo hygiene rules in `AGENTS.md`).
+
+```json
+{
+  "mcpServers": {
+    "atlassian": {
+      "type": "http",
+      "url": "https://mcp.atlassian.com/v1/mcp/authv2"
+    },
+    "jira-dc": {
+      "command": "uvx",
+      "args": ["mcp-atlassian"],
+      "env": {
+        "JIRA_URL": "https://jira.<your-company>.com",
+        "JIRA_PERSONAL_TOKEN": "${JIRA_PERSONAL_TOKEN}"
+      }
+    },
+    "confluence-dc": {
+      "command": "uvx",
+      "args": ["mcp-atlassian"],
+      "env": {
+        "CONFLUENCE_URL": "https://confluence.<your-company>.com",
+        "CONFLUENCE_PERSONAL_TOKEN": "${CONFLUENCE_PERSONAL_TOKEN}"
+      }
+    },
+    "figma": {
+      "type": "http",
+      "url": "http://127.0.0.1:3845/mcp"
+    },
+    "figma-remote": {
+      "type": "http",
+      "url": "https://mcp.figma.com/mcp"
+    },
+    "honeycomb": {
+      "type": "http",
+      "url": "https://mcp.eu1.honeycomb.io/mcp"
+    },
+    "flagsmith": {
+      "type": "http",
+      "url": "https://app.getgram.ai/mcp/flagsmith-mcp"
+    },
+    "miro": {
+      "type": "http",
+      "url": "https://mcp.miro.com/"
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest", "--browserUrl=http://127.0.0.1:9222"]
+    },
+    "sonarqube": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-e", "SONARQUBE_TOKEN", "-e", "SONARQUBE_URL", "-e", "SONARQUBE_IDE_PORT", "mcp/sonarqube"],
+      "env": {
+        "SONARQUBE_URL": "https://sonarqube.<your-company>.com",
+        "SONARQUBE_TOKEN": "${SONARQUBE_TOKEN}",
+        "SONARQUBE_IDE_PORT": "64120"
+      }
+    }
+  }
+}
+```
+
+Delete the servers you don't use — a smaller `.mcp.json` means fewer startup failures to debug (see the disable table at the top for per-developer opt-outs instead).
+
+---
+
 ## Troubleshooting
 
 | Problem | Fix |

@@ -144,15 +144,25 @@ If this playbook (or your project) has a legacy-cleanup skill, run it on every *
 
 ### Step 7: Quality Checks
 
-Run these, substituting this project's actual package manager/scripts:
+Lint, type-check, unit tests, and component tests all only need the code as it currently stands — none of them consumes another's output — so run them **together, in parallel**, substituting this project's actual package manager/scripts (see "Independent Verification Fan-Out" in `CLAUDE.md`'s Agent Orchestration section for why this is safe):
+
+```bash
+<package-manager> --filter <package-name> lint &
+<package-manager> --filter <package-name> typecheck &
+<package-manager> --filter <package-name> test:unit &
+<package-manager> --filter <package-name> test-ct &
+wait
+```
 
 1. **Lint — package-scoped (fast):** run the package's own lint script rather than a full-repo lint where possible. Fix all errors; pre-existing warning conventions (e.g. an allowed unused-var prefix) are fine to leave as-is.
 
 2. **Type-check:** run the compiler's `--noEmit`-equivalent check directly rather than relying solely on editor diagnostics (an IDE only indexes open files). Fix any errors; pre-existing warnings are acceptable.
 
-3. **Unit tests + component tests — run in parallel with lint** if the project supports it, to save wall-clock time. Fix any failures before proceeding. If a test type can't run locally for environment reasons, note that explicitly rather than silently skipping it — CI will validate.
+3. **Unit tests + component tests:** fix any failures before proceeding. If a test type can't run locally for environment reasons, note that explicitly rather than silently skipping it — CI will validate.
 
-4. **Code-quality MCP (if configured):** query it for issues in each modified file (see `docs/mcp-servers.md`). Fix blocker/critical issues in lines you authored; skip pre-existing issues in untouched lines.
+4. **Code-quality MCP (if configured):** query it for issues in each modified file (see `docs/mcp-servers.md`) — this can run alongside the batch above too, it's a separate read-only check. Fix blocker/critical issues in lines you authored; skip pre-existing issues in untouched lines.
+
+If a failure needs real diagnosis rather than a quick fix, and delegating that diagnosis to a separate agent is practical for this project, the same fan-out rule applies: it comes back as a finding you act on, not an independent fix to files you're already editing.
 
 ### Step 8: Tests
 

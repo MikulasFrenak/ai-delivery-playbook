@@ -183,20 +183,24 @@ TICKET-ID - Summary
 | Abort stale in-flight requests | Old requests could overwrite newer state | added an AbortController, swallow abort errors | Flag on only |
 ```
 
-### Step 4: Quality Gate — Lint + Unit Tests + Component Tests
+### Step 4: Quality Gate — Lint + Type-Check + Unit Tests + Component Tests + Build
 
-Run lint, unit tests, and component tests **in parallel** before committing, substituting this project's actual package-manager scripts. All must pass.
+None of these need each other's output — each only needs the code as it currently stands (see "Independent Verification Fan-Out" in `CLAUDE.md`'s Agent Orchestration section) — so run all of them **in parallel**, substituting this project's actual package-manager scripts. All must pass.
 
 ```bash
 <package-manager> --filter <package-name> lint &
+<package-manager> --filter <package-name> typecheck &
 <package-manager> --filter <package-name> test:unit &
 <package-manager> --filter <package-name> test-ct &
+<package-manager> --filter <package-name> build &
 wait
 ```
 
 If a script doesn't exist for this package, check `package.json` first rather than assuming — skip only what's genuinely absent.
 
 Also run any root-level cross-package check this project defines (e.g. a monorepo-wide lint) before pushing, to catch cross-package issues a package-scoped run would miss.
+
+If diagnosing a failure from one of these needs real interpretation (not just re-running with `--fix`) and this project's setup makes a second agent practical, that diagnosis can be delegated — but it comes back as a finding for you to act on, not as an independent fix committed to the same files you're already working in.
 
 **Lint failures:** fix errors (or use the project's auto-fix flag), re-stage, and rerun.
 
