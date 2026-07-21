@@ -136,6 +136,16 @@ Expose the store on `window` only from the CT harness entry point, not from prod
 
 ---
 
+## Code Comments
+
+No narrative comments in source files — rely on clear naming, small functions, and types to make the code self-explanatory. Don't write comments that walk through a debugging history ("tried X, it didn't work, then Y overcorrected, so we landed on Z") or restate what the next line already says.
+
+If a piece of functionality is genuinely non-obvious — an external API's quirky encoding, a workaround for a library bug, a deliberate trade-off between two approaches — document it in a doc file instead of inline: the project's `PLAN.md`/design doc, a per-package `AGENTS.md`, or a `docs/*.md` (see [`/code-doc`](./skills/code-doc.md)). The "why we changed this" narrative belongs in commit messages and git history, not in the file itself.
+
+This isn't a ban on every comment — a short note is still warranted for something a reader genuinely can't infer from the code alone (a regulatory requirement, a non-obvious ordering constraint, a lint-suppression directive). The rule is against narration and restating-the-obvious, not against all comments.
+
+---
+
 ## Skills
 
 A **Skill** is a single unit of engineering behavior — "analyze a story," "implement a ticket," "verify a change in the browser." This playbook documents each one in prose (in `workflows/*.md` and `lifecycle/*.md`), so any agent can follow it by reading the doc, regardless of tool. Agents running skills work **as part of the team**, not instead of it: humans and agents collaborate on the final result, and every workflow ends at a human checkpoint.
