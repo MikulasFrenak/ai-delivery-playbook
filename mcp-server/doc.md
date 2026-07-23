@@ -10,6 +10,7 @@ Serves this repo's `skills/*.md` files over MCP (Model Context Protocol) so any 
 - `test.js` — smoke test. Spawns `server.js` as a real child process and talks to it over stdio exactly as an MCP client would, asserting on both tools' happy paths and error paths. Run with `node mcp-server/test.js`.
 - `README.md` — what the server does, dependencies, verification, known limits.
 - `setup.md` — exact connection steps per client (Claude Code CLI, VS Code/JetBrains extension, Claude Desktop app, Cursor/other) — split out because each reads its MCP config from a different place, and a couple of them don't share config with each other even on the same machine.
+- `remote/` — Cloudflare Workers version of this same server (Streamable HTTP instead of stdio, no clone needed once deployed). Built and locally verified, not yet deployed — see `remote/README.md` and `.tasks/AIPB-12.md`.
 
 ## Data Source
 

@@ -43,7 +43,7 @@ Unlike every other entry in this file — which document servers this repo's ski
 }
 ```
 
-Local stdio only for now — no remote hosting yet, so the repo needs to be cloned locally.
+Local stdio for now — the repo needs to be cloned locally. A remote (Cloudflare Workers, no clone needed) version exists at [`mcp-server/remote/`](../mcp-server/remote/), built and locally verified but not yet deployed — see `mcp-server/remote/README.md`.
 
 ---
 

@@ -1,0 +1,3 @@
+# Generated — derived entirely from skills/*.md, regenerate with:
+# node mcp-server/remote/build.js
+mcp-server/remote/skills-data.js
