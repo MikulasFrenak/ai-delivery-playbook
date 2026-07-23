@@ -6,6 +6,12 @@ How to connect `mcp-server/server.js` from each Claude client. Every one of thes
 node /absolute/path/to/ai-delivery-playbook/mcp-server/server.js
 ```
 
+## Prerequisites
+
+1. **Clone this repo somewhere on the machine that will run the server.** It's local stdio, not a hosted URL (see README's Known limits) — there's no remote endpoint to point at yet, so the person connecting to it needs their own local copy.
+2. **Node.js installed** (any reasonably recent version — built and tested on v22). No `npm install` needed; the server has zero dependencies.
+3. **Swap `/absolute/path/to/ai-delivery-playbook` for your own clone's actual path** in every example below — e.g. `/Users/<you>/Github/ai-delivery-playbook/mcp-server/server.js`. This is the one step people actually get wrong: copy-pasting the placeholder path as-is silently fails (the client just won't find a server to launch).
+
 ---
 
 ## Claude Code (CLI)
@@ -64,4 +70,4 @@ Don't just check that the tool appears in a tool list — ask the connected sess
 
 > "Use search_skills to find something about commit conventions, then get_skill and show me the full content."
 
-If it comes back with real content pulled from `skills/commit.md`, the loop works end to end. See `README.md` → Known limits for what's still unverified.
+If it comes back with real content pulled from `skills/commit.md`, the loop works end to end. This has been confirmed working from the Claude Code VS Code extension, opened in a project other than this repo — see `.tasks/AIPB-11.md` for the full trace.
