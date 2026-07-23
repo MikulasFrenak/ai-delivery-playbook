@@ -31,7 +31,7 @@ Spawns `server.js` as a real subprocess and drives it over stdio exactly like an
 
 ## Known limits
 
-- **Local stdio only, no remote hosting yet.** Whoever wants to use this needs the repo cloned locally so `server.js` can read `../skills/*.md` — it isn't reachable over the internet the way `https://mcp.figma.com/mcp` is. Remote HTTP hosting (Cloudflare Workers, per AIPB-11's plan) is a later step, once there's a real reason to distribute a URL instead of a path.
+- **Local stdio only, for now.** Whoever uses `server.js` directly needs the repo cloned so it can read `../skills/*.md` — it isn't reachable over the internet the way `https://mcp.figma.com/mcp` is. A remote version exists at [`remote/`](./remote/) (Cloudflare Workers, Streamable HTTP) — built and locally verified, not yet deployed. See `remote/README.md` and `.tasks/AIPB-12.md`.
 - **Keyword search only.** Fine at 13 skills; revisit (embeddings, hybrid ranking) only if the catalog grows enough that keyword-in-description misses matches people expect.
 - **Per-client config, not shared automatically.** The Claude Code CLI and the VS Code/JetBrains extension read different config files — registering via `claude mcp add --scope user` does not make the server available in the extension. One exception: the Claude Desktop app's `claude_desktop_config.json` covers both the regular Desktop chat *and* Cowork sessions, despite Cowork running in its own sandboxed environment. See `setup.md` for what each client actually needs.
 
