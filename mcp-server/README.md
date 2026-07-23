@@ -19,20 +19,7 @@ Requires Node.js (any reasonably recent version — built and tested on v22).
 
 ## Connect it
 
-Add to your `.mcp.json` (see [`../docs/mcp-servers.md`](../docs/mcp-servers.md) for this repo's other MCP entries):
-
-```json
-{
-  "mcpServers": {
-    "ai-delivery-playbook": {
-      "command": "node",
-      "args": ["/absolute/path/to/ai-delivery-playbook/mcp-server/server.js"]
-    }
-  }
-}
-```
-
-Restart your agent — `search_skills` and `get_skill` appear in its tool list.
+See [`setup.md`](./setup.md) for exact steps per client — Claude Code CLI, the VS Code/JetBrains extension, the Claude Desktop app, and Cursor/other MCP clients each read their config from a different place, and the CLI's and the IDE extension's configs don't share automatically. Short version: it's always the same `node .../mcp-server/server.js` command, just registered differently depending on where you're running it from.
 
 ## Verify it
 
