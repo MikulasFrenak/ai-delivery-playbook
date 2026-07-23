@@ -28,6 +28,25 @@ This file documents the servers this playbook's skills/workflows commonly assume
 
 ---
 
+## AI Delivery Playbook Skill Server (this repo's own server)
+
+Unlike every other entry in this file — which document servers this repo's skills *consume* — [`mcp-server/`](../mcp-server/) is a server this repo *provides*: it serves `skills/*.md` over MCP so any agent can search and fetch them without cloning the repo. See [`mcp-server/README.md`](../mcp-server/README.md) for setup and [`.tasks/AIPB-11.md`](../.tasks/AIPB-11.md) for the design decisions.
+
+```json
+{
+  "mcpServers": {
+    "ai-delivery-playbook": {
+      "command": "node",
+      "args": ["/absolute/path/to/ai-delivery-playbook/mcp-server/server.js"]
+    }
+  }
+}
+```
+
+Local stdio only for now — no remote hosting yet, so the repo needs to be cloned locally.
+
+---
+
 ## Figma MCP
 
 Figma offers two MCP options — pick one per developer/machine.

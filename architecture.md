@@ -70,3 +70,9 @@ Worked Examples
 Real traces of a workflow run end to end —
 trigger → workflow → skills → tools → human confirmation.
 See examples/
+
+---
+
+Level 1 skills are also servable directly over MCP — search and
+fetch skills/*.md at runtime instead of cloning the repo and
+copying files into .claude/skills/. See mcp-server/
