@@ -32,5 +32,7 @@ Spawns `server.js` as a real subprocess and drives it over stdio exactly like an
 ## Known limits
 
 - **Local stdio only, no remote hosting yet.** Whoever wants to use this needs the repo cloned locally so `server.js` can read `../skills/*.md` — it isn't reachable over the internet the way `https://mcp.figma.com/mcp` is. Remote HTTP hosting (Cloudflare Workers, per AIPB-11's plan) is a later step, once there's a real reason to distribute a URL instead of a path.
-- **No fresh-session verification.** `test.js` proves the wire protocol works; it doesn't prove a *different* Claude Code/Cursor session on a separate machine (with this repo not cloned) can connect and use it end to end. Do that check before relying on this for a client demo.
 - **Keyword search only.** Fine at 13 skills; revisit (embeddings, hybrid ranking) only if the catalog grows enough that keyword-in-description misses matches people expect.
+- **Per-client config, not shared automatically.** The Claude Code CLI and the VS Code/JetBrains extension read different config files — registering via `claude mcp add --scope user` does not make the server available in the extension. See `setup.md` for what each client actually needs.
+
+Fresh-session, repo-not-cloned use has been verified: connected from the Claude Code VS Code extension with `review-spa` open (ai-delivery-playbook not cloned into that workspace), asked a natural-language question, and got back an accurate answer pulled live from `skills/design-brief.md` via `search_skills` → `get_skill`.
