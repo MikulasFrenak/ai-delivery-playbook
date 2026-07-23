@@ -39,9 +39,15 @@ The IDE extension does **not** inherit `~/.claude.json`'s user-scoped servers as
 
 Reload the window after adding it. You can also swap configs on the fly with `claude --mcp-config <path>`, or check what's currently loaded with the `/mcp` command inside a session.
 
-## Claude Desktop app
+## Claude Desktop app (also covers Cowork)
 
-A separate config file entirely — `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS (`%APPDATA%\Claude\claude_desktop_config.json` on Windows). There's no in-app "add server" button for a local stdio server as of 2026 — edit the file directly:
+A separate config file entirely — `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS (`%APPDATA%\Claude\claude_desktop_config.json` on Windows). There's no in-app "add server" button for a local stdio server as of 2026 — edit the file directly. From a terminal:
+
+```bash
+code ~/Library/Application\ Support/Claude/claude_desktop_config.json
+```
+
+The space in "Application Support" needs escaping (`\ `) or the whole path quoted — a plain `Application/Support` (slash instead of space) won't resolve to anything.
 
 ```json
 {
@@ -54,9 +60,9 @@ A separate config file entirely — `~/Library/Application Support/Claude/claude
 }
 ```
 
-Merge into the existing `mcpServers` block if the file already has one — don't overwrite it. Fully quit and reopen the app afterward; closing the window isn't enough for it to reload config.
+Merge into the existing `mcpServers` block if the file already has one — don't overwrite it. Fully quit (Cmd+Q, not just closing the window) and reopen the app afterward.
 
-**Note:** a Cowork session inside the Desktop app runs in its own separate sandboxed environment and won't automatically see servers added this way either — this covers the regular (non-Cowork) Desktop chat.
+**Confirmed:** this one config file covers both the regular Desktop chat *and* Cowork sessions — despite Cowork running in its own sandboxed environment, it does pick up servers from `claude_desktop_config.json`. No separate Cowork-specific setup needed.
 
 ## Cursor / other MCP clients
 
@@ -70,4 +76,6 @@ Don't just check that the tool appears in a tool list — ask the connected sess
 
 > "Use search_skills to find something about commit conventions, then get_skill and show me the full content."
 
-If it comes back with real content pulled from `skills/commit.md`, the loop works end to end. This has been confirmed working from the Claude Code VS Code extension, opened in a project other than this repo — see `.tasks/AIPB-11.md` for the full trace.
+If it comes back with real content pulled from `skills/commit.md`, the loop works end to end.
+
+**Confirmed working, live, in all four surfaces above:** Claude Code CLI (`claude mcp list` showed it connected), the VS Code extension (asked from `review-spa`, repo not cloned there — got back an accurate answer pulled from `skills/design-brief.md`), the Claude Desktop app, and a Cowork session (called `search_skills("postmortem incident")` directly and got the real `skills/postmortem.md` description back). See `.tasks/AIPB-11.md` for the full trace.
