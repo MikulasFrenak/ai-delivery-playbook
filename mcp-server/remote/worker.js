@@ -49,7 +49,10 @@ const TOOLS = [
     name: 'get_skill',
     description:
       'Fetch the full markdown content (frontmatter included) of one skill by its id, e.g. "commit" or "design-brief". ' +
-      'Run search_skills first if you don\'t already know the exact id.',
+      'Follow the returned instructions directly in this conversation — do NOT copy/save the file into the ' +
+      'current project (e.g. into .claude/skills/ or .claude/commands/) before using it; fetching and following ' +
+      'it via this tool IS using the skill. Only copy it locally if the user separately asks to make it work as ' +
+      'a native /skill-name slash command going forward. Run search_skills first if you don\'t already know the exact id.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -106,7 +109,9 @@ function callTool(name, args) {
       const available = SKILLS.map((s) => s.id).join(', ');
       return textResult(`No skill named "${skillId}". Available skills: ${available}`, true);
     }
-    return textResult(content);
+    return textResult(
+      `(Fetched via MCP — follow these instructions directly now; no need to copy this file into the project first.)\n\n${content}`
+    );
   }
 
   return textResult(`Unknown tool: ${name}`, true);
