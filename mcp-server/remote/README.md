@@ -2,7 +2,12 @@
 
 The remote counterpart to [`../server.js`](../server.js) (local stdio): same two tools, `search_skills` and `get_skill`, same skill content — but reachable over the internet instead of requiring the repo cloned locally. See [`../../.tasks/AIPB-12.md`](../../.tasks/AIPB-12.md) for the design decisions and current status.
 
-**Status: built and verified locally, not yet deployed.** Deploying needs a Cloudflare account and `wrangler` — both outside what this was built with (no npm/Cloudflare network access in that sandbox). The steps below are what deploying it looks like; they haven't been run yet.
+**Status: deployed and verified live.** `https://ai-delivery-playbook.mikulas-frenak.workers.dev/mcp` — confirmed with real `curl` calls: `initialize` returns the correct `serverInfo`, `tools/call` → `search_skills("commit")` returns real skill descriptions from the deployed bundle.
+
+Deployed via Cloudflare's **Git integration** (dashboard → Workers → connect repo), not a local `wrangler deploy` — worth knowing because the two build settings below aren't wrangler defaults, they're specific to that flow:
+
+- **Root directory:** `mcp-server/remote` (wrangler.toml doesn't live at the repo root)
+- **Build command:** `node build.js` (generates the gitignored `skills-data.js` before `wrangler deploy` runs — without this, the deploy fails with "Could not detect a directory containing static files", because `wrangler deploy` finds no config and no import target)
 
 ## Why this exists
 
@@ -15,14 +20,16 @@ The remote counterpart to [`../server.js`](../server.js) (local stdio): same two
 - **Zero dependencies**, same as `server.js` — hand-rolled JSON-RPC over HTTP rather than the MCP SDK, for the same reason (no npm registry access when this was built).
 - **Not sharing tool logic with `server.js` as a common module** — different module systems (CommonJS vs. ES module) and no way to test the bundling interop in the sandbox this was built in. The ~40 lines of tool logic are duplicated on purpose; see `worker.js`'s header comment.
 
-## Deploy it
+## Deploy it (manually, from a local machine)
 
 ```bash
 node build.js          # generates skills-data.js from ../../skills/*.md
 npx wrangler deploy    # needs a Cloudflare account; prompts to log in on first run
 ```
 
-Deploys to `https://ai-delivery-playbook-mcp.<your-subdomain>.workers.dev/mcp` (name comes from `wrangler.toml`). Re-run `node build.js` before every deploy if `skills/*.md` changed since the last one.
+Deploys to `https://ai-delivery-playbook.<your-subdomain>.workers.dev/mcp` (name comes from `wrangler.toml`). Re-run `node build.js` before every deploy if `skills/*.md` changed since the last one.
+
+The live deployment actually runs through Cloudflare's Git integration instead (auto-builds on push to `main`) — see the Root directory / Build command settings above. Either path works; the Git integration just means new skills or fixes go live automatically on merge, without a manual `wrangler deploy` step.
 
 ## Verify it
 
@@ -32,9 +39,9 @@ node test.js
 
 Imports `worker.js`'s actual exported `fetch` handler and drives it with real Web-standard `Request` objects (Node 18+ has `fetch`/`Request`/`Response` as globals — the same Web Fetch API surface Workers implement). This exercises the real request-handling code path — JSON-RPC parsing, all four MCP methods, both tools' happy and error paths, CORS preflight, wrong method/path, malformed JSON — without needing `wrangler dev` or a live deploy.
 
-**What this does NOT verify:** that the deployed Worker is actually reachable and behaves the same inside Cloudflare's real runtime, or that a real MCP client (Claude Code, Cursor) can connect to the live URL end to end. Do that check after deploying — connect a client to the `*.workers.dev` URL and ask it a real question, the same way AIPB-11's stdio version was verified.
+`test.js` alone doesn't prove the live deployment works — the `curl` checks above (against the actual `*.workers.dev` URL) cover that gap. Still outstanding: a real MCP client (Claude Code, Cursor) connecting end to end and actually using it in a conversation, rather than raw `curl`. Do that next if you want the same level of confidence AIPB-11's stdio version has.
 
-## Connect a client to it once deployed
+## Connect a client to it
 
 Same shape as any other remote MCP server in [`../../docs/mcp-servers.md`](../../docs/mcp-servers.md) — `type: "http"` instead of a local `command`:
 
@@ -43,10 +50,10 @@ Same shape as any other remote MCP server in [`../../docs/mcp-servers.md`](../..
   "mcpServers": {
     "ai-delivery-playbook": {
       "type": "http",
-      "url": "https://ai-delivery-playbook-mcp.<your-subdomain>.workers.dev/mcp"
+      "url": "https://ai-delivery-playbook.mikulas-frenak.workers.dev/mcp"
     }
   }
 }
 ```
 
-Update [`../setup.md`](../setup.md) with the real URL once deployed — right now it only documents the local stdio path.
+See [`../setup.md`](../setup.md) for per-client steps.

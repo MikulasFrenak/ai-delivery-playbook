@@ -29,9 +29,12 @@ node mcp-server/test.js
 
 Spawns `server.js` as a real subprocess and drives it over stdio exactly like an MCP client would: `initialize` → `notifications/initialized` → `tools/list` → `tools/call` for both tools, plus the error paths (missing `skill_id`, unknown skill, unknown tool). Prints `OK` and exits 0 on success.
 
-## Known limits
+## Two ways to run it
 
-- **Local stdio only, for now.** Whoever uses `server.js` directly needs the repo cloned so it can read `../skills/*.md` — it isn't reachable over the internet the way `https://mcp.figma.com/mcp` is. A remote version exists at [`remote/`](./remote/) (Cloudflare Workers, Streamable HTTP) — built and locally verified, not yet deployed. See `remote/README.md` and `.tasks/AIPB-12.md`.
+- **Local stdio** (`server.js`, this directory) — needs the repo cloned, reads `../skills/*.md` fresh via `fs` on every call. See `setup.md`.
+- **Remote HTTP** (`remote/`, Cloudflare Workers) — no clone needed, live at `https://ai-delivery-playbook.mikulas-frenak.workers.dev/mcp`. See `remote/README.md`.
+
+## Known limits
 - **Keyword search only.** Fine at 13 skills; revisit (embeddings, hybrid ranking) only if the catalog grows enough that keyword-in-description misses matches people expect.
 - **Per-client config, not shared automatically.** The Claude Code CLI and the VS Code/JetBrains extension read different config files — registering via `claude mcp add --scope user` does not make the server available in the extension. One exception: the Claude Desktop app's `claude_desktop_config.json` covers both the regular Desktop chat *and* Cowork sessions, despite Cowork running in its own sandboxed environment. See `setup.md` for what each client actually needs.
 
