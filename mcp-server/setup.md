@@ -8,7 +8,7 @@ node /absolute/path/to/ai-delivery-playbook/mcp-server/server.js
 
 ## Prerequisites
 
-1. **Clone this repo somewhere on the machine that will run the server.** It's local stdio, not a hosted URL (see README's Known limits) — there's no remote endpoint to point at yet, so the person connecting to it needs their own local copy.
+1. **Clone this repo somewhere on the machine that will run the server** — only if you're using the local-stdio option below. A live remote URL also exists and needs no clone at all; see "Remote (no clone needed)" further down, or jump straight to [`remote/README.md`](./remote/README.md).
 2. **Node.js installed** (any reasonably recent version — built and tested on v22). No `npm install` needed; the server has zero dependencies.
 3. **Swap `/absolute/path/to/ai-delivery-playbook` for your own clone's actual path** in every example below — e.g. `/Users/<you>/Github/ai-delivery-playbook/mcp-server/server.js`. This is the one step people actually get wrong: copy-pasting the placeholder path as-is silently fails (the client just won't find a server to launch).
 
