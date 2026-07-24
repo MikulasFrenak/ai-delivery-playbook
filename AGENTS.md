@@ -167,6 +167,7 @@ A **Skill** is a single unit of engineering behavior — "analyze a story," "imp
 | [`/verify-browser`](./skills/verify-browser.md) | Verify a change in the live browser via Chrome DevTools MCP (web only — see the skill for the native-mobile gap) |
 | [`/commit`](./skills/commit.md) | Generate a commit message from the current diff, run the quality gate, commit, and offer to create/update the PR/MR |
 | [`/pr-update`](./skills/pr-update.md) | Append the last commit's changes as new rows to the open PR/MR description (GitHub, GitLab, Azure DevOps, Bitbucket) |
+| [`/branch-cleanup`](./skills/branch-cleanup.md) | Delete local branches confirmed merged via the host (not just `git branch --merged`, which misses squash merges), then prune stale remote-tracking refs |
 | [`/code-doc`](./skills/code-doc.md) | Create or update a `doc.md` for a component, module, or feature section after implementing or changing it |
 | [`/public-repo-check`](./skills/public-repo-check.md) | Scan working tree + git history for secrets, UUIDs, and org-specific naming before pushing to a public remote |
 | [`/generate-agents-md`](./skills/generate-agents-md.md) | Split a repo's `CLAUDE.md` into a tool-agnostic `AGENTS.md` + a thin Claude-only `CLAUDE.md` import shim, following this repo's own split |
