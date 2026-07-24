@@ -71,6 +71,8 @@ Adapt to your own team's actual policy, but decide and document explicitly:
 - Whether `AGENTS.md`/`CLAUDE.md`-only changes go on their own branch type (keeps doc updates decoupled from long-lived feature branches)
 - PR merge strategy (squash vs merge commit) and whether the source branch auto-deletes
 
+**This repo's own answer** *(example fill-in, not a template placeholder)*: `main` is never committed to directly — every change, including trivial doc fixes, lands via its own `feature/`/`bugfix/`/`chore/`/`trivial/` branch and a PR. This repo merges via real merge commits (not squash) specifically so `git branch --merged main` stays a reliable signal for the `branch-cleanup` skill — a project that squash-merges instead should say so here and lean on that skill's host-cross-check step rather than `--merged` alone.
+
 **Branch cleanup after merge (recommended default):** a squash-merged branch's commits are never ancestors of the new squash commit on the base branch, so git always shows it as diverged ("N ahead, M behind") even though its content fully landed — this is expected, not a sign anything went wrong, and the branch is safe to delete once the PR shows merged.
 - **Remote:** turn on the host's "automatically delete head branches" repo setting (GitHub: Settings → General → Pull Requests) once, rather than remembering to delete it by hand on every PR.
 - **Local:** the host can't reach your local clone, so this step is always manual. After confirming the PR is merged (`gh pr view <n> --json state,mergedAt` / equivalent):
@@ -167,6 +169,7 @@ A **Skill** is a single unit of engineering behavior — "analyze a story," "imp
 | [`/verify-browser`](./skills/verify-browser.md) | Verify a change in the live browser via Chrome DevTools MCP (web only — see the skill for the native-mobile gap) |
 | [`/commit`](./skills/commit.md) | Generate a commit message from the current diff, run the quality gate, commit, and offer to create/update the PR/MR |
 | [`/pr-update`](./skills/pr-update.md) | Append the last commit's changes as new rows to the open PR/MR description (GitHub, GitLab, Azure DevOps, Bitbucket) |
+| [`/branch-cleanup`](./skills/branch-cleanup.md) | Delete local branches confirmed merged via the host (not just `git branch --merged`, which misses squash merges), then prune stale remote-tracking refs |
 | [`/code-doc`](./skills/code-doc.md) | Create or update a `doc.md` for a component, module, or feature section after implementing or changing it |
 | [`/public-repo-check`](./skills/public-repo-check.md) | Scan working tree + git history for secrets, UUIDs, and org-specific naming before pushing to a public remote |
 | [`/generate-agents-md`](./skills/generate-agents-md.md) | Split a repo's `CLAUDE.md` into a tool-agnostic `AGENTS.md` + a thin Claude-only `CLAUDE.md` import shim, following this repo's own split |

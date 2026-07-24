@@ -27,6 +27,7 @@ implement-task
 verify-browser
 commit
 pr-update
+branch-cleanup
 code-doc
 public-repo-check
 generate-agents-md
