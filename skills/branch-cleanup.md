@@ -20,9 +20,15 @@ This skill cross-references against the real PR/MR state on the host, not just g
 
 ## Workflow
 
-### Step 1: Detect the Host
+### Step 1: Detect the Host (or the Lack of One)
 
-Same detection as [`pr-update`](./pr-update.md) Step 2 — check the git remote URL for GitHub / GitLab / Azure DevOps / Bitbucket and confirm the corresponding CLI is installed and authenticated (`gh auth status` / `glab auth status` / `az account show` / a stored Bitbucket credential). If none is available, fall back to Step 3's `--merged` check alone and say so explicitly — it will under-report on a repo that squash-merges, and the report in Step 5 must make that limitation visible rather than silently presenting a partial list as complete.
+Same detection as [`pr-update`](./pr-update.md) Step 2 — check the git remote URL and confirm the corresponding CLI (or REST API for an unlisted host) is installed and authenticated. This skill isn't tied to GitHub, or to any fixed list of hosts — the point is cross-checking against *whatever* actually merged the branch, GitHub/GitLab/Azure DevOps/Bitbucket being the common cases with a well-known CLI, anything else via its API the same way `pr-update` handles an unlisted host.
+
+Three cases, not two:
+
+1. **Known or reachable host, CLI/API authenticated** — do the full Step 4 cross-check.
+2. **A remote exists but nothing can query it** (CLI missing, not authenticated, host has no reachable API) — fall back to Step 3's `--merged` check alone and say so explicitly. It will under-report on a repo that squash-merges, and the report in Step 5 must make that limitation visible rather than silently presenting a partial list as complete.
+3. **No remote at all** (a purely local, never-pushed project) — skip host detection entirely, there's nothing to cross-check against. This case is actually the *one* where `git branch --merged` alone is fully trustworthy: without a remote host doing a squash merge via its own web UI, every merge that happened, happened through local `git merge`/`git rebase`, so ordinary ancestry checking already sees the whole picture. Say so in the report too — "no remote, `--merged` is authoritative here" reads differently than "host unavailable, treat this as incomplete."
 
 ### Step 2: List Local Branches
 
