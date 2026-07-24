@@ -71,6 +71,8 @@ Adapt to your own team's actual policy, but decide and document explicitly:
 - Whether `AGENTS.md`/`CLAUDE.md`-only changes go on their own branch type (keeps doc updates decoupled from long-lived feature branches)
 - PR merge strategy (squash vs merge commit) and whether the source branch auto-deletes
 
+**This repo's own answer** *(example fill-in, not a template placeholder)*: `main` is never committed to directly — every change, including trivial doc fixes, lands via its own `feature/`/`bugfix/`/`chore/`/`trivial/` branch and a PR. This repo merges via real merge commits (not squash) specifically so `git branch --merged main` stays a reliable signal for the `branch-cleanup` skill — a project that squash-merges instead should say so here and lean on that skill's host-cross-check step rather than `--merged` alone.
+
 **Branch cleanup after merge (recommended default):** a squash-merged branch's commits are never ancestors of the new squash commit on the base branch, so git always shows it as diverged ("N ahead, M behind") even though its content fully landed — this is expected, not a sign anything went wrong, and the branch is safe to delete once the PR shows merged.
 - **Remote:** turn on the host's "automatically delete head branches" repo setting (GitHub: Settings → General → Pull Requests) once, rather than remembering to delete it by hand on every PR.
 - **Local:** the host can't reach your local clone, so this step is always manual. After confirming the PR is merged (`gh pr view <n> --json state,mergedAt` / equivalent):
