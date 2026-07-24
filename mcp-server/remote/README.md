@@ -39,7 +39,7 @@ node test.js
 
 Imports `worker.js`'s actual exported `fetch` handler and drives it with real Web-standard `Request` objects (Node 18+ has `fetch`/`Request`/`Response` as globals — the same Web Fetch API surface Workers implement). This exercises the real request-handling code path — JSON-RPC parsing, all four MCP methods, both tools' happy and error paths, CORS preflight, wrong method/path, malformed JSON — without needing `wrangler dev` or a live deploy.
 
-`test.js` alone doesn't prove the live deployment works — the `curl` checks above (against the actual `*.workers.dev` URL) cover that gap. Still outstanding: a real MCP client (Claude Code, Cursor) connecting end to end and actually using it in a conversation, rather than raw `curl`. Do that next if you want the same level of confidence AIPB-11's stdio version has.
+`test.js` alone doesn't prove the live deployment works — the `curl` checks above (against the actual `*.workers.dev` URL) cover that gap. Beyond that: confirmed via `claude mcp add --transport http ai-delivery-playbook --scope user https://ai-delivery-playbook.mikulas-frenak.workers.dev/mcp` — the Claude Code CLI connects to the remote URL directly and works, same confidence level as AIPB-11's stdio verification, just over HTTP instead of stdio.
 
 ## Connect a client to it
 
