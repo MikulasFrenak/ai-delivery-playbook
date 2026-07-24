@@ -6,4 +6,19 @@ Built with frontend and mobile delivery in mind, but designed to be technology-a
 
 See [`architecture.md`](./architecture.md) for how it's structured, [`examples/`](./examples/) for real worked runs, [`docs/adoption.md`](./docs/adoption.md) for how to introduce the playbook to a team (research → workshop → pilot → conventions → independence), and [`CONTRIBUTING.md`](./CONTRIBUTING.md) if you want to add a skill or workflow.
 
-Skills are also servable directly to any MCP-compatible agent — no clone-and-copy required. See [`mcp-server/README.md`](./mcp-server/README.md).
+## Try it — no clone required
+
+Every skill is live over MCP. Add this to your MCP client config (Claude Code, Cursor, or anything else that speaks MCP) and it can search and pull skills directly:
+
+```json
+{
+  "mcpServers": {
+    "ai-delivery-playbook": {
+      "type": "http",
+      "url": "https://ai-delivery-playbook.mikulas-frenak.workers.dev/mcp"
+    }
+  }
+}
+```
+
+Then ask it something like *"search the ai-delivery-playbook skills for commit conventions, then show me the full skill."* See [`mcp-server/setup.md`](./mcp-server/setup.md) for exact steps per client (Claude Code CLI, VS Code/JetBrains extension, Claude Desktop app), and [`mcp-server/README.md`](./mcp-server/README.md) for how the server itself works — including a local-stdio option if you'd rather run it from a clone.

@@ -43,7 +43,20 @@ Unlike every other entry in this file — which document servers this repo's ski
 }
 ```
 
-Local stdio for now — the repo needs to be cloned locally. A remote (Cloudflare Workers, no clone needed) version exists at [`mcp-server/remote/`](../mcp-server/remote/), built and locally verified but not yet deployed — see `mcp-server/remote/README.md`.
+Local stdio (see above) needs the repo cloned. A remote version is live, no clone needed:
+
+```json
+{
+  "mcpServers": {
+    "ai-delivery-playbook": {
+      "type": "http",
+      "url": "https://ai-delivery-playbook.mikulas-frenak.workers.dev/mcp"
+    }
+  }
+}
+```
+
+See [`mcp-server/remote/README.md`](../mcp-server/remote/README.md).
 
 ---
 

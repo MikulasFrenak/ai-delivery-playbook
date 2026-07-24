@@ -70,20 +70,20 @@ Same JSON shape, added wherever that client's own docs say its MCP config lives 
 
 ## Remote (no clone needed)
 
-All of the above requires the repo cloned locally. A remote version exists at [`remote/`](./remote/) — built and locally verified, not yet deployed (see `remote/README.md` and `.tasks/AIPB-12.md`). Once it's deployed, connecting is even simpler — swap the `command`/`args` local-stdio block in any of the examples above for:
+All of the above requires the repo cloned locally. A remote version — deployed, live, verified — is at [`remote/`](./remote/) (see `remote/README.md` and `.tasks/AIPB-12.md`). Connecting is simpler: swap the `command`/`args` local-stdio block in any of the examples above for:
 
 ```json
 {
   "mcpServers": {
     "ai-delivery-playbook": {
       "type": "http",
-      "url": "https://ai-delivery-playbook-mcp.<your-subdomain>.workers.dev/mcp"
+      "url": "https://ai-delivery-playbook.mikulas-frenak.workers.dev/mcp"
     }
   }
 }
 ```
 
-No clone, no Node install, works identically across every client above. This section will get the real URL once it's live.
+No clone, no Node install, works identically across every client above. Verified with real `curl` calls: `initialize` returns the correct `serverInfo`, and `tools/call` → `search_skills` returns real skill descriptions pulled from the deployed bundle.
 
 ---
 
