@@ -9,7 +9,7 @@ Two tools, not one per skill:
 - **`search_skills(query)`** — keyword search over skill id + description. Empty query lists every skill.
 - **`get_skill(skill_id)`** — returns one skill's full markdown, frontmatter included, exactly as it lives in `skills/`.
 
-Nothing runs server-side beyond reading local files. The calling agent reads the fetched skill and follows it itself — same as if it had this repo cloned. Skills that depend on another MCP server already being connected (`design-brief` needs Figma, `verify-browser` needs chrome-devtools) still work that way through the *calling* client's own connections; this server never touches those.
+Nothing runs server-side beyond reading local files. The calling agent reads the fetched skill and follows it itself — same as if it had this repo cloned, **without** copying the file into the current project first. `get_skill`'s tool description and every response say this explicitly (see `doc.md`'s "Fetch-and-follow, not fetch-and-copy") — a bare description alone wasn't enough in practice, since a calling agent's instinct is to reach for Claude Code's normal `.claude/skills/` discovery mechanism instead. Skills that depend on another MCP server already being connected (`design-brief` needs Figma, `verify-browser` needs chrome-devtools) still work that way through the *calling* client's own connections; this server never touches those.
 
 ## Zero dependencies
 
