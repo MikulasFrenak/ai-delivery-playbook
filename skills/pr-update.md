@@ -44,8 +44,11 @@ git remote get-url origin
 | `gitlab.com` or self-hosted GitLab | GitLab | `glab` |
 | `dev.azure.com` or `visualstudio.com` | Azure DevOps | `az repos` |
 | `bitbucket.org` | Bitbucket | REST API via `curl` (no first-party CLI) |
+| Anything else (self-hosted Gitea/Gogs/Forgejo, sourcehut, a private GitLab CE instance that doesn't say "gitlab" in its hostname, etc.) | Unknown | none built in |
 
-Confirm the corresponding CLI is installed and authenticated before proceeding (`gh auth status`, `glab auth status`, `az account show`, or a stored Bitbucket app-password/token). If it isn't, tell the user what's missing and stop — don't try to guess credentials.
+This table covers the hosts common enough to have a well-known CLI — it's a starting point, not a hard boundary. For an unlisted host: check whether it exposes an OpenAPI-compatible REST API (most do) and drive that with `curl` the same way the Bitbucket row does, rather than assuming the skill can't run at all. Only fall back to telling the user and stopping if there's genuinely no way to query PR/MR state programmatically (no CLI, no reachable API, no credentials).
+
+Confirm the corresponding CLI (or API access) is installed/reachable and authenticated before proceeding (`gh auth status`, `glab auth status`, `az account show`, a stored Bitbucket app-password/token, or a working credential for an unlisted host's API). If it isn't, tell the user what's missing and stop — don't try to guess credentials.
 
 **Find the open PR/MR for the current branch:**
 
