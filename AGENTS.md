@@ -50,7 +50,7 @@ chore/TICKET-ID/short-kebab-desc     # ticketed, non-feature work: deps, refacto
 trivial/short-kebab-desc             # tooling, docs, config (no ticket)
 ```
 
-**One working branch until merge.** Fixes and follow-ups to work that hasn't merged yet land on the *same* branch as new commits — don't open a new branch per fix. Parallel branches over the same files just manufacture merge conflicts. A new branch starts only for independent work, after the previous one merges.
+**One open branch/PR at a time.** Before starting new work, check whether a branch or PR is already open — fixes and follow-ups to work that hasn't merged yet land on that *same* branch as new commits, not a new one. Parallel branches over the same files just manufacture merge conflicts (and duplicate/competing PRs) once both try to land. A new branch starts only for genuinely independent work, after the previous one merges.
 
 `chore/` vs `trivial/`: both cover non-feature, non-bugfix work — the difference is whether it's tracked by a ticket. If it has a ticket (matches the `create-task` skill's Chore template), it's `chore/`. If it's small enough that filing a ticket would be overhead, it's `trivial/`.
 
