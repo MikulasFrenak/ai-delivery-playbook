@@ -21,7 +21,7 @@ If you're using Claude Code specifically, also read `CLAUDE.md` — it's a thin 
 | `workflows/` | 2 — Workflows | Multi-skill sequences for a delivery scenario |
 | `lifecycle/` | 3 — Software Delivery Lifecycle | Stage-level docs (Requirements → Release) |
 | `examples/` | 4 — Worked Examples | Real traces of a workflow run end to end |
-| `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `vocabulary.md`, `future-considerations.md`) |
+| `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `deployment.md`, `vocabulary.md`, `future-considerations.md`) |
 
 See [`architecture.md`](./architecture.md) for how these levels relate.
 
@@ -308,3 +308,5 @@ When generalizing a skill sourced from a real project — as every one in `skill
 ## Setup
 
 See [`docs/mcp-servers.md`](./docs/mcp-servers.md) for MCP server setup. Add your own machine-setup doc (runtime versions, package manager, auth proxy/VPN requirements, token-usage visibility) as `docs/setup.md` — that content is inherently org-specific, so it isn't templated here.
+
+For deployment, see [`docs/deployment.md`](./docs/deployment.md) — the vendor-agnostic set of decisions any deploy setup has to answer, with this ecosystem's own Cloudflare setup as one worked example. Fill it in with your own host (Azure, AWS, Kubernetes, Vercel, self-hosted); the questions don't change.
