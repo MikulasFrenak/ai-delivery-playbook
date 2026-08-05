@@ -16,7 +16,7 @@ status: documented
 - [`commit`](../skills/commit.md) — generates the commit message, runs the quality gate, creates the commit, and creates or triggers the PR/MR update
 - [`pr-update`](../skills/pr-update.md) — keeps the PR/MR description's changes table and Testing section in sync with later commits on the same branch
 
-**Gap:** this playbook has no merge/deploy skill yet — merging the PR/MR and any deploy step still happen manually or via this project's existing CI/CD, outside Claude Code.
+**Gap:** this playbook has no merge/deploy skill yet — merging the PR/MR and any deploy step still happen manually or via this project's existing CI/CD, outside Claude Code. [`docs/deployment.md`](../docs/deployment.md) writes down the *shape* of that deploy setup and the decisions it forces, but a doc isn't a skill and doesn't close this gap — an agent can't run a reference doc.
 
 **In practice:** "existing CI/CD" isn't hypothetical — every personal project this playbook has actually run on (family-trails-eu, review-spa, this repo, and ZenSmash) deploys through the same real pipeline shape: GitHub Actions for cross-repo sync/build steps, Cloudflare Workers' own Git integration for the deploy itself (push to `main` → build → live, no manual `wrangler deploy` in the common case — see `mcp-server/remote/README.md` for the one build-config gotcha that shows up in that flow, twice now, once for production and once for PR previews). None of that lives in a skill yet, which is exactly the Gap above — but the absence of a skill isn't the same as the absence of practice.
 
