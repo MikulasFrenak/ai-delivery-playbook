@@ -19,6 +19,8 @@ status: documented
 
 **Artifacts:** Code changes, `doc.md`, updated task file with completed items and any architecture decisions discovered mid-implementation.
 
+**Backend services:** [`docs/error-handling.md`](../docs/error-handling.md) is the cross-cutting convention this stage applies for error responses, retries/idempotency, and observability — same role `AGENTS.md`'s Styling/Responsive-UI sections play for frontend work, just for backend failure behavior.
+
 ---
 
 **Difference from `implement-task` the skill:** this file describes the *stage* — its purpose, entry/exit criteria, and which skills serve it. `implement-task` is the *tool* — the actual runnable workflow that does the work. Level 3 docs describe the "what/when" of the lifecycle; Level 1 skills are the "how."

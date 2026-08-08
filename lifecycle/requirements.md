@@ -19,3 +19,5 @@ status: documented
 **For a plain Task** (no Story to decompose first): `create-task` Step 1a files a new ticket from conversation context when none exists yet, then runs directly — there's no `analyze-story` step in this path.
 
 **Artifacts:** Ticket(s) in the issue tracker, including subtasks for a Story; a `.tasks/TICKET-ID.md` plan per subtask/Task (see `create-task`).
+
+**Non-functional requirements — same rigor as functional ones.** A reliability ask ("this needs to be fast," "it can't go down") is a requirement, not an implementation detail to sort out later — and it needs the same "testable acceptance criteria" treatment functional asks get. See [`docs/sla-framework.md`](../docs/sla-framework.md) for translating a vague client-driven ask into a measurable technical SLO before Architecture starts, so the architecture decision is made with a real reliability target in view instead of guessing at one mid-implementation.
