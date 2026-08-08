@@ -14,6 +14,10 @@ This exists because terminology drift is a real, recurring failure mode here: an
 | **Lifecycle stage** | — | Level 3 — one stage of the Software Delivery Lifecycle (Requirements → Release), documented in `lifecycle/*.md` | "Phase" |
 | **Worked Example** | — | Level 4 — a real, after-the-fact trace of a workflow run, in `examples/*.md`. Not hypothetical | "Playbook" (confusing — this repo is already called a playbook) |
 | **Verification fan-out** | — | Running independent, read-only checks (lint, type-check, tests, build) concurrently — as parallel shell jobs, or as separate agents when a check needs real diagnosis — because none of them consumes another's output. See "Independent Verification Fan-Out" in `AGENTS.md`'s Agent Orchestration section | "Parallelization" (too generic — this is specifically about *independent, read-only* steps; don't use the term for anything that writes shared state) |
+| **SLI** (Service Level Indicator) | — | The specific thing being measured — latency, error rate, availability. See `docs/sla-framework.md` | "SLA" or "SLO" (a measurement isn't a target, and isn't a commitment) |
+| **SLO** (Service Level Objective) | — | The internal target for an SLI (e.g. "p95 < 500ms"), with headroom below the SLA so a miss is an internal alarm before it's a customer conversation | "SLA" (an SLA is the external agreement; conflating them removes the warning margin) |
+| **SLA** (Service Level Agreement) | — | The external commitment, with stated consequences if missed | "SLO" (the internal target should be stricter than the external promise, not identical to it) |
+| **Error budget** | — | `1 − SLO` — the amount of acceptable failure remaining in the current measurement window; spent budget means prioritize reliability work over new features | "Buffer" or "slack" (it's a specific, calculated quantity tied to an SLO and a window, not a vague margin) |
 
 ## Branch types
 
