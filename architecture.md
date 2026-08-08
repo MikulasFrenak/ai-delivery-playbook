@@ -23,6 +23,7 @@ Skills
 ------
 analyze-story
 create-task
+define-slo
 implement-task
 verify-browser
 commit

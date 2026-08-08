@@ -2,6 +2,8 @@
 
 A backend extension example, per this playbook's own framing: the structure (skills → workflows → lifecycle) is stack-agnostic, and this doc is what filling that structure in for a backend/reliability concern looks like, the same way `docs/deployment.md` is for infrastructure. It plugs into [`lifecycle/requirements.md`](../lifecycle/requirements.md) — an SLA is a non-functional requirement, and "non-functional" doesn't mean "untestable," it means the acceptance criteria are about *how well* rather than *what*.
 
+This is the theory and vocabulary. The translation process described below (Client-Driven vs. Technical SLAs section) is also implemented as a runnable skill — [`/define-slo`](../skills/define-slo.md) — that walks the same steps against a real ticket and writes the result into the task file rather than leaving it as prose someone has to remember to apply.
+
 ---
 
 ## The vocabulary, precisely (Google SRE)

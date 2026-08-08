@@ -164,6 +164,7 @@ A **Skill** is a single unit of engineering behavior — "analyze a story," "imp
 |---|---|
 | [`/analyze-story`](./skills/analyze-story.md) | Deep-analyze a Story ticket — Event Model diagram, FE/backend breakdown, splittability, create subtasks. Run this *before* `create-task` when starting from a Story |
 | [`/create-task`](./skills/create-task.md) | Create `.tasks/TICKET-ID.md` from a ticket (or from one of `analyze-story`'s subtasks) — planning only, no code |
+| [`/define-slo`](./skills/define-slo.md) | Translate a vague, client-driven reliability ask into a measurable technical SLO (target, window, exclusions, error budget, instrumentation, owner) — run during Requirements when a ticket has a non-functional/reliability ask |
 | [`/design-brief`](./skills/design-brief.md) | Turn a Figma node into a Design Brief mapped to this project's own color/spacing/typography tokens and component library — run before implementing a UI task with a design link |
 | [`/implement-task`](./skills/implement-task.md) | Full implementation flow for a ticket — reads the task file, design, implements, tests, docs, commit |
 | [`/verify-browser`](./skills/verify-browser.md) | Verify a change in the live browser via Chrome DevTools MCP (web only — see the skill for the native-mobile gap) |
