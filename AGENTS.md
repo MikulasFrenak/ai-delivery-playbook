@@ -5,7 +5,7 @@ This file serves two purposes:
 1. It's the agent guide for working **in this repo** (the playbook itself) — for any AI coding tool (Claude Code, Codex, Copilot, Cursor, Aider, Ollama-driven agents, etc).
 2. It's a **template** of cross-cutting conventions to copy into your own project's `AGENTS.md`. Sections marked *Example* show a real pattern distilled from a production adoption — replace the specifics with your own stack, tooling, and package names.
 
-This playbook is built with **frontend and mobile delivery** in mind, but designed to be technology- and tool-agnostic and extensible — that's why the examples throughout lean on components, views, screens, and design tokens rather than backend services, even though the underlying structure (skills → workflows → lifecycle) generalizes to any stack. Extending it to a backend or infra skill (e.g. `verify-mobile`, `verify-ios`, `deploy-kubernetes`) means following the same shape, not inventing a new one.
+This playbook is built with **frontend and mobile delivery** in mind, but designed to be technology- and tool-agnostic and extensible — that's why the examples throughout lean on components, views, screens, and design tokens rather than backend services, even though the underlying structure (skills → workflows → lifecycle) generalizes to any stack. Extending it to a backend or infra skill (e.g. `verify-mobile`, `verify-ios`, `deploy-kubernetes`) means following the same shape, not inventing a new one — `docs/deployment.md`, `docs/error-handling.md`, and `docs/sla-framework.md` are worked examples of that extension for infra, backend failure behavior, and reliability requirements respectively.
 
 Every skill below assumes an `AGENTS.md` exists at the repo root and, for monorepos, at each package root — read these before exploring code or writing a plan. Keep this file (and per-package equivalents) accurate for that reason, not just as documentation.
 
@@ -21,7 +21,7 @@ If you're using Claude Code specifically, also read `CLAUDE.md` — it's a thin 
 | `workflows/` | 2 — Workflows | Multi-skill sequences for a delivery scenario |
 | `lifecycle/` | 3 — Software Delivery Lifecycle | Stage-level docs (Requirements → Release) |
 | `examples/` | 4 — Worked Examples | Real traces of a workflow run end to end |
-| `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `deployment.md`, `vocabulary.md`, `future-considerations.md`) |
+| `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `deployment.md`, `error-handling.md`, `sla-framework.md`, `vocabulary.md`, `future-considerations.md`) |
 
 See [`architecture.md`](./architecture.md) for how these levels relate.
 
@@ -164,6 +164,7 @@ A **Skill** is a single unit of engineering behavior — "analyze a story," "imp
 |---|---|
 | [`/analyze-story`](./skills/analyze-story.md) | Deep-analyze a Story ticket — Event Model diagram, FE/backend breakdown, splittability, create subtasks. Run this *before* `create-task` when starting from a Story |
 | [`/create-task`](./skills/create-task.md) | Create `.tasks/TICKET-ID.md` from a ticket (or from one of `analyze-story`'s subtasks) — planning only, no code |
+| [`/define-slo`](./skills/define-slo.md) | Translate a vague, client-driven reliability ask into a measurable technical SLO (target, window, exclusions, error budget, instrumentation, owner) — run during Requirements when a ticket has a non-functional/reliability ask |
 | [`/design-brief`](./skills/design-brief.md) | Turn a Figma node into a Design Brief mapped to this project's own color/spacing/typography tokens and component library — run before implementing a UI task with a design link |
 | [`/implement-task`](./skills/implement-task.md) | Full implementation flow for a ticket — reads the task file, design, implements, tests, docs, commit |
 | [`/verify-browser`](./skills/verify-browser.md) | Verify a change in the live browser via Chrome DevTools MCP (web only — see the skill for the native-mobile gap) |

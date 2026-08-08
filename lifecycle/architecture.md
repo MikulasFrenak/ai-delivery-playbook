@@ -19,3 +19,5 @@ status: documented
 **Gap:** for a plain Task (not a Story), this playbook has no standalone architecture-decision skill — the research step embedded in `create-task`/`implement-task` is what covers this stage instead, and it doesn't produce a durable artifact beyond the task file. If a project needs to preserve architecture decisions beyond that (e.g. an ADR log), that's a skill this playbook doesn't have yet.
 
 **Artifacts:** For a Story — `analysis.md` + `event-model.drawio` (from `analyze-story`). For a Task — the chosen approach recorded in the task file's Architecture Notes section; optionally a standalone ADR if the project keeps one.
+
+**Backend/reliability decisions belong here too.** Which dependencies get a circuit breaker, which failures degrade gracefully vs. fail loudly, what the technical SLO from Requirements implies for redundancy and retry strategy — these are architecture decisions in the sense this doc means ("a decision, not a document"), not details to discover ad hoc while writing a try/catch. See [`docs/error-handling.md`](../docs/error-handling.md) and [`docs/sla-framework.md`](../docs/sla-framework.md).
