@@ -254,7 +254,7 @@ claude   # restart Claude Code — the tools appear in the tool list
 Ask Claude to list your Workers to confirm it works:
 > "List my Cloudflare Workers"
 
-**What it can't do:** this connector reads and manages platform resources (Workers metadata, KV/R2/D1, etc.) but doesn't run a local build step — for a repo like this one where the deployed Worker is generated from source (`mcp-server/remote/build.js` bakes `skills/*.md` into `skills-data.js` before `wrangler deploy`), the build still has to run first. The connector is for checking/managing what's live, not a replacement for the build+deploy pipeline itself.
+**What it can't do:** this connector reads and manages platform resources (Workers metadata, KV/R2/D1, etc.) — it doesn't trigger a deploy itself. In this ecosystem that's rarely needed manually anyway: every Worker here (including this repo's own remote skill server) is deployed via Cloudflare's Git integration, which auto-builds and deploys on every push to `main` — for the skill server specifically, that means running `node build.js` (which bakes `skills/*.md` into `skills-data.js`) as its configured build command before `wrangler deploy`, with no manual step required. See [`../mcp-server/remote/README.md`](../mcp-server/remote/README.md) and [`deployment.md`](./deployment.md)'s worked example for the full setup. The connector's job is confirming what's actually live after that happens (e.g. checking `modified_on` on `workers_get_worker`/`workers_list`), not running the build.
 
 ---
 
