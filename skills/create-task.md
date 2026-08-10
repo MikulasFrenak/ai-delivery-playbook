@@ -40,9 +40,19 @@ Run this skill when you pick up a new ticket and want to scope it before writing
 
 ### Step 1: Get the Ticket ID and Target Package
 
-If the user provided a ticket ID (e.g. `PROJ-1234`), use it. Otherwise ask: _"What is the ticket ID? If there's no ticket yet, say 'create one' and I'll file it."_
+If the user provided a ticket ID (e.g. `PROJ-1234`), use it. Otherwise ask: _"What is the ticket ID? If there's no ticket yet, say 'create one' and I'll file it. If this repo has no tracker at all, say so and I'll self-assign one."_
 
-If the user replies that no ticket exists yet (e.g. _"create one"_, _"no ticket"_, _"file it"_), branch to **Step 1a** below. Otherwise continue.
+If the user replies that no ticket exists yet **but a tracker does** (e.g. _"create one"_, _"no ticket"_, _"file it"_), branch to **Step 1a** below.
+
+If the repo has **no tracker at all** — check `AGENTS.md` for a "Ticket IDs for solo/no-tracker projects" section (or the project's own equivalent) first, since a prefix may already be registered. Self-assign the next ID under that prefix instead of branching to Step 1a:
+
+```bash
+git log --oneline --all | grep -oE '<PREFIX>-[0-9]+' | sort -t- -k2 -n | tail -1
+```
+
+Use the next number after whatever that returns (or `-01` if it returns nothing). If no prefix is registered yet for this repo, ask the user to pick one (short, stable, all-caps, 3–5 letters) and note where to register it (this playbook's `AGENTS.md`, plus the repo's own). Then continue to Step 2.
+
+Otherwise continue.
 
 Determine the target package (for a monorepo) or the working directory (for a single-repo project):
 - If the user specified it — use it.
