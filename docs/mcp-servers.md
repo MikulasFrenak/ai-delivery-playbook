@@ -224,6 +224,40 @@ After authentication, paste any board URL in chat to confirm it works:
 
 ---
 
+## Cloud Platform MCP (example: Cloudflare Developer Platform)
+
+A remote HTTP server (`https://bindings.mcp.cloudflare.com/mcp`) gives Claude direct access to your Cloudflare account — Workers (list, inspect, get deployed code), KV namespaces, R2 buckets, D1 databases, Hyperdrive configs, and Cloudflare's own documentation search. Useful for checking on anything deployed there without leaving the chat — including, for this repo specifically, the remote skill server documented above: after editing `skills/*.md`, this connector can confirm the redeploy landed instead of you checking the dashboard by hand.
+
+**Prerequisites:** A Cloudflare account with access to the relevant account/zone.
+
+**Step 1 — Authenticate:**
+
+Uses OAuth — no token or env var needed. On first use, Claude triggers an interactive authentication flow that opens a browser to log in.
+
+```json
+{
+  "mcpServers": {
+    "cloudflare": {
+      "type": "http",
+      "url": "https://bindings.mcp.cloudflare.com/mcp"
+    }
+  }
+}
+```
+
+**Step 2 — Verify:**
+
+```bash
+claude   # restart Claude Code — the tools appear in the tool list
+```
+
+Ask Claude to list your Workers to confirm it works:
+> "List my Cloudflare Workers"
+
+**What it can't do:** this connector reads and manages platform resources (Workers metadata, KV/R2/D1, etc.) but doesn't run a local build step — for a repo like this one where the deployed Worker is generated from source (`mcp-server/remote/build.js` bakes `skills/*.md` into `skills-data.js` before `wrangler deploy`), the build still has to run first. The connector is for checking/managing what's live, not a replacement for the build+deploy pipeline itself.
+
+---
+
 ## Chrome DevTools MCP
 
 The Chrome DevTools MCP (`chrome-devtools-mcp`, maintained by Google's ChromeDevTools team) attaches to a **running Chrome instance** via the DevTools Protocol and gives Claude tools for navigation, DOM inspection, input, screenshots, network, performance, and console/debugging. This is what the `verify-browser` skill uses.
@@ -365,6 +399,10 @@ All of the servers above in one ready-to-adapt file. Swap the `<...>` placeholde
       "type": "http",
       "url": "https://mcp.miro.com/"
     },
+    "cloudflare": {
+      "type": "http",
+      "url": "https://bindings.mcp.cloudflare.com/mcp"
+    },
     "chrome-devtools": {
       "command": "npx",
       "args": ["-y", "chrome-devtools-mcp@latest", "--browserUrl=http://127.0.0.1:9222"]
@@ -399,3 +437,5 @@ Delete the servers you don't use — a smaller `.mcp.json` means fewer startup f
 | Chrome debug port silently ignored | `--user-data-dir` is required on Chrome 136+ — use any non-default path |
 | SonarQube MCP not appearing | Check the token env var is set and Docker is running |
 | SonarQube Docker fails to start | Run `docker pull mcp/sonarqube` to ensure the image is present |
+| Cloudflare MCP lists no Workers/resources | You may be authenticated to the wrong account — check which account is active before assuming nothing's deployed |
+| Cloudflare MCP shows a stale Worker (old skill content, old code) | It reports what's actually deployed — run the build step (e.g. `node build.js`) and `wrangler deploy` first, then re-check |
