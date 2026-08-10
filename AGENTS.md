@@ -84,6 +84,77 @@ Adapt to your own team's actual policy, but decide and document explicitly:
 
 ---
 
+## Ticket IDs for solo/no-tracker projects
+
+`TICKET-ID` above assumes an external tracker (Jira, Linear, GitHub Issues) — `create-task`'s Step 1a files into one. Personal/solo repos usually don't have one, and the alternative — no ticket ID at all, just `feature/short-kebab-desc` — throws away what IDs are actually for: a stable, grep-able handle tying a branch, its commits, its task file, and (when you're working across several personal repos in one sitting) its repo apart from every other repo's own `feature/add-caching` branch.
+
+**This repo already does this for its own meta-work, it just was never written down.** Every `AIPB-NN` commit/branch/task-file in this repo's own history is a self-assigned ID, not a real Jira/Linear ticket (`git log --oneline --all | grep AIPB` — currently up to `AIPB-14`). That's the pattern to copy, not invent fresh per repo:
+
+1. **Pick a short, stable, all-caps prefix once** — 3–5 letters, derived from the repo name, memorable enough to type from memory. Record it in the registry table below *and* in that repo's own `AGENTS.md`, so it's discoverable from either side.
+2. **Number sequentially from 01.** Find the next number from git log, not `.tasks/` — merged task files get deleted (see this file's rule on that above), so branch/commit history is the durable record:
+   ```bash
+   git log --oneline --all | grep -oE '<PREFIX>-[0-9]+' | sort -t- -k2 -n | tail -1
+   ```
+3. **Everything downstream is identical to the ticketed case** — branch names (`feature/PRCH-03/short-kebab-desc`), commit format (`PRCH-03 - Summary`), task files (`.tasks/PRCH-03.md`, deleted once merged). A self-assigned ID is a drop-in `TICKET-ID`, not a parallel mechanism `create-task` or `pr-update` need to special-case.
+4. **`create-task`'s Step 1** needs a third path for these repos: if there's no tracker at all (not just "no ticket yet" for a tracker that does exist), self-assign the next number under the repo's registered prefix instead of branching to Step 1a's external-filing flow.
+
+**Registry — personal/solo repo prefixes** *(the only place all of them are listed together; add a row here the first time a repo adopts one, and check no other repo already claimed it)*:
+
+| Repo | Prefix | Notes |
+|---|---|---|
+| `ai-delivery-playbook` | `AIPB` | Established in this repo's own history before this convention was written down |
+| `provenance-check` | `PRCH` | |
+| `review-spa` | `RSPA` | |
+| `family-trails-eu` | `FTEU` | |
+| `abap-review-agent` | `ABRA` | |
+| `sap-rap-case-study` | `SRAP` | |
+| `money-save` | *(opted out)* | Not a delivery-tracked software project in the same sense as the others — no branch/PR/ticket discipline applies there by design |
+
+---
+
+## PLAN.md — living delivery/roadmap doc *(template)*
+
+A ticket tracker (real or self-assigned, see above) answers "what is this one task." Neither it nor `AGENTS.md`'s own Phases/architecture sections answer "what's the actual state of the project right now, what's next, and why" — `AGENTS.md` is deliberately stable (it's the architecture, not the status), and a `.tasks/PREFIX-NN.md` file gets deleted the moment its ticket merges, so neither is the right place for a running view of the backlog.
+
+**`money-save/PLAN.md` is the real precedent this generalizes from** — a living, top-level file the model reads and updates as thinking evolves, rather than being reconstructed from git history every session. Same shape, one per repo, root-level:
+
+```markdown
+# <Repo> — Plan
+
+*One-line context: current focus, constraints, anything a fresh session needs before reading further.*
+
+## Status
+
+What's actually done vs. in progress right now — a snapshot, not a changelog. Rewrite this section in place each time it goes stale; don't append to it forever.
+
+## Next up
+
+Roughly ordered backlog. Each item that's actually about to be worked on gets promoted to a real ticket (`create-task`, `PREFIX-NN`) — PLAN.md is where items live *before* that, not a duplicate of the tracker.
+
+## Open questions / decisions needed
+
+Things blocking a clean "next up" ordering — a decision, a missing piece of research, a choice between approaches. Move to "Next up" once resolved.
+
+## Parked (noted, not active)
+
+Ideas and follow-ups worth remembering but not being worked on. ✅/⬜ sub-items where a parked idea has partial progress — see `money-save/PLAN.md`'s "Parked ideas" section for the real pattern (checkbox-tracked sub-items, each with enough context that a cold read still makes sense).
+
+## Decision points
+
+Checkpoints to revisit specific choices — "after N weeks/months, check X, and if not true, do Y" — so a plan's assumptions get re-examined on purpose instead of silently going stale.
+
+## Sources
+
+Only if the plan leans on external research/claims — cite them, same rule as everywhere else in this playbook.
+```
+
+Rules:
+- **Update it as thinking happens, not as a separate chore.** If a conversation changes the plan, the file changes in the same sitting — a stale PLAN.md is worse than none, because it gets trusted by default.
+- **Rewrite "Status" and "Next up" in place; don't let them grow append-only.** "Parked" is the one section that's allowed to accumulate, since old parked ideas are still useful context.
+- **PLAN.md is not a ticket file and doesn't replace one.** Once an item from "Next up" is actually being worked on, it gets a real `PREFIX-NN` ticket and task file — PLAN.md keeps the one-line backlog entry (optionally noting the ticket ID) rather than duplicating the task file's detail.
+
+---
+
 ## Testing Infrastructure *(template)*
 
 Document your actual test runner setup here (unit / component / e2e, and where each runs — locally vs CI).
