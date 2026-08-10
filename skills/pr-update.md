@@ -1,14 +1,14 @@
 ---
 name: pr-update
 disable-model-invocation: true
-description: Appends the latest committed changes as new rows to the open PR/MR description, on GitHub, GitLab, Azure DevOps, or Bitbucket. Reads the last commit diff, generates table rows in the project's format, and updates the PR/MR via the appropriate host CLI. NEVER auto-invoke — only run when user explicitly types /pr-update or when called from the commit skill.
+description: Appends the latest committed changes as new rows to the open PR/MR description — or creates the PR/MR first, with those changes as its initial description, if one doesn't exist yet — on GitHub, GitLab, Azure DevOps, or Bitbucket. Reads the last commit diff, generates table rows in the project's format, and updates (or creates) the PR/MR via the appropriate host CLI. NEVER auto-invoke — only run when user explicitly types /pr-update or when called from the commit skill.
 ---
 
 # pr-update — Append Changes to PR/MR Description
 
 ## Overview
 
-Reads the last commit on the current branch, generates new rows in the PR/MR changes-table format, and appends them to the open PR/MR description — on whichever host this repo actually uses.
+Reads the last commit on the current branch, generates new rows in the PR/MR changes-table format, and appends them to the open PR/MR description — on whichever host this repo actually uses. If no PR/MR is open yet, offers to create one instead, using those same generated rows as its initial description.
 
 **Follow the steps in order. Stop gracefully at any step if the prerequisite is not met.**
 
@@ -68,9 +68,15 @@ curl -s -u "<user>:<app-password>" \
   "https://api.bitbucket.org/2.0/repositories/<workspace>/<repo>/pullrequests?q=source.branch.name=%22<branch>%22"
 ```
 
-If no open PR/MR is found → inform the user ("No open PR/MR found for this branch") and stop. Do not error — this is expected when the PR/MR hasn't been created yet.
+**If no open PR/MR is found → don't stop.** Ask the user:
 
-Note the PR/MR id/number and its current description/body from the response.
+> No open PR/MR found for this branch. Create one now with these changes as the initial description?
+
+- If they decline, stop without erroring — that's a valid choice, not a failure.
+- If the branch is `trivial/` (no ticket ID), skip this offer silently and stop — trivial branches don't get a PR/MR, same rule `commit.md` follows.
+- If they confirm, continue to Step 3 as normal, but note this run is *creating* rather than *updating*: the table + `## Testing` section built in Steps 4–5 becomes the PR/MR's initial description instead of an appendix, and Step 6 creates it (title `TICKET-ID - <commit summary>`, same convention and host commands as [`commit.md`](./commit.md) Step 5, "PR/MR — Create or Update") instead of editing an existing one.
+
+**If an open PR/MR is found**, note its id/number and current description/body from the response, and continue to Step 3.
 
 ---
 
@@ -152,7 +158,7 @@ Rules for the Testing section:
 
 ---
 
-### Step 6: Update the PR/MR
+### Step 6: Update or Create the PR/MR
 
 Write the description to a temp file first, on every host — this avoids shell-escaping issues with markdown tables, backticks, and quotes:
 
@@ -162,7 +168,7 @@ cat > /tmp/pr_desc_update.md << 'EOF'
 EOF
 ```
 
-Then update via the host's CLI:
+**If an open PR/MR already existed (the normal case)** — update it:
 
 ```bash
 # GitHub
@@ -188,12 +194,42 @@ curl -s -u "<user>:<app-password>" -X PUT \
 
 Confirm success by printing the PR/MR id and number of rows added.
 
+**If this run is creating a new PR/MR instead (Step 2's fallback, user confirmed)** — create it, using the same title convention and host commands as [`commit.md`](./commit.md) Step 5, with `/tmp/pr_desc_update.md` as the description body:
+
+```bash
+# GitHub
+gh pr create --title "TICKET-ID - <commit summary>" --body-file /tmp/pr_desc_update.md --base <base-branch>
+
+# GitLab
+glab mr create --title "TICKET-ID - <commit summary>" --description "$(cat /tmp/pr_desc_update.md)" --target-branch <base-branch>
+
+# Azure DevOps
+az repos pr create \
+  --org https://dev.azure.com/<org> \
+  --title "TICKET-ID - <commit summary>" \
+  --description "$(cat /tmp/pr_desc_update.md)" \
+  --source-branch <current-branch> \
+  --target-branch <base-branch> \
+  --detect false \
+  --output table
+
+# Bitbucket (REST API — no dedicated CLI)
+curl -s -u "<user>:<app-password>" -X POST \
+  -H "Content-Type: application/json" \
+  -d "$(jq -n --arg title "TICKET-ID - <commit summary>" --rawfile desc /tmp/pr_desc_update.md --arg src "<current-branch>" --arg dst "<base-branch>" \
+    '{title: $title, description: $desc, source: {branch: {name: $src}}, destination: {branch: {name: $dst}}}')" \
+  "https://api.bitbucket.org/2.0/repositories/<workspace>/<repo>/pullrequests"
+```
+
+Confirm success by printing the new PR/MR's id/number and link.
+
 ---
 
 ### Step 7: Report
 
 Tell the user:
-- Which PR/MR was updated (id/number + link)
-- How many rows were appended and a one-line summary of each
+- Which PR/MR was updated **or created** (id/number + link)
+- If created: say so plainly ("no open PR/MR existed, so I created one") — don't phrase a creation as if it were an update
+- How many rows were appended (or, if newly created, that this is the initial description) and a one-line summary of each
 - Whether a `## Testing` section was added or already existed
-- If the step stopped early (no ticket ID, no open PR/MR, tooling-only commit), say so plainly instead of reporting a fake success
+- If the step stopped early (no ticket ID, no open PR/MR and the user declined to create one, tooling-only commit), say so plainly instead of reporting a fake success
