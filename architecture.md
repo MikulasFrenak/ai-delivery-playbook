@@ -32,6 +32,7 @@ branch-cleanup
 code-doc
 public-repo-check
 generate-agents-md
+agent-eval
 ...
 
 ↓
