@@ -188,6 +188,8 @@ Run [`/commit`](./commit.md) with the ticket ID — it generates the commit mess
 
 Include in the commit: all implementation files, the updated i18n resource file, the updated QA-selector file, `doc.md`, and `.tasks/TICKET-ID.md`. Do **not** stage `.env*` files, generated/auto-generated client code, or infra config files unless the ticket is explicitly about them. `/commit`'s own Step 5 handles creating or updating the PR/MR afterward — no separate step needed here.
 
+If closing this ticket resolves or changes something the repo's root `PLAN.md` was tracking (a Status line, a Next-up item, an Open question), run [`/plan-update`](./plan-update.md) to refresh it — don't leave `PLAN.md` stale just because the ticket itself is done.
+
 ---
 
 ## Feature Flag Behaviour Checklist

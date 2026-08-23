@@ -18,6 +18,11 @@ This exists because terminology drift is a real, recurring failure mode here: an
 | **SLO** (Service Level Objective) | — | The internal target for an SLI (e.g. "p95 < 500ms"), with headroom below the SLA so a miss is an internal alarm before it's a customer conversation | "SLA" (an SLA is the external agreement; conflating them removes the warning margin) |
 | **SLA** (Service Level Agreement) | — | The external commitment, with stated consequences if missed | "SLO" (the internal target should be stricter than the external promise, not identical to it) |
 | **Error budget** | — | `1 − SLO` — the amount of acceptable failure remaining in the current measurement window; spent budget means prioritize reliability work over new features | "Buffer" or "slack" (it's a specific, calculated quantity tied to an SLO and a window, not a vague margin) |
+| **Golden set** | — | Real historical examples with known-correct output for one specific judgment call a skill makes. See `docs/eval-framework.md` | "Test cases" (those check code against its own logic; a golden set checks a judgment call against what a human already decided was right) |
+| **Rubric** | — | How a single golden-set example is scored — exact-match, or explicit partial-credit criteria stated before scoring | — |
+| **Eval score** | — | Examples scored correct ÷ total examples, from running a skill's current implementation against its golden set | "Accuracy" (too generic — a score is always relative to one stated golden set and rubric, not a general property of the skill) |
+| **Baseline** (eval) | — | The last accepted eval score, that a new run gets compared against | "SLO" (a baseline is descriptive — the last accepted result — not a target set in advance) |
+| **Regression** (eval) | — | A run that scores worse than baseline | — |
 
 ## Branch types
 

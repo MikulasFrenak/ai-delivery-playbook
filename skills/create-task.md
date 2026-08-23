@@ -344,3 +344,5 @@ Tell the user:
 - A brief summary of what the implementation plan contains
 - Any open questions that need an answer before implementation can start
 - Any notable structural quirks in the target module (e.g. legacy wrapper/composition patterns) that a downstream `/implement-task` run should account for
+
+If this ticket promotes an item out of the repo's root `PLAN.md` "Next up" list, run [`/plan-update`](./plan-update.md) afterward to note the ticket ID against that entry — see `PLAN.md`'s own rule against duplicating task-file detail there.

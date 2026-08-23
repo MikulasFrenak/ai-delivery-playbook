@@ -24,6 +24,7 @@ Skills
 analyze-story
 create-task
 define-slo
+design-brief
 implement-task
 verify-browser
 commit
@@ -32,7 +33,11 @@ branch-cleanup
 code-doc
 public-repo-check
 generate-agents-md
+diagram
+postmortem
+test-scaffold
 agent-eval
+plan-update
 ...
 
 ↓

@@ -250,6 +250,7 @@ A **Skill** is a single unit of engineering behavior — "analyze a story," "imp
 | [`/postmortem`](./skills/postmortem.md) | Turn `.tasks/.postmortems/TICKET-ID.md` incident notes into a blameless post-mortem, in Confluence wiki markup by default |
 | [`/test-scaffold`](./skills/test-scaffold.md) | Scaffold a component/CT test driven by the issue tracker's own Test Case work items, written in user language rather than implementation detail |
 | [`/agent-eval`](./skills/agent-eval.md) | Build a golden set + rubric for one specific judgment call a skill makes, score the current implementation against it, and gate a pending skill change on the score not regressing — run when a skill has real usage history, not on day one |
+| [`/plan-update`](./skills/plan-update.md) | Create or reconcile this repo's root `PLAN.md` (Status/Next-up/Open-questions/Parked/Decision-points) against what actually changed — edits the file only, does not commit |
 | ... | Add your own following the same skill-doc pattern |
 
 ### Task file lifecycle
