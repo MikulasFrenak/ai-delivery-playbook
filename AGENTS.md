@@ -21,7 +21,8 @@ If you're using Claude Code specifically, also read `CLAUDE.md` — it's a thin 
 | `workflows/` | 2 — Workflows | Multi-skill sequences for a delivery scenario |
 | `lifecycle/` | 3 — Software Delivery Lifecycle | Stage-level docs (Requirements → Release) |
 | `examples/` | 4 — Worked Examples | Real traces of a workflow run end to end |
-| `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `deployment.md`, `error-handling.md`, `sla-framework.md`, `vocabulary.md`, `future-considerations.md`) |
+| `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `deployment.md`, `error-handling.md`, `sla-framework.md`, `eval-framework.md`, `vocabulary.md`, `future-considerations.md`) |
+| `evals/` | Reference | Golden-set scorecards produced by [`/agent-eval`](./skills/agent-eval.md) — one `<skill-name>.md` per evaluated skill, kept durable (not deleted like `.tasks/`) so score history stays comparable over time |
 
 See [`architecture.md`](./architecture.md) for how these levels relate.
 
@@ -248,6 +249,7 @@ A **Skill** is a single unit of engineering behavior — "analyze a story," "imp
 | [`/diagram`](./skills/diagram.md) | Generate a draw.io flow/activity/swimlane diagram from a module's code — useful for documenting a non-obvious multi-step or multi-actor flow |
 | [`/postmortem`](./skills/postmortem.md) | Turn `.tasks/.postmortems/TICKET-ID.md` incident notes into a blameless post-mortem, in Confluence wiki markup by default |
 | [`/test-scaffold`](./skills/test-scaffold.md) | Scaffold a component/CT test driven by the issue tracker's own Test Case work items, written in user language rather than implementation detail |
+| [`/agent-eval`](./skills/agent-eval.md) | Build a golden set + rubric for one specific judgment call a skill makes, score the current implementation against it, and gate a pending skill change on the score not regressing — run when a skill has real usage history, not on day one |
 | ... | Add your own following the same skill-doc pattern |
 
 ### Task file lifecycle
