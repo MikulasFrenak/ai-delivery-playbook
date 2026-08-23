@@ -37,6 +37,15 @@ For branching, commit format, and PR conventions, see [`AGENTS.md`](./AGENTS.md)
 
 6. **Use the terms in [`docs/vocabulary.md`](./docs/vocabulary.md) consistently** — ticket vs. task file, "skill" (never "capability" — retired in AIPB-08), etc. A one-word inconsistency here is exactly the kind of thing that survives review and drifts for months (see `docs/vocabulary.md`'s own opening paragraph for how that happened once already).
 
+## Changing an existing skill
+
+If the skill you're changing already has a scorecard at `evals/<skill-name>.md`, re-run [`/agent-eval`](./skills/agent-eval.md) against the judgment call it covers before opening the PR — see `docs/eval-framework.md` for why a scorecard that isn't re-run after a change isn't gating anything.
+
+- **Score holds or improves** → note the new score in the PR description, update the scorecard's baseline, ship.
+- **Score regresses** → the change doesn't ship as-is. Either fix the regression, or get explicit sign-off from someone with the authority to accept the trade-off and record who/why in the scorecard — see `agent-eval`'s Guardrails against quietly lowering the threshold.
+
+If the skill has no scorecard yet, this doesn't apply — `agent-eval` isn't a day-one skill, and a skill without real usage history has nothing to gate a change against. Build one later once the skill has enough real cases to be worth evaluating.
+
 ## Before opening a PR
 
 Run [`/public-repo-check`](./skills/public-repo-check.md) if you touched anything that could plausibly carry a secret, UUID, real hostname, or org-specific name — new MCP config, a new example, a new skill sourced from a real project.
