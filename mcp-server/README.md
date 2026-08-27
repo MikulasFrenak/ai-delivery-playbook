@@ -35,7 +35,7 @@ Spawns `server.js` as a real subprocess and drives it over stdio exactly like an
 - **Remote HTTP** (`remote/`, Cloudflare Workers) — no clone needed, live at `https://ai-delivery-playbook.mikulas-frenak.workers.dev/mcp`. See `remote/README.md`.
 
 ## Known limits
-- **Keyword search only.** Fine at 17 skills; revisit (embeddings, hybrid ranking) only if the catalog grows enough that keyword-in-description misses matches people expect.
+- **Keyword search only.** Fine at 18 skills; revisit (embeddings, hybrid ranking) only if the catalog grows enough that keyword-in-description misses matches people expect.
 - **Per-client config, not shared automatically.** The Claude Code CLI and the VS Code/JetBrains extension read different config files — registering via `claude mcp add --scope user` does not make the server available in the extension. One exception: the Claude Desktop app's `claude_desktop_config.json` covers both the regular Desktop chat *and* Cowork sessions, despite Cowork running in its own sandboxed environment. See `setup.md` for what each client actually needs.
 
 Fresh-session, repo-not-cloned use has been verified live in all four surfaces: the Claude Code CLI, the VS Code extension (asked from `review-spa`, ai-delivery-playbook not cloned there — got back an accurate answer pulled from `skills/design-brief.md`), the Claude Desktop app, and a Cowork session (called `search_skills`/`get_skill` directly, got real content back from `skills/postmortem.md`).
