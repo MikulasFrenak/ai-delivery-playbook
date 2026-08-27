@@ -38,6 +38,7 @@ postmortem
 test-scaffold
 agent-eval
 plan-update
+self-healing-selectors
 ...
 
 ↓

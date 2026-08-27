@@ -23,6 +23,11 @@ This exists because terminology drift is a real, recurring failure mode here: an
 | **Eval score** | — | Examples scored correct ÷ total examples, from running a skill's current implementation against its golden set | "Accuracy" (too generic — a score is always relative to one stated golden set and rubric, not a general property of the skill) |
 | **Baseline** (eval) | — | The last accepted eval score, that a new run gets compared against | "SLO" (a baseline is descriptive — the last accepted result — not a target set in advance) |
 | **Regression** (eval) | — | A run that scores worse than baseline | — |
+| **Self-healing selector** | — | A locator that gets automatically repaired when it fails to resolve, via DOM fingerprint matching plus candidate scoring against a confidence threshold. See `docs/test-maintenance.md` | "Auto-retry" (a retry re-runs the same broken locator; healing finds a new one) |
+| **Fingerprint** (test) | — | A lightweight, re-identifiable description of a DOM element captured at the last passing test run — role, visible text, `aria-label`, tag, short structural path, sibling text | "Selector" (a selector is how you find an element today; a fingerprint is what lets you re-find it after that selector breaks) |
+| **Confidence threshold** (test healing) | — | The score above which a healed locator auto-patches; below it, the healer reports candidates to a human instead of guessing. See `docs/test-maintenance.md` | "Pass/fail" (it's a graded score, not a binary) |
+| **Quarantine** (flaky test) | — | Moving a flaky test into a separate suite that still runs and is tracked, but can't block merges, paired with an assigned owner and fix deadline | "Skip" or "disable" (those drop tracking and accountability entirely) |
+| **Test impact analysis** | — | Mapping changed files/modules to the tests that actually exercise them, and running only that subset per push, with the full suite on a schedule instead | "Test sharding" (sharding splits *all* tests across runners; impact analysis narrows *which* tests run at all) |
 
 ## Branch types
 
