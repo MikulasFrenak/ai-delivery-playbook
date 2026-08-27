@@ -5,7 +5,7 @@ This file serves two purposes:
 1. It's the agent guide for working **in this repo** (the playbook itself) — for any AI coding tool (Claude Code, Codex, Copilot, Cursor, Aider, Ollama-driven agents, etc).
 2. It's a **template** of cross-cutting conventions to copy into your own project's `AGENTS.md`. Sections marked *Example* show a real pattern distilled from a production adoption — replace the specifics with your own stack, tooling, and package names.
 
-This playbook is built with **frontend and mobile delivery** in mind, but designed to be technology- and tool-agnostic and extensible — that's why the examples throughout lean on components, views, screens, and design tokens rather than backend services, even though the underlying structure (skills → workflows → lifecycle) generalizes to any stack. Extending it to a backend or infra skill (e.g. `verify-mobile`, `verify-ios`, `deploy-kubernetes`) means following the same shape, not inventing a new one — `docs/deployment.md`, `docs/error-handling.md`, and `docs/sla-framework.md` are worked examples of that extension for infra, backend failure behavior, and reliability requirements respectively.
+This playbook is built with **frontend and mobile delivery** in mind, but designed to be technology- and tool-agnostic and extensible — that's why the examples throughout lean on components, views, screens, and design tokens rather than backend services, even though the underlying structure (skills → workflows → lifecycle) generalizes to any stack. Extending it to a backend or infra skill (e.g. `verify-mobile`, `verify-ios`, `deploy-kubernetes`) means following the same shape, not inventing a new one — `docs/deployment.md`, `docs/error-handling.md`, `docs/sla-framework.md`, and `docs/test-maintenance.md` are worked examples of that extension for infra, backend failure behavior, reliability requirements, and E2E test-suite maintenance respectively.
 
 Every skill below assumes an `AGENTS.md` exists at the repo root and, for monorepos, at each package root — read these before exploring code or writing a plan. Keep this file (and per-package equivalents) accurate for that reason, not just as documentation.
 
@@ -21,7 +21,7 @@ If you're using Claude Code specifically, also read `CLAUDE.md` — it's a thin 
 | `workflows/` | 2 — Workflows | Multi-skill sequences for a delivery scenario |
 | `lifecycle/` | 3 — Software Delivery Lifecycle | Stage-level docs (Requirements → Release) |
 | `examples/` | 4 — Worked Examples | Real traces of a workflow run end to end |
-| `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `deployment.md`, `error-handling.md`, `sla-framework.md`, `eval-framework.md`, `vocabulary.md`, `future-considerations.md`) |
+| `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `deployment.md`, `error-handling.md`, `sla-framework.md`, `test-maintenance.md`, `eval-framework.md`, `vocabulary.md`, `future-considerations.md`) |
 | `evals/` | Reference | Golden-set scorecards produced by [`/agent-eval`](./skills/agent-eval.md) — one `<skill-name>.md` per evaluated skill, kept durable (not deleted like `.tasks/`) so score history stays comparable over time |
 
 See [`architecture.md`](./architecture.md) for how these levels relate.
@@ -160,6 +160,8 @@ Rules:
 
 Document your actual test runner setup here (unit / component / e2e, and where each runs — locally vs CI).
 
+**Selector drift and flaky E2E tests are a maintenance-cost problem, not just a debugging annoyance.** If broken selectors after UI changes are a recurring source of red builds, see [`docs/test-maintenance.md`](./docs/test-maintenance.md) for the underlying architecture and vocabulary, and run [`/self-healing-selectors`](./skills/self-healing-selectors.md) to scaffold it — but note that doc's own point that selector healing addresses roughly a quarter to a third of flaky-test causes; async/timing issues and quarantine practices (also covered there) are separate, larger levers.
+
 **Example — cross-process bridge quirk:** if your CT setup proxies through a separate process (e.g. a remote-browser grid), callback counters incremented in Node-side test code may never reflect what happened in the real browser, because the runner's dispatch bridge and the test framework's own `mount` populate different arrays. Symptom: `expect.poll(() => callCount)` always times out in CI but the interaction visibly works.
 
 Fix pattern — track the interaction from the browser side instead of a Node-side closure variable:
@@ -251,6 +253,7 @@ A **Skill** is a single unit of engineering behavior — "analyze a story," "imp
 | [`/test-scaffold`](./skills/test-scaffold.md) | Scaffold a component/CT test driven by the issue tracker's own Test Case work items, written in user language rather than implementation detail |
 | [`/agent-eval`](./skills/agent-eval.md) | Build a golden set + rubric for one specific judgment call a skill makes, score the current implementation against it, and gate a pending skill change on the score not regressing — run when a skill has real usage history, not on day one |
 | [`/plan-update`](./skills/plan-update.md) | Create or reconcile this repo's root `PLAN.md` (Status/Next-up/Open-questions/Parked/Decision-points) against what actually changed — edits the file only, does not commit |
+| [`/self-healing-selectors`](./skills/self-healing-selectors.md) | Scaffold self-healing selector infrastructure (DOM fingerprinting, LLM or deterministic candidate scoring, confidence threshold, human-review fallback) into an E2E suite and wire it into CI — run when selector drift after UI changes is a recurring source of broken tests |
 | ... | Add your own following the same skill-doc pattern |
 
 ### Task file lifecycle
