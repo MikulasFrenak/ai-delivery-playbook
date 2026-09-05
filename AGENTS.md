@@ -21,7 +21,7 @@ If you're using Claude Code specifically, also read `CLAUDE.md` — it's a thin 
 | `workflows/` | 2 — Workflows | Multi-skill sequences for a delivery scenario |
 | `lifecycle/` | 3 — Software Delivery Lifecycle | Stage-level docs (Requirements → Release) |
 | `examples/` | 4 — Worked Examples | Real traces of a workflow run end to end |
-| `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `deployment.md`, `error-handling.md`, `sla-framework.md`, `test-maintenance.md`, `eval-framework.md`, `vocabulary.md`, `future-considerations.md`) |
+| `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `mcp-governance.md`, `deployment.md`, `error-handling.md`, `sla-framework.md`, `test-maintenance.md`, `eval-framework.md`, `vocabulary.md`, `future-considerations.md`) |
 | `evals/` | Reference | Golden-set scorecards produced by [`/agent-eval`](./skills/agent-eval.md) — one `<skill-name>.md` per evaluated skill, kept durable (not deleted like `.tasks/`) so score history stays comparable over time |
 
 See [`architecture.md`](./architecture.md) for how these levels relate.
@@ -232,6 +232,8 @@ A **Skill** is a single unit of engineering behavior — "analyze a story," "imp
 
 **Never call any MCP tool automatically.** MCP servers (issue tracker, design tool, code-quality scanner, feature-flag service, browser automation, observability, etc. — see [`docs/mcp-servers.md`](./docs/mcp-servers.md)) consume tokens and may trigger external side effects. Only invoke one when the user explicitly asks for it in the current message, or by running a skill whose own instructions document that MCP usage. Don't infer intent and call MCPs speculatively. This applies regardless of which tool is driving the agent — MCP is a cross-tool protocol, not Claude-specific.
 
+That's about invoking a tool call in the moment; a separate, earlier decision is what scope a server should even have once it's connected — see [`docs/mcp-governance.md`](./docs/mcp-governance.md) and run [`/mcp-check`](./skills/mcp-check.md) before adding a new server to `.mcp.json`.
+
 ### Skills in this playbook
 
 | Skill | When to use |
@@ -254,6 +256,7 @@ A **Skill** is a single unit of engineering behavior — "analyze a story," "imp
 | [`/agent-eval`](./skills/agent-eval.md) | Build a golden set + rubric for one specific judgment call a skill makes, score the current implementation against it, and gate a pending skill change on the score not regressing — run when a skill has real usage history, not on day one |
 | [`/plan-update`](./skills/plan-update.md) | Create or reconcile this repo's root `PLAN.md` (Status/Next-up/Open-questions/Parked/Decision-points) against what actually changed — edits the file only, does not commit |
 | [`/self-healing-selectors`](./skills/self-healing-selectors.md) | Scaffold self-healing selector infrastructure (DOM fingerprinting, LLM or deterministic candidate scoring, confidence threshold, human-review fallback) into an E2E suite and wire it into CI — run when selector drift after UI changes is a recurring source of broken tests |
+| [`/mcp-check`](./skills/mcp-check.md) | Classify a new (or already-connected) MCP server as read-only, write (scoped), or write (destructive) per `docs/mcp-governance.md`, and record the decision — run before adding a server to `.mcp.json` for the first time on a project |
 | ... | Add your own following the same skill-doc pattern |
 
 ### Task file lifecycle

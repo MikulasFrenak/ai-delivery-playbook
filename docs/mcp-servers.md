@@ -26,6 +26,8 @@ Restart Claude Code after editing `settings.local.json`.
 
 This file documents the servers this playbook's skills/workflows commonly assume. Treat each section below as a template — swap in your project's actual hostnames, project keys, and auth details.
 
+**This file covers connecting a server — not what it should be allowed to do once connected.** See [`docs/mcp-governance.md`](./mcp-governance.md) for the scope/least-privilege assessment of each server below, and [`/mcp-check`](../skills/mcp-check.md) to run that assessment against a server before adding it to `.mcp.json` for the first time on a project.
+
 ---
 
 ## AI Delivery Playbook Skill Server (this repo's own server)
@@ -227,6 +229,8 @@ After authentication, paste any board URL in chat to confirm it works:
 ## Cloud Platform MCP (example: Cloudflare Developer Platform)
 
 A remote HTTP server (`https://bindings.mcp.cloudflare.com/mcp`) gives Claude direct access to your Cloudflare account — Workers (list, inspect, get deployed code), KV namespaces, R2 buckets, D1 databases, Hyperdrive configs, and Cloudflare's own documentation search. Useful for checking on anything deployed there without leaving the chat — including, for this repo specifically, the remote skill server documented above: after editing `skills/*.md`, this connector can confirm the redeploy landed instead of you checking the dashboard by hand.
+
+**This isn't read-only.** Alongside the list/inspect tools above, it exposes real create and delete operations on KV namespaces, R2 buckets, D1 databases, and Hyperdrive configs — a deleted database is real, irreversible data loss, not a mistake you can undo from the dashboard. See [`docs/mcp-governance.md`](./mcp-governance.md) for the scope split and run [`/mcp-check`](../skills/mcp-check.md) before treating this connector as safe to auto-approve broadly.
 
 **Prerequisites:** A Cloudflare account with access to the relevant account/zone.
 
