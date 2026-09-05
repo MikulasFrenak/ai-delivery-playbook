@@ -28,6 +28,8 @@ This exists because terminology drift is a real, recurring failure mode here: an
 | **Confidence threshold** (test healing) | — | The score above which a healed locator auto-patches; below it, the healer reports candidates to a human instead of guessing. See `docs/test-maintenance.md` | "Pass/fail" (it's a graded score, not a binary) |
 | **Quarantine** (flaky test) | — | Moving a flaky test into a separate suite that still runs and is tracked, but can't block merges, paired with an assigned owner and fix deadline | "Skip" or "disable" (those drop tracking and accountability entirely) |
 | **Test impact analysis** | — | Mapping changed files/modules to the tests that actually exercise them, and running only that subset per push, with the full suite on a schedule instead | "Test sharding" (sharding splits *all* tests across runners; impact analysis narrows *which* tests run at all) |
+| **Scope tier** | — | An MCP server's classification as read-only, write (scoped), or write (destructive), per `docs/mcp-governance.md` | "Permission level" (too generic — a scope tier is specifically about what an MCP server's tools can *do* to an external system, not an auth role) |
+| **Blast radius** | — | What actually breaks, and how reversibly, if a capability is misused or a credential leaks — the basis for a scope tier, not a vague synonym for "risk" | "Risk" (too broad — blast radius is specifically about *consequence and reversibility*, not likelihood) |
 
 ## Branch types
 
