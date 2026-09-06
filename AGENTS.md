@@ -109,6 +109,7 @@ Adapt to your own team's actual policy, but decide and document explicitly:
 | `family-trails-eu` | `FTEU` | |
 | `abap-review-agent` | `ABRA` | |
 | `sap-rap-case-study` | `SRAP` | |
+| `ai-review` | `AIRV` | Documentation-only (AI agent evaluation lifecycle), no source/build pipeline |
 | `money-save` | *(opted out)* | Not a delivery-tracked software project in the same sense as the others — no branch/PR/ticket discipline applies there by design |
 
 ---
