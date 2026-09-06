@@ -1,3 +1,7 @@
 # Generated — derived entirely from skills/*.md, regenerate with:
 # node mcp-server/remote/build.js
 mcp-server/remote/skills-data.js
+
+# Claude Code local-only state — see CLAUDE.md's Claude Code Settings section
+.claude/settings.local.json
+.claude/worktrees/
