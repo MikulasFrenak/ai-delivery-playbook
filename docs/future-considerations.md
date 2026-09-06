@@ -29,6 +29,18 @@ What would actually start this: pick 1-2 skills that are already naturally singl
 
 **Update:** deeper research on this landed in `.tasks/AIPB-11.md`. Short version: a "content-serving" shape (two generic tools, `search_skills`/`get_skill`, returning skill markdown as-is rather than wrapping each skill's logic as a function) resolves blockers 1 and 2 above — skills never become deterministic functions, they just get fetched over the wire instead of from a local clone, and any skill that depends on another MCP (Figma, chrome-devtools) still executes in the *calling client's* own already-connected session, never proxied through this server. Blockers 3 and 4 (no real second consumer yet; protect human-in-the-loop) still stand — see AIPB-11 for the full writeup and prior art.
 
+## A personal AI-tooling decision log as a worked example
+
+Proposed shape: a full Requirements→Architecture→Implementation→Verification→Release trace of a solo, non-ticketed decision (e.g. choosing a local coding-agent stack — harness, model runner, model — for one person's own machine), submitted for inclusion in this repo.
+
+Not adding this:
+
+1. **`examples/` is scoped to this playbook's own build history**, not arbitrary demonstrations of the methodology elsewhere. `AIPB-01` through `AIPB-06` are traces of *this repo* getting built — a well-written lifecycle trace of an unrelated personal decision doesn't fit that slot just because it uses the same stage names.
+2. **The content itself is perishable in a way this repo's docs deliberately aren't.** A specific model/pricing comparison (which local model wins this month, current subscription tiers) goes stale in weeks; `docs/sla-framework.md`'s SRE vocabulary or `docs/test-maintenance.md`'s architecture stay useful for years. Publishing market-moment comparisons here would break the durability bar every other doc in this repo is held to.
+3. **No real second consumer** — same AIPB-02 bar as everything else in this doc. One person's own hardware-specific tooling log isn't evidence a template for "applying the lifecycle to a solo tooling decision" generalizes to anyone else's situation.
+
+What the lifecycle-stage structure *is* still good for here: it's a real demonstration that the methodology generalizes past shippable features, which is worth knowing works — just not worth publishing the specific instance. A personal, no-ticket-discipline space (this repo's own `money-save` precedent, cited in `AGENTS.md`'s `PLAN.md` section) is the right home for that kind of log, not this repo.
+
 ## Resolved: "Capability" reframing and README rewrite
 
 Both items previously tracked here — reframing Capability as an abstract, tool-agnostic unit of engineering behavior, and the README identity rewrite gated on that reframing — landed via the `AGENTS.md`/`CLAUDE.md` split (`/generate-agents-md`) once a real second consumer (review-spa, zensmash) existed to generalize from. `AGENTS.md` now carries the tool-agnostic framing and conventions; `CLAUDE.md` is a thin `@AGENTS.md` import plus only genuinely Claude Code-specific mechanics. (The "Capability" label this section refers to was itself retired in AIPB-08 — one concept, one name: **skill**.)
