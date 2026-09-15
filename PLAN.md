@@ -6,7 +6,7 @@
 
 - 20 skills documented in [`skills/`](./skills/), all tool-agnostic in [`AGENTS.md`](./AGENTS.md) with `CLAUDE.md` as a thin import shim.
 - Remote MCP server (`ai-delivery-playbook.mikulas-frenak.workers.dev`) is live on Cloudflare Workers, serving `search_skills`/`get_skill` — confirmed via `curl` and a real Claude Code CLI connection (AIPB-12).
-- [`/agent-eval`](./skills/agent-eval.md) landed (AIPB-15/16), wired into the skill-change and vocabulary docs. [`evals/`](./evals/) exists but has **no scorecards yet** — by the skill's own guardrail, it only applies once a skill has real usage history, and none has been run against it yet.
+- [`/agent-eval`](./skills/agent-eval.md) landed (AIPB-15/16), wired into the skill-change and vocabulary docs. **First real scorecard now exists** — [`evals/branch-cleanup.md`](./evals/branch-cleanup.md), 20 real cases (19 confirmed-merged, 1 open-PR-leave-alone), 20/20 baseline, via the MCP server's `get_skill` since the local `/agent-eval` slash command wasn't resolving in this session (file itself checked fine — cause not confirmed, a CLI restart is the likely fix). Coverage gap stated plainly in the scorecard itself: the "delete" path is thoroughly verified, "no PR found" and "host unavailable" have zero real cases yet — extend when they occur for real, don't invent them.
 - [`/branch-cleanup`](./skills/branch-cleanup.md) made genuinely host-agnostic (not GitHub-only) and is now the most-exercised skill in practice this cycle.
 - [`/plan-update`](./skills/plan-update.md) added — resolves the "does PLAN.md need a dedicated skill" question below by existing. Registered in `AGENTS.md`'s skills table and `architecture.md`'s Level 1 list (the latter was already stale — missing `design-brief`/`diagram`/`postmortem`/`test-scaffold` too — fixed at the same time). Wired into `create-task` (Step 7) and `implement-task` (Step 11) as one-line references, same "documented checkpoint, not auto-invoke" pattern `agent-eval` used in `CONTRIBUTING.md`.
 - [`/self-healing-selectors`](./skills/self-healing-selectors.md) added (AIPB-17), paired with [`docs/test-maintenance.md`](./docs/test-maintenance.md) — same doc/skill pairing pattern as `define-slo`/`docs/sla-framework.md`. Generalized from an external draft with all job-application-specific content stripped; core claims (Healwright, the ~28%/~65% selector-vs-timing flakiness split, Spotify's quarantine result) spot-checked via web search before landing. Registered in all three mandatory places plus `lifecycle/verification.md` and `docs/vocabulary.md`.
@@ -18,7 +18,6 @@
 
 ## Next up
 
-- Pick a first real `/agent-eval` candidate once a skill has enough usage history to build a golden set against — `branch-cleanup` or `commit` are the closest given actual session usage so far.
 - **Release ≠ deploy** — `lifecycle/release.md` currently defines Release as "PR merged, ticket closed" with no rollout/rollback/flag-lifecycle content; feature flags exist only as an `implement-task` implementation mechanic (register + on/off check), not a release strategy. Candidate next ticket after AIPB-20: a `create-task` addition (or a `release-plan`-style skill, TBD) covering rollout/rollback decided before merge, flag lifecycle (a flag created without a removal ticket is debt), and why flags alone don't protect data (schema/API changes need expand-contract, not just a toggle) — this playbook's own mobile focus makes this sharper than it would be for web-only: a shipped app binary can't be rolled back, and old app versions keep calling the API for months.
 - **Vendor-neutral "context weight" descriptor per skill** — not "use Sonnet here," which would hard-code one vendor's model names into 19+ tool-agnostic skill files, but something like "judgment-heavy, needs broad context" vs. "mechanical, narrow context once a spec exists" as a skill-frontmatter or table descriptor, so whoever's running a skill (with whatever tool/model) can decide their own delegation. Not started — needs its own real trigger before building (same AIPB-02 bar), likely a real cheap-model-delegation experiment first, same as `/agent-eval`'s "run it for real before writing the doc" precedent from AIPB-19.
 
@@ -33,7 +32,7 @@ See [`docs/future-considerations.md`](./docs/future-considerations.md) — the e
 ## Decision points
 
 - **Reference-architecture level (docs/future-considerations.md):** revisit once a second real adoption in a different stack exists — not before.
-- **`/agent-eval` golden sets:** build one only once a skill has real usage history behind it, per the skill's own guardrail — not on day one for any new skill.
+- **`/agent-eval` golden sets:** build one only once a skill has real usage history behind it, per the skill's own guardrail — not on day one for any new skill. First one built for `branch-cleanup` (AIPB-20 cycle); extend its "leave alone"/"no PR found"/"host unavailable" coverage the first time a real case of each occurs, don't invent examples to fill the gap early.
 
 ## Sources
 
