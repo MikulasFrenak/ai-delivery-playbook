@@ -40,6 +40,7 @@ agent-eval
 plan-update
 self-healing-selectors
 mcp-check
+security-check
 ...
 
 ↓

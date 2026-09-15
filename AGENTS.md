@@ -21,7 +21,7 @@ If you're using Claude Code specifically, also read `CLAUDE.md` — it's a thin 
 | `workflows/` | 2 — Workflows | Multi-skill sequences for a delivery scenario |
 | `lifecycle/` | 3 — Software Delivery Lifecycle | Stage-level docs (Requirements → Release) |
 | `examples/` | 4 — Worked Examples | Real traces of a workflow run end to end |
-| `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `mcp-governance.md`, `deployment.md`, `error-handling.md`, `sla-framework.md`, `test-maintenance.md`, `eval-framework.md`, `vocabulary.md`, `future-considerations.md`) |
+| `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `mcp-governance.md`, `deployment.md`, `error-handling.md`, `sla-framework.md`, `test-maintenance.md`, `security.md`, `eval-framework.md`, `vocabulary.md`, `future-considerations.md`) |
 | `evals/` | Reference | Golden-set scorecards produced by [`/agent-eval`](./skills/agent-eval.md) — one `<skill-name>.md` per evaluated skill, kept durable (not deleted like `.tasks/`) so score history stays comparable over time |
 
 See [`architecture.md`](./architecture.md) for how these levels relate.
@@ -257,6 +257,7 @@ That's about invoking a tool call in the moment; a separate, earlier decision is
 | [`/plan-update`](./skills/plan-update.md) | Create or reconcile this repo's root `PLAN.md` (Status/Next-up/Open-questions/Parked/Decision-points) against what actually changed — edits the file only, does not commit |
 | [`/self-healing-selectors`](./skills/self-healing-selectors.md) | Scaffold self-healing selector infrastructure (DOM fingerprinting, LLM or deterministic candidate scoring, confidence threshold, human-review fallback) into an E2E suite and wire it into CI — run when selector drift after UI changes is a recurring source of broken tests |
 | [`/mcp-check`](./skills/mcp-check.md) | Classify a new (or already-connected) MCP server as read-only, write (scoped), or write (destructive) per `docs/mcp-governance.md`, and record the decision — run before adding a server to `.mcp.json` for the first time on a project |
+| [`/security-check`](./skills/security-check.md) | Run 5 trigger questions against a ticket (new input surface, access/role changes, sensitive data, new dependencies, secrets/tokens) during Requirements, and write a Security Considerations section when one applies — not a substitute for `/security-review`'s diff-time scan |
 | ... | Add your own following the same skill-doc pattern |
 
 ### Task file lifecycle
