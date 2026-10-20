@@ -82,6 +82,17 @@ Produce uncompressed draw.io XML following these conventions.
 | Navigation / external link | add `strokeColor=#5f3dc4;` |
 | Curved (condensed/widget style) | `curved=1;html=1;endArrow=block;` |
 
+#### Colours, contrast and encoding
+
+- **Project palette first.** The table above is the default. If the project has a design-token or colour palette (a colours file, a tokens package), map each semantic role to the nearest palette entry and use only palette values. After generating, check programmatically that every hex value in the file belongs to the palette — a first pass tends to leave a few strays.
+- **Set text colour explicitly.** Give every cell a `fontColor` (dark text on light fills, light text on dark fills) and use `fontSize` 12 or larger inside boxes. Never rely on the editor default, and avoid pale text on pastel fills.
+- **One dimension per visual channel** when a diagram carries several (a system map with owners and object types): border colour = owner, fill colour = object type, shape = category (for example hexagon for a gateway, cylinder for a store). Always add the legend (`id="3"`).
+- **Categorical colours must be told apart at a glance.** Every colour in a set (for example one per team) must differ in hue or lightness from *all* others, not just its neighbours. Compare similar pairs (orange vs red, green vs teal, navy vs indigo) after the first draft and adjust.
+
+#### Label escaping
+
+With `html=1` the label is HTML after XML decoding, so it is escaped twice: `&` becomes `&amp;amp;`, a non-breaking space becomes `&amp;nbsp;`, `<br>` becomes `&lt;br&gt;`. A triple-escaped entity prints literally (for example the text `&nbsp;`) and an unescaped one makes the file unreadable. Prefer plain characters (` | `, ` - `) over `&nbsp;`.
+
 #### Swimlane layout (multi-actor diagrams)
 
 - Draw background column rectangles first, then column header labels, then nodes inside each column
@@ -95,12 +106,18 @@ Produce uncompressed draw.io XML following these conventions.
 - `id="2"` = title label
 - `id="3"` = legend (if present)
 - `id="4"` onward = swimlane backgrounds, then nodes, then edges — sequential, no gaps
+- For large maps (dozens of nodes) descriptive ids (`sec_payments`, `e_app_gateway`) are fine as long as they are unique and `0`–`3` keep their meaning
 
 ### Step 4: Save the File
 
 Write the XML to the target path (default `docs/<name>-flow.drawio`).
 
 Confirm to the user: "Diagram saved to `docs/xxx.drawio`. Open with the draw.io desktop app or app.diagrams.net."
+
+Before saying that, validate and look at the result:
+
+1. **Validate the XML:** parse the file, then check that ids are unique and every edge `source` / `target` exists.
+2. **Render and inspect:** if the draw.io desktop app is installed, export a PNG with its CLI (`drawio -x -f png -s 0.5 -o /tmp/<name>.png <file>.drawio`; on macOS the binary may be at `/opt/homebrew/bin/drawio`) and open the image. XML checks cannot show overlapping text, text running outside a box, or literal entities — only the render can. Fix, re-export, and delete the PNG afterwards (do not commit it).
 
 ### Step 5: Update `doc.md` (if it exists)
 
@@ -119,3 +136,5 @@ If the module already has a `doc.md` ([`/code-doc`](./code-doc.md) output), add 
 - Always include a title label (`id=2`) and a legend if the diagram uses color coding a reader wouldn't otherwise infer
 - For a complex module, prefer splitting into multiple focused diagrams over one diagram trying to show everything
 - If unsure about a flow detail from reading the code alone, add a note node saying so rather than guessing at the logic
+- Every node and link needs a readable source (code, an API spec, a doc). Do not infer a relationship from the folder names of another artefact; where no source says what sits behind something, label it "not verified" instead of drawing it as fact
+- Show roles, not people's names, in a diagram meant to be shared
