@@ -41,6 +41,8 @@ plan-update
 self-healing-selectors
 mcp-check
 security-check
+review-pr
+review-comment-style
 ...
 
 ↓

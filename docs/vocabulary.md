@@ -31,6 +31,8 @@ This exists because terminology drift is a real, recurring failure mode here: an
 | **Test impact analysis** | — | Mapping changed files/modules to the tests that actually exercise them, and running only that subset per push, with the full suite on a schedule instead | "Test sharding" (sharding splits *all* tests across runners; impact analysis narrows *which* tests run at all) |
 | **Scope tier** | — | An MCP server's classification as read-only, write (scoped), or write (destructive), per `docs/mcp-governance.md` | "Permission level" (too generic — a scope tier is specifically about what an MCP server's tools can *do* to an external system, not an auth role) |
 | **Blast radius** | — | What actually breaks, and how reversibly, if a capability is misused or a credential leaks — the basis for a scope tier, not a vague synonym for "risk" | "Risk" (too broad — blast radius is specifically about *consequence and reversibility*, not likelihood) |
+| **Project-specific section** | — | The part of a public skill (for example `review-pr`) that each team fills in for its own repo — formats, labels, where the source of truth lives. Placeholders and short answers only | "Config" (it is prose for the agent, not a settings file) |
+| **Private overlay** | — | A prompt or skill kept *outside* the playbook (for example in an editor's user prompts folder) that runs a public skill and adds company- or person-specific rules: names, hosts, internal repos, ticket prefixes, tone. The public skill never imports it | "Fork" (nothing is copied or diverges; the overlay only calls the skill) |
 
 ## Branch types
 

@@ -258,6 +258,8 @@ That's about invoking a tool call in the moment; a separate, earlier decision is
 | [`/self-healing-selectors`](./skills/self-healing-selectors.md) | Scaffold self-healing selector infrastructure (DOM fingerprinting, LLM or deterministic candidate scoring, confidence threshold, human-review fallback) into an E2E suite and wire it into CI — run when selector drift after UI changes is a recurring source of broken tests |
 | [`/mcp-check`](./skills/mcp-check.md) | Classify a new (or already-connected) MCP server as read-only, write (scoped), or write (destructive) per `docs/mcp-governance.md`, and record the decision — run before adding a server to `.mcp.json` for the first time on a project |
 | [`/security-check`](./skills/security-check.md) | Run 5 trigger questions against a ticket (new input surface, access/role changes, sensitive data, new dependencies, secrets/tokens) during Requirements, and write a Security Considerations section when one applies — not a substitute for `/security-review`'s diff-time scan |
+| [`/review-pr`](./skills/review-pr.md) | Read-only review of a PR/MR: gather it and its existing threads, verify claims in a throwaway worktree, return verified findings, a verdict and paste-ready comment drafts. Has a Project-specific section per repo and a Private overlay rule for company details |
+| [`/review-comment-style`](./skills/review-comment-style.md) | Format review drafts: one inline comment per finding with a severity tag, evidence and fix (optional suggestion block), plus a summary with Verified / Must fix / Non-blocking / Not verified |
 | ... | Add your own following the same skill-doc pattern |
 
 ### Task file lifecycle
