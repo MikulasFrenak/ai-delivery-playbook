@@ -29,4 +29,4 @@ One file per ticket of this repo's own work. Each is the ticket's spec and plan 
 | [AIPB-19](./AIPB-19.md) | Document worktree-isolated parallel agents, run live first | done | [#42](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/42) | reconstructed | [trace](../examples/AIPB-19.md) |
 | [AIPB-20](./AIPB-20.md) | security-check skill + docs/security.md | done | [#43](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/43) | written at the time |  |
 | [AIPB-21](./AIPB-21.md) | Add review-pr and review-comment-style skills | done | — (direct to `main`) | reconstructed |  |
-| [AIPB-22](./AIPB-22.md) | Spec-anchored task files: keep them, close them out, move to tasks/ | open | — | written at the time |  |
+| [AIPB-22](./AIPB-22.md) | Spec-anchored task files: keep them, close them out, move to tasks/ | done | [#47](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/47) | written at the time |  |

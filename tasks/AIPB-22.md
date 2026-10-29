@@ -2,7 +2,7 @@
 
 **Ticket:** self-assigned (see `AGENTS.md` → Ticket IDs for solo/no-tracker projects)
 **Type:** Chore
-**Status:** open
+**Status:** done — [PR #47](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/47), closed 2026-10-29
 **Supersedes:** [AIPB-05](./AIPB-05.md)
 **Related:** [AIPB-02](./AIPB-02.md), [AIPB-04](./AIPB-04.md), [AIPB-15](./AIPB-15.md), [AIPB-16](./AIPB-16.md) — earlier specs this ticket changes; each carries `Updated by: AIPB-22`
 
@@ -24,19 +24,16 @@ Task files also move from hidden `.tasks/` to visible `tasks/`, since they're no
 - [x] `tasks/README.md` indexes every ID with its PR and any `examples/` trace
 - [x] `/public-repo-check` passes before push
 
-## Plan
+## What was built
 
-- [x] Convention: `AGENTS.md`, `commit.md`, `create-task.md`, `implement-task.md`, `plan-update.md`, `docs/vocabulary.md`, `evals/README.md`, `agent-eval.md`, `lifecycle/release.md`
-- [x] Move `.tasks/` → `tasks/`, path sweep across current-state docs
-- [x] Restore AIPB-01–06, 11, 12, 13 from history (03, 04 and 06 were added and deleted on their own branches, so plain `git log -- <path>` hides them; `--full-history` finds them); close out 18, 20; reconstruct 07–10, 14–17, 19, 21 from PRs and commits
-- [x] `tasks/README.md` index; `PLAN.md` status
-- [x] `/public-repo-check`, PR
+The durable task-file convention: `AGENTS.md` holds the lifecycle and close-out rules, `/commit` closes out (including a dedicated commit right after creating a PR), and `/create-task` links earlier specs. `.tasks/` became `tasks/` across all current-state docs. Every AIPB ticket got a task file, 11 restored and 10 reconstructed, indexed in `tasks/README.md`. This file was closed out by that same follow-up-commit rule.
 
 ## Open Questions
 
-- Should `tasks/.postmortems/` lose its dot too? Kept as-is here: the rename is strictly `.tasks/` → `tasks/`, and whether raw incident notes should be visible is a separate decision.
+- Should `tasks/.postmortems/` lose its dot too? **Moved to `PLAN.md`** → Open questions.
 
 ## Architecture Notes
 
 - The PR link can't exist in the commit that creates the PR, so `/commit` closes out in a dedicated follow-up commit right after opening a new PR/MR — the same mechanism AIPB-05 proposed for deletion, now used for close-out.
-- Reconstructed task files contain only what the PR description and commit messages actually say. Where those don't state acceptance criteria, the file says so rather than inventing them.
+- Reconstructed task files contain only what the PR description and commit messages actually say. Where those don't state acceptance criteria, the file says so rather than inventing them. A first draft did infer motivations for five of them; that was caught and cut back to what the sources state.
+- Plain `git log -- <path>` misses files added and deleted on a branch before it merged (history simplification); `--full-history` finds them. That's how AIPB-03, 04 and 06 first looked lost.

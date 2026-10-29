@@ -42,7 +42,7 @@
 
 ## Open questions / decisions needed
 
-*(none open)*
+- **`tasks/.postmortems/` — keep the dot?** AIPB-22 renamed strictly `.tasks/` → `tasks/`, leaving `/postmortem`'s notes folder hidden. Whether raw incident notes should be visible next to other task files is a separate call: they can hold details a ticket's task file wouldn't.
 
 ## Parked (noted, not active)
 
