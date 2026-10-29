@@ -4,7 +4,8 @@
 
 ## Status
 
-- 20 skills documented in [`skills/`](./skills/), all tool-agnostic in [`AGENTS.md`](./AGENTS.md) with `CLAUDE.md` as a thin import shim.
+- **Spec-anchored task files** landed in [AIPB-22](./tasks/AIPB-22.md) — the first step of making spec-driven development (SDD) the default working style (decided 2026-10-29). Task files are kept, not deleted: closed out when the PR opens, linked by `Updated by` / `Superseded by` when a later ticket changes the same behavior, and moved to a visible `tasks/` folder. The rules live in `AGENTS.md` → Task file lifecycle; `/commit`, `/create-task` and `/implement-task` enforce them. Every AIPB ticket now has a task file, indexed in [`tasks/README.md`](./tasks/README.md): 11 restored from git history (`git log --full-history` is needed to see AIPB-03, 04 and 06, whose files were added and deleted on their own branches), 10 reconstructed from PRs and commits and marked as such. This repo publishes them; nothing new is exposed, since every restored file was already public in history.
+- 22 skills documented in [`skills/`](./skills/), all tool-agnostic in [`AGENTS.md`](./AGENTS.md) with `CLAUDE.md` as a thin import shim.
 - Remote MCP server (`ai-delivery-playbook.mikulas-frenak.workers.dev`) is live on Cloudflare Workers, serving `search_skills`/`get_skill` — confirmed via `curl` and a real Claude Code CLI connection (AIPB-12).
 - [`/agent-eval`](./skills/agent-eval.md) landed (AIPB-15/16), wired into the skill-change and vocabulary docs. **First real scorecard now exists** — [`evals/branch-cleanup.md`](./evals/branch-cleanup.md), 20 real cases (19 confirmed-merged, 1 open-PR-leave-alone), 20/20 baseline, via the MCP server's `get_skill` since the local `/agent-eval` slash command wasn't resolving in this session (file itself checked fine — cause not confirmed, a CLI restart is the likely fix). Coverage gap stated plainly in the scorecard itself: the "delete" path is thoroughly verified, "no PR found" and "host unavailable" have zero real cases yet — extend when they occur for real, don't invent them.
 - [`/branch-cleanup`](./skills/branch-cleanup.md) made genuinely host-agnostic (not GitHub-only) and is now the most-exercised skill in practice this cycle.
@@ -18,7 +19,7 @@
 
 ## Next up
 
-- **Spec-driven development (SDD) as the default working style.** The playbook is already most of the way to SDD under different names; the work is naming it, plus one real model change. Mapping to Spec Kit's stages (sources below):
+- **SDD — what's left after AIPB-22.** How the existing skills map onto spec-driven development's stages (stage names from GitHub Spec Kit; sources below):
 
   | SDD stage | Already here |
   |---|---|
@@ -31,30 +32,17 @@
   | Verify / analyze | `/verify-browser`, `/test-scaffold`, `/security-check`, `/review-pr`, `/agent-eval` |
   | Living docs | `/code-doc`, `/plan-update` |
 
-  **The model change: task files stop being deleted and become durable records** — moving the playbook from "spec-first" to "spec-anchored" in Böckeler's terms (the spec survives the task and is edited as behavior evolves). Deletion only existed because `doc.md` lived next to the task and seemed to duplicate it; the split resolves that — `doc.md` = how the code works *now*, task file = *why* a change happened (a lightweight decision record). `examples/AIPB-03.md` already showed the deletion rule was fragile in practice (AIPB-01/02 lingered because no follow-up commit re-triggered `/commit`'s check).
-
-  What a task file keeps after merge:
-  - **Keep as-is:** Goal / What & Why, Acceptance Criteria (the spec part), Architecture Notes; for bugfixes, Expected vs Actual and Reproduction Steps
-  - **Rewrite at close-out:** Open Questions → answered or moved to `PLAN.md`; Root Cause Hypothesis → confirmed root cause; Implementation Plan → 2–3 lines on what was actually built
-  - **Drop at close-out:** Files to Touch (`git log -- <file>` is authoritative), Changes table (lives in the PR description)
-  - **Add:** a header with status (`open`/`done`), PR link, merge date, and an `Updated by: TICKET-ID` line whenever a later ticket changes the same behavior — those links are what make the task files a spec trail rather than a pile
-
-  Touchpoints when this is picked up (candidate `AIPB-22`): `skills/commit.md` (delete rule, lines ~56–65, 104–105, 171–172 → close-out), `skills/create-task.md` (status header in all three templates), `skills/implement-task.md` (close-out step), `AGENTS.md` (Task file lifecycle table; the "deleted once merged" mentions in the ticket-ID and `PLAN.md` sections and the `evals/` row), `evals/README.md`, `skills/agent-eval.md`, and the `.tasks/` link-exception noted in `examples/AIPB-19.md`.
-
-  **Decided (2026-10-29):**
-  - SDD is the default way of working from now on — in this repo and in projects that adopt it — not a separate course or product.
-  - Task files move from hidden `<package-root>/.tasks/` to a visible `<package-root>/tasks/`, since they're now permanent and meant to be read. Add `tasks/` to the touchpoints above (every `.tasks/` path reference in skills, `AGENTS.md`, `evals/README.md`, `examples/`).
-  - This repo publishes its own durable task files (gated by `/public-repo-check`). Nothing new is exposed: every past task file was already pushed here and is readable in history.
-  - Every AIPB ID gets a task file. The 6 deleted ones (AIPB-01, 02, 05, 11, 12, 13) are restored from git history and the 2 still present (18, 20) are closed out. The 13 IDs that never had one are reconstructed from their PRs and commits, and marked as reconstructed so they aren't mistaken for specs written at the time. AIPB-05 (which enforced deletion) is marked superseded by AIPB-22.
-  - A `tasks/README.md` index lists every ID with its PR and any `examples/` trace.
-  - Order: convention change first (rename, skills, `AGENTS.md`), then the restore/reconstruct, all in AIPB-22, whose own task file is the first written under the new rules.
+  Remaining:
+  - **Constitution:** write the Principles doc parked in `docs/future-considerations.md` — SDD is the real trigger it was waiting for. Keep it short and grounded in principles this repo already follows (human checkpoint, `disable-model-invocation` by default, research before implementing, no speculative features).
+  - **Spec trail in practice:** the `Updated by` links only pay off once new tickets search `tasks/` for earlier specs (`/create-task` Step 5). Check after the next few tickets whether that search actually finds and links anything; tighten the step if not.
+  - Re-check Spec Kit's current command names against github.com/github/spec-kit before quoting them in any doc.
 
 - **Release ≠ deploy** — `lifecycle/release.md` currently defines Release as "PR merged, ticket closed" with no rollout/rollback/flag-lifecycle content; feature flags exist only as an `implement-task` implementation mechanic (register + on/off check), not a release strategy. Candidate next ticket after AIPB-20: a `create-task` addition (or a `release-plan`-style skill, TBD) covering rollout/rollback decided before merge, flag lifecycle (a flag created without a removal ticket is debt), and why flags alone don't protect data (schema/API changes need expand-contract, not just a toggle) — this playbook's own mobile focus makes this sharper than it would be for web-only: a shipped app binary can't be rolled back, and old app versions keep calling the API for months.
 - **Vendor-neutral "context weight" descriptor per skill** — not "use Sonnet here," which would hard-code one vendor's model names into 19+ tool-agnostic skill files, but something like "judgment-heavy, needs broad context" vs. "mechanical, narrow context once a spec exists" as a skill-frontmatter or table descriptor, so whoever's running a skill (with whatever tool/model) can decide their own delegation. Not started — needs its own real trigger before building (same AIPB-02 bar), likely a real cheap-model-delegation experiment first, same as `/agent-eval`'s "run it for real before writing the doc" precedent from AIPB-19.
 
 ## Open questions / decisions needed
 
-*(none open — the SDD item's questions are resolved above)*
+*(none open)*
 
 ## Parked (noted, not active)
 

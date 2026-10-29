@@ -4,6 +4,7 @@
 **Type:** Chore
 **Status:** open
 **Supersedes:** [AIPB-05](./AIPB-05.md)
+**Related:** [AIPB-02](./AIPB-02.md), [AIPB-04](./AIPB-04.md), [AIPB-15](./AIPB-15.md), [AIPB-16](./AIPB-16.md) — earlier specs this ticket changes; each carries `Updated by: AIPB-22`
 
 ---
 
@@ -15,21 +16,21 @@ Task files also move from hidden `.tasks/` to visible `tasks/`, since they're no
 
 ## Acceptance Criteria
 
-- [ ] `AGENTS.md`'s Task file lifecycle defines keep / close-out / updated-by instead of delete, and is the single place the close-out rules live
-- [ ] `/commit` closes out instead of deleting, including right after it creates a new PR/MR (so a ticket with no follow-up commit doesn't stay `open` — the gap AIPB-05 named)
-- [ ] `/create-task` templates carry `**Status:** open`, and Step 5 links earlier task files whose behavior this ticket changes
-- [ ] Every `.tasks/` path in current-state docs (skills, `AGENTS.md`, `docs/`, `lifecycle/`, `workflows/`, `mcp-server/`, `evals/`) reads `tasks/`; `examples/` stay verbatim as historical traces
-- [ ] AIPB-01…21 each have a task file in `tasks/`, closed out; reconstructed ones say so in their header
-- [ ] `tasks/README.md` indexes every ID with its PR and any `examples/` trace
-- [ ] `/public-repo-check` passes before push
+- [x] `AGENTS.md`'s Task file lifecycle defines keep / close-out / updated-by instead of delete, and is the single place the close-out rules live
+- [x] `/commit` closes out instead of deleting, including right after it creates a new PR/MR (so a ticket with no follow-up commit doesn't stay `open` — the gap AIPB-05 named)
+- [x] `/create-task` templates carry `**Status:** open`, and Step 5 links earlier task files whose behavior this ticket changes
+- [x] Every `.tasks/` path in current-state docs (skills, `AGENTS.md`, `docs/`, `lifecycle/`, `workflows/`, `mcp-server/`, `evals/`) reads `tasks/`; `examples/` stay verbatim as historical traces
+- [x] AIPB-01…21 each have a task file in `tasks/`, closed out; reconstructed ones say so in their header
+- [x] `tasks/README.md` indexes every ID with its PR and any `examples/` trace
+- [x] `/public-repo-check` passes before push
 
 ## Plan
 
-- [ ] Convention: `AGENTS.md`, `commit.md`, `create-task.md`, `implement-task.md`, `plan-update.md`, `docs/vocabulary.md`, `evals/README.md`, `agent-eval.md`, `lifecycle/release.md`
-- [ ] `git mv .tasks tasks`, path sweep across current-state docs
-- [ ] Restore AIPB-01, 02, 05, 11, 12, 13 from history; close out 18, 20; reconstruct 03, 04, 06–10, 14–17, 19, 21 from PRs and commits
-- [ ] `tasks/README.md` index; `PLAN.md` status
-- [ ] `/public-repo-check`, PR
+- [x] Convention: `AGENTS.md`, `commit.md`, `create-task.md`, `implement-task.md`, `plan-update.md`, `docs/vocabulary.md`, `evals/README.md`, `agent-eval.md`, `lifecycle/release.md`
+- [x] Move `.tasks/` → `tasks/`, path sweep across current-state docs
+- [x] Restore AIPB-01–06, 11, 12, 13 from history (03, 04 and 06 were added and deleted on their own branches, so plain `git log -- <path>` hides them; `--full-history` finds them); close out 18, 20; reconstruct 07–10, 14–17, 19, 21 from PRs and commits
+- [x] `tasks/README.md` index; `PLAN.md` status
+- [x] `/public-repo-check`, PR
 
 ## Open Questions
 
