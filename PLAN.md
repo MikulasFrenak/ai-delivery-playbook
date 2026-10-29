@@ -18,7 +18,7 @@
 
 ## Next up
 
-- **Spec-driven development (SDD) as the playbook's backbone — and the basis for a course.** The playbook is already most of the way to SDD under different names; the work is naming it, plus one real model change. Mapping to Spec Kit's stages (sources below):
+- **Spec-driven development (SDD) as the default working style.** The playbook is already most of the way to SDD under different names; the work is naming it, plus one real model change. Mapping to Spec Kit's stages (sources below):
 
   | SDD stage | Already here |
   |---|---|
@@ -41,7 +41,10 @@
 
   Touchpoints when this is picked up (candidate `AIPB-22`): `skills/commit.md` (delete rule, lines ~56–65, 104–105, 171–172 → close-out), `skills/create-task.md` (status header in all three templates), `skills/implement-task.md` (close-out step), `AGENTS.md` (Task file lifecycle table; the "deleted once merged" mentions in the ticket-ID and `PLAN.md` sections and the `evals/` row), `evals/README.md`, `skills/agent-eval.md`, and the `.tasks/` link-exception noted in `examples/AIPB-19.md`.
 
-  **Course:** `docs/adoption.md`'s research → workshop → pilot → conventions → independence is already the course's shape; the SDD stages above are its modules, with this repo's own `examples/` as real traces.
+  **Decided (2026-10-29):**
+  - SDD is the default way of working from now on — in this repo and in projects that adopt it — not a separate course or product.
+  - Task files move from hidden `<package-root>/.tasks/` to a visible `<package-root>/tasks/`, since they're now permanent and meant to be read. Add `tasks/` to the touchpoints above (every `.tasks/` path reference in skills, `AGENTS.md`, `evals/README.md`, `examples/`).
+  - AIPB-01…17 are not restored up front; they stay in git history and can be restored individually later if one turns out to be worth reading as a record.
 
 - **Release ≠ deploy** — `lifecycle/release.md` currently defines Release as "PR merged, ticket closed" with no rollout/rollback/flag-lifecycle content; feature flags exist only as an `implement-task` implementation mechanic (register + on/off check), not a release strategy. Candidate next ticket after AIPB-20: a `create-task` addition (or a `release-plan`-style skill, TBD) covering rollout/rollback decided before merge, flag lifecycle (a flag created without a removal ticket is debt), and why flags alone don't protect data (schema/API changes need expand-contract, not just a toggle) — this playbook's own mobile focus makes this sharper than it would be for web-only: a shipped app binary can't be rolled back, and old app versions keep calling the API for months.
 - **Vendor-neutral "context weight" descriptor per skill** — not "use Sonnet here," which would hard-code one vendor's model names into 19+ tool-agnostic skill files, but something like "judgment-heavy, needs broad context" vs. "mechanical, narrow context once a spec exists" as a skill-frontmatter or table descriptor, so whoever's running a skill (with whatever tool/model) can decide their own delegation. Not started — needs its own real trigger before building (same AIPB-02 bar), likely a real cheap-model-delegation experiment first, same as `/agent-eval`'s "run it for real before writing the doc" precedent from AIPB-19.
@@ -49,9 +52,7 @@
 ## Open questions / decisions needed
 
 For the SDD item above:
-- **Task file location** — keep the hidden `<package-root>/.tasks/`, or switch to a visible `tasks/` now that the files are permanent and meant to be read?
-- **Old tasks** — restore AIPB-01…17 from git history as closed-out records, or start the durable convention fresh from the next ticket?
-- **Where the course lives** — inside this public repo, or a separate (possibly paid) repo that uses this playbook as its open reference? Leaning separate: the playbook stays durable and vendor-neutral, the course can be opinionated and change faster.
+- **Should this repo's own durable task files be public?** The convention (keep task files) applies to every adopting project, most of which are private. This repo is public, and its task files are already committed today (`.tasks/AIPB-18.md`, `AIPB-20.md`) — but only briefly until merge, whereas durable ones would accumulate. Options: (a) keep publishing them, gated by `/public-repo-check` like every other file here — they describe the playbook's own work, and they'd double as real SDD examples; (b) gitignore `tasks/` in this repo only and keep them local. Leaning (a), since they're already public and the content is about the playbook itself, but undecided.
 
 ## Parked (noted, not active)
 
