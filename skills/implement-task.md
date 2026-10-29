@@ -24,7 +24,7 @@ Before anything else, determine which package this task belongs to.
 
 **How to detect:**
 1. If the user specified a package explicitly — use it.
-2. If a task file path is known (e.g. `apps/<pkg>/.tasks/TICKET-ID.md`) — extract the package from the path.
+2. If a task file path is known (e.g. `apps/<pkg>/tasks/TICKET-ID.md`) — extract the package from the path.
 3. If neither — ask: _"Which package does this task belong to?"_
 
 **Resolve `<package-root>`** — for monorepos, check the repo's own docs/config for the layout (e.g. `apps/` vs `packages/`) and confirm the target directory exists. For single-repo projects, `<package-root>` is the repo root.
@@ -67,7 +67,7 @@ Now that the ticket content is known, search for the best way to solve this befo
 
 ### Step 2: Task File
 
-Check whether `<package-root>/.tasks/TICKET-ID.md` exists (use the package detected in Step 0).
+Check whether `<package-root>/tasks/TICKET-ID.md` exists (use the package detected in Step 0).
 
 **If the file exists** (e.g. created via `/create-task`): read it. Use its Implementation Plan, Files to Touch, and Open Questions as the source of truth. Resolve any open questions before proceeding. Skip creating a new file.
 
@@ -180,13 +180,15 @@ Run [`/code-doc`](./code-doc.md) to create or update the relevant `doc.md` — a
 
 ### Step 10: Update Task File
 
-Mark completed items in `<package-root>/.tasks/TICKET-ID.md` and add any non-obvious architecture decisions discovered during implementation.
+Mark completed items in `<package-root>/tasks/TICKET-ID.md` and add any non-obvious architecture decisions discovered during implementation. Tick the acceptance criteria that are now met. If the work changed behavior an earlier task file specified, make sure that file's `**Updated by:**` line carries this ticket's ID (see `/create-task` Step 5).
+
+Leave `**Status:** open` — `/commit` closes the file out once the PR/MR exists (`AGENTS.md` → Task file lifecycle). The file is never deleted.
 
 ### Step 11: Commit
 
 Run [`/commit`](./commit.md) with the ticket ID — it generates the commit message, runs the quality gate, and offers to create/update the PR/MR.
 
-Include in the commit: all implementation files, the updated i18n resource file, the updated QA-selector file, `doc.md`, and `.tasks/TICKET-ID.md`. Do **not** stage `.env*` files, generated/auto-generated client code, or infra config files unless the ticket is explicitly about them. `/commit`'s own Step 5 handles creating or updating the PR/MR afterward — no separate step needed here.
+Include in the commit: all implementation files, the updated i18n resource file, the updated QA-selector file, `doc.md`, and `tasks/TICKET-ID.md`. Do **not** stage `.env*` files, generated/auto-generated client code, or infra config files unless the ticket is explicitly about them. `/commit`'s own Step 5 handles creating or updating the PR/MR afterward — no separate step needed here.
 
 If closing this ticket resolves or changes something the repo's root `PLAN.md` was tracking (a Status line, a Next-up item, an Open question), run [`/plan-update`](./plan-update.md) to refresh it — don't leave `PLAN.md` stale just because the ticket itself is done.
 
@@ -212,7 +214,7 @@ Always read the target package's `CLAUDE.md` first — it's authoritative for al
 | Feature flags — registration mechanism | Package `CLAUDE.md` / `docs/mcp-servers.md` |
 | Cross-module routes | Package `CLAUDE.md` |
 | State store pattern | Package `CLAUDE.md` |
-| Task tracking path | `<package-root>/.tasks/TICKET-ID.md` |
+| Task tracking path | `<package-root>/tasks/TICKET-ID.md` |
 | Lint / test commands | Package `CLAUDE.md` or root `package.json` scripts |
 | Design tokens location | Package `CLAUDE.md` |
 | Shared icon set | Package `CLAUDE.md` |

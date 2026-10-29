@@ -1,6 +1,6 @@
 # ai-delivery-playbook skill server — remote (Cloudflare Workers)
 
-The remote counterpart to [`../server.js`](../server.js) (local stdio): same two tools, `search_skills` and `get_skill`, same skill content — but reachable over the internet instead of requiring the repo cloned locally. See [`../../.tasks/AIPB-12.md`](../../.tasks/AIPB-12.md) for the design decisions and current status.
+The remote counterpart to [`../server.js`](../server.js) (local stdio): same two tools, `search_skills` and `get_skill`, same skill content — but reachable over the internet instead of requiring the repo cloned locally. See [`../../tasks/AIPB-12.md`](../../tasks/AIPB-12.md) for the design decisions and current status.
 
 **Status: deployed and verified live.** `https://ai-delivery-playbook.mikulas-frenak.workers.dev/mcp` — confirmed with real `curl` calls: `initialize` returns the correct `serverInfo`, `tools/call` → `search_skills("commit")` returns real skill descriptions from the deployed bundle.
 

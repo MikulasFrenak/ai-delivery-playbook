@@ -53,7 +53,7 @@ Run `git diff --staged` (and `git diff` if nothing is staged yet), plus `git sta
 
 ```bash
 # 1. Check if a task file exists for this ticket
-ls <package-root>/.tasks/TICKET-ID.md 2>/dev/null
+ls <package-root>/tasks/TICKET-ID.md 2>/dev/null
 
 # 2. Check if a PR/MR is already open for this branch — see the host-detection
 #    table in the pr-update skill (Step 2) for the right command per host
@@ -62,9 +62,12 @@ ls <package-root>/.tasks/TICKET-ID.md 2>/dev/null
 
 | Task file exists? | PR/MR already open? | Action |
 |---|---|---|
-| Yes | Yes | **Delete it** — work is done, file served its purpose |
+| Yes, `**Status:** open` | Yes | **Close it out** — per the close-out rules in `AGENTS.md`'s Task file lifecycle (catches a PR opened outside this skill) |
+| Yes, already closed out | Yes | **Include as update** only if this commit changes an acceptance criterion or a decision; otherwise leave it |
 | Yes | No | **Include as update** — ongoing work, keep it |
 | No | — | Nothing to do |
+
+Task files are never deleted — they're durable records once closed out.
 
 ### Step 2.3: `CLAUDE.md` Conflict Guard
 
@@ -101,8 +104,8 @@ Before running any `git add` command, output a clearly visible summary:
 **Files NOT staged (and why):**
 - `.env*`, generated/auto-generated code — never staged
 
-> If the task file is flagged for deletion, include it here as:
-> - `.tasks/TICKET-ID.md` *(delete — ticket complete)*
+> If the task file is being closed out, include it here as:
+> - `tasks/TICKET-ID.md` *(close-out — status done, PR linked)*
 
 ---
 
@@ -168,11 +171,11 @@ TICKET-ID - Summary of what changed (imperative, max 72 chars)
 - First line: `TICKET-ID - ` prefix + imperative summary — use `TRIVIAL - ` when on a `trivial/` branch
 - If nothing was staged yet, stage all relevant changed files first (never stage `.env*` or generated files)
 - **Task file:** follow the lifecycle rule determined in Step 2:
-  - Delete (`git rm`) if a PR/MR is already open → bullet: `` `.tasks/TICKET-ID.md`: removed — ticket work complete ``
-  - Update (stage normally) if no PR/MR yet → bullet: `` `.tasks/TICKET-ID.md`: updated plan/notes ``
+  - Close out if a PR/MR is already open and the file is still `open` → bullet: `` `tasks/TICKET-ID.md`: closed out — status done, PR linked ``
+  - Update (stage normally) if no PR/MR yet → bullet: `` `tasks/TICKET-ID.md`: updated plan/notes ``
 - **`Co-Authored-By` trailer:** follow whatever this repo's `CLAUDE.md` documents — don't assume either way.
 
-**Multi-area changes:** when the commit touches 3+ independent problem areas, replace the bullet list with the Changes table from `.tasks/TICKET-ID.md` (if populated):
+**Multi-area changes:** when the commit touches 3+ independent problem areas, replace the bullet list with the Changes table from `tasks/TICKET-ID.md` (if populated):
 
 ```
 TICKET-ID - Summary
@@ -282,6 +285,8 @@ curl -s -u "<user>:<app-password>" -X POST \
     '{title: $title, description: $desc, source: {branch: {name: $src}}, destination: {branch: {name: $dst}}}')" \
   "https://api.bitbucket.org/2.0/repositories/<workspace>/<repo>/pullrequests"
 ```
+
+**Close out the task file right away.** If `<package-root>/tasks/TICKET-ID.md` exists and is still `**Status:** open`, close it out now per `AGENTS.md`'s Task file lifecycle — the PR/MR link only exists from this moment, so it can't be in the commit that created the PR. Commit it on its own as `TICKET-ID - Close out task file` and push. Announce it the same way Step 2.5 announces staging rather than asking separately: it's this ticket's own file and its work is already committed. Without this step, a ticket with no follow-up commit after its PR opens would stay `open` forever.
 
 After creating, ask the user:
 

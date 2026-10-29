@@ -1,14 +1,14 @@
 ---
 name: postmortem
 disable-model-invocation: true
-description: Fills in a blameless post-mortem template from a local .tasks/.postmortems/TICKET-ID.md notes file and outputs Confluence wiki markup ready to paste (or publish directly via a wiki MCP). Adapt the markup section if this project's wiki isn't Confluence. NEVER auto-invoke — only run when user explicitly types /postmortem.
+description: Fills in a blameless post-mortem template from a local tasks/.postmortems/TICKET-ID.md notes file and outputs Confluence wiki markup ready to paste (or publish directly via a wiki MCP). Adapt the markup section if this project's wiki isn't Confluence. NEVER auto-invoke — only run when user explicitly types /postmortem.
 ---
 
 # postmortem — Generate a Blameless Post-Mortem
 
 ## Overview
 
-Reads a local `.tasks/.postmortems/TICKET-ID.md` notes file and maps its content into a standard blameless post-mortem template. Output is **Confluence wiki markup** by default (paste via *Insert (`+`) → Other macros → Wiki markup*) — if this project's wiki is something else (Notion, a plain markdown doc, GitHub wiki), skip the markup-syntax conversion in Step 3 and output plain markdown instead; the template structure itself is wiki-agnostic.
+Reads a local `tasks/.postmortems/TICKET-ID.md` notes file and maps its content into a standard blameless post-mortem template. Output is **Confluence wiki markup** by default (paste via *Insert (`+`) → Other macros → Wiki markup*) — if this project's wiki is something else (Notion, a plain markdown doc, GitHub wiki), skip the markup-syntax conversion in Step 3 and output plain markdown instead; the template structure itself is wiki-agnostic.
 
 A blameless post-mortem focuses on what happened and what prevents recurrence, not who to blame. That framing goes in the output itself (see the Intro section below) — don't soften or drop it when adapting this skill.
 
@@ -25,10 +25,10 @@ If the user provided a ticket ID, use it. Otherwise ask: _"What is the ticket ID
 Look for the file at:
 
 ```
-<package-root>/.tasks/.postmortems/TICKET-ID.md
+<package-root>/tasks/.postmortems/TICKET-ID.md
 ```
 
-If it doesn't exist, ask: _"I couldn't find `.tasks/.postmortems/TICKET-ID.md`. Do you want me to create a blank one to fill in, or paste the incident details here?"_
+If it doesn't exist, ask: _"I couldn't find `tasks/.postmortems/TICKET-ID.md`. Do you want me to create a blank one to fill in, or paste the incident details here?"_
 
 ### Step 3: Map and Output as Confluence Wiki Markup
 
@@ -131,7 +131,7 @@ h2. Notes
 Write the filled-in wiki markup back to:
 
 ```
-<package-root>/.tasks/.postmortems/TICKET-ID.md
+<package-root>/tasks/.postmortems/TICKET-ID.md
 ```
 
 This overwrites the source notes file — the wiki markup version *is* the standard post-mortem format for this project going forward. No confirmation needed for this local overwrite (it's not a publish step).

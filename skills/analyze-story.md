@@ -164,14 +164,14 @@ A text box with the story title + ticket link, followed by **screen images** (fr
 1. Call `mcp__figma__get_metadata` on the Figma node URL to get the list of child frames/screens inside that page.
 2. For each relevant screen (match by name to the story's AC — e.g. "Item list", "Filter drawer"):
    - Call `mcp__figma__get_screenshot` on that frame's node ID.
-   - Save the screenshot as `<package-root>/.tasks/analyzes/TICKET-ID/screen-<N>.png`.
+   - Save the screenshot as `<package-root>/tasks/analyzes/TICKET-ID/screen-<N>.png`.
 3. In the draw.io XML, place each screenshot as an `image` vertex in Zone 1:
    ```xml
    <mxCell id="screen-1" value="Item list table" style="shape=image;html=1;verticalLabelPosition=bottom;labelBackgroundColor=none;verticalAlign=top;align=center;strokeColor=#ced4da;fillColor=none;imageAspect=1;aspect=fixed;image=img/screen-1.png;" vertex="1" parent="1">
      <mxGeometry x="300" y="20" width="240" height="150" as="geometry" />
    </mxCell>
    ```
-   > Note: draw.io `image=img/...` paths are relative to the `.drawio` file location. PNGs are saved in the same `.tasks/analyzes/TICKET-ID/` folder as the diagram.
+   > Note: draw.io `image=img/...` paths are relative to the `.drawio` file location. PNGs are saved in the same `tasks/analyzes/TICKET-ID/` folder as the diagram.
 
 **If no Figma link exists:** use a grey placeholder rectangle with the screen name as label:
 
@@ -279,13 +279,13 @@ Arrows connect:
 ⚙️ Processor — automated / service
 ```
 
-**Save** the XML to `<package-root>/.tasks/analyzes/TICKET-ID/event-model.drawio`.
+**Save** the XML to `<package-root>/tasks/analyzes/TICKET-ID/event-model.drawio`.
 
 ---
 
 ### Step 5: Write the Analysis File
 
-Create `<package-root>/.tasks/analyzes/TICKET-ID/analysis.md`:
+Create `<package-root>/tasks/analyzes/TICKET-ID/analysis.md`:
 
 ```markdown
 # TICKET-ID — [Story title] — Analysis
@@ -434,7 +434,7 @@ Comment format (markdown):
 ## 📊 Story Analysis
 
 **Event Model (Miro):** <miro-link-if-provided, otherwise omit this line>
-**Local diagram + analysis:** `<package-root>/.tasks/analyzes/TICKET-ID/`
+**Local diagram + analysis:** `<package-root>/tasks/analyzes/TICKET-ID/`
 
 ---
 
@@ -465,9 +465,9 @@ Comment format (markdown):
 ### Step 7: Report
 
 Tell the user:
-- Path to the event model diagram: `<package-root>/.tasks/analyzes/TICKET-ID/event-model.drawio`
+- Path to the event model diagram: `<package-root>/tasks/analyzes/TICKET-ID/event-model.drawio`
   - _"Open with draw.io desktop, drag into app.diagrams.net, or drag directly onto a Miro board (Import → Diagrams.net)"_
-- Path to the analysis file: `<package-root>/.tasks/analyzes/TICKET-ID/analysis.md`
+- Path to the analysis file: `<package-root>/tasks/analyzes/TICKET-ID/analysis.md`
 - Ticket comment posted ✅ (link to the ticket)
 - Subtask keys created (list them)
 - Any **open questions** that need an answer before implementation starts

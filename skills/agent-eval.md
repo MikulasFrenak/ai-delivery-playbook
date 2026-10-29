@@ -24,7 +24,7 @@ Not a day-one skill — a golden set needs real history to be built from. Run th
 
 ## Output
 
-- `evals/<skill-name>.md` — a durable scorecard (not deleted like `.tasks/` — score history only means something if it persists across runs)
+- `evals/<skill-name>.md` — a durable scorecard, one per skill rather than per ticket (score history only means something if it persists across runs)
 
 ## Guardrails
 
