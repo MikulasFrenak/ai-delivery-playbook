@@ -18,12 +18,40 @@
 
 ## Next up
 
+- **Spec-driven development (SDD) as the playbook's backbone — and the basis for a course.** The playbook is already most of the way to SDD under different names; the work is naming it, plus one real model change. Mapping to Spec Kit's stages (sources below):
+
+  | SDD stage | Already here |
+  |---|---|
+  | Constitution | `AGENTS.md` conventions + the parked Principles doc in `docs/future-considerations.md` — SDD is the real trigger to finally write it |
+  | Specify | `/analyze-story`, `lifecycle/requirements.md`; `/define-slo`, `/security-check` for non-functional requirements |
+  | Clarify | "Research Before Implementing" + Open questions |
+  | Plan | `/create-task`, `/design-brief`, `/diagram` |
+  | Tasks | `/analyze-story` subtasks, the task file's plan |
+  | Implement | `/implement-task` |
+  | Verify / analyze | `/verify-browser`, `/test-scaffold`, `/security-check`, `/review-pr`, `/agent-eval` |
+  | Living docs | `/code-doc`, `/plan-update` |
+
+  **The model change: task files stop being deleted and become durable records** — moving the playbook from "spec-first" to "spec-anchored" in Böckeler's terms (the spec survives the task and is edited as behavior evolves). Deletion only existed because `doc.md` lived next to the task and seemed to duplicate it; the split resolves that — `doc.md` = how the code works *now*, task file = *why* a change happened (a lightweight decision record). `examples/AIPB-03.md` already showed the deletion rule was fragile in practice (AIPB-01/02 lingered because no follow-up commit re-triggered `/commit`'s check).
+
+  What a task file keeps after merge:
+  - **Keep as-is:** Goal / What & Why, Acceptance Criteria (the spec part), Architecture Notes; for bugfixes, Expected vs Actual and Reproduction Steps
+  - **Rewrite at close-out:** Open Questions → answered or moved to `PLAN.md`; Root Cause Hypothesis → confirmed root cause; Implementation Plan → 2–3 lines on what was actually built
+  - **Drop at close-out:** Files to Touch (`git log -- <file>` is authoritative), Changes table (lives in the PR description)
+  - **Add:** a header with status (`open`/`done`), PR link, merge date, and an `Updated by: TICKET-ID` line whenever a later ticket changes the same behavior — those links are what make the task files a spec trail rather than a pile
+
+  Touchpoints when this is picked up (candidate `AIPB-22`): `skills/commit.md` (delete rule, lines ~56–65, 104–105, 171–172 → close-out), `skills/create-task.md` (status header in all three templates), `skills/implement-task.md` (close-out step), `AGENTS.md` (Task file lifecycle table; the "deleted once merged" mentions in the ticket-ID and `PLAN.md` sections and the `evals/` row), `evals/README.md`, `skills/agent-eval.md`, and the `.tasks/` link-exception noted in `examples/AIPB-19.md`.
+
+  **Course:** `docs/adoption.md`'s research → workshop → pilot → conventions → independence is already the course's shape; the SDD stages above are its modules, with this repo's own `examples/` as real traces.
+
 - **Release ≠ deploy** — `lifecycle/release.md` currently defines Release as "PR merged, ticket closed" with no rollout/rollback/flag-lifecycle content; feature flags exist only as an `implement-task` implementation mechanic (register + on/off check), not a release strategy. Candidate next ticket after AIPB-20: a `create-task` addition (or a `release-plan`-style skill, TBD) covering rollout/rollback decided before merge, flag lifecycle (a flag created without a removal ticket is debt), and why flags alone don't protect data (schema/API changes need expand-contract, not just a toggle) — this playbook's own mobile focus makes this sharper than it would be for web-only: a shipped app binary can't be rolled back, and old app versions keep calling the API for months.
 - **Vendor-neutral "context weight" descriptor per skill** — not "use Sonnet here," which would hard-code one vendor's model names into 19+ tool-agnostic skill files, but something like "judgment-heavy, needs broad context" vs. "mechanical, narrow context once a spec exists" as a skill-frontmatter or table descriptor, so whoever's running a skill (with whatever tool/model) can decide their own delegation. Not started — needs its own real trigger before building (same AIPB-02 bar), likely a real cheap-model-delegation experiment first, same as `/agent-eval`'s "run it for real before writing the doc" precedent from AIPB-19.
 
 ## Open questions / decisions needed
 
-*(none open right now — the PLAN.md-skill question above resolved by shipping `/plan-update`)*
+For the SDD item above:
+- **Task file location** — keep the hidden `<package-root>/.tasks/`, or switch to a visible `tasks/` now that the files are permanent and meant to be read?
+- **Old tasks** — restore AIPB-01…17 from git history as closed-out records, or start the durable convention fresh from the next ticket?
+- **Where the course lives** — inside this public repo, or a separate (possibly paid) repo that uses this playbook as its open reference? Leaning separate: the playbook stays durable and vendor-neutral, the course can be opinionated and change faster.
 
 ## Parked (noted, not active)
 
@@ -36,4 +64,6 @@ See [`docs/future-considerations.md`](./docs/future-considerations.md) — the e
 
 ## Sources
 
-None — this file reflects this repo's own git history and current file state, not external research.
+Everything except the SDD item reflects this repo's own git history and current file state. For the SDD item:
+- [Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl — Birgitta Böckeler, martinfowler.com](https://www.martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) — the spec-first / spec-anchored / spec-as-source distinction
+- [GitHub Spec Kit deep dive — constitution and slash commands (DEV Community)](https://dev.to/x4nent/github-spec-kit-deep-dive-spec-driven-development-the-constitution-speckit-slash-commands-1m71) and [GitHub Spec Kit practical guide (Augment Code)](https://www.augmentcode.com/guides/github-spec-kit-practical-guide-sdd-workflow) — stage names (constitution, specify, clarify, plan, tasks, implement, analyze). Third-party sources; re-check command names and current version against github.com/github/spec-kit before quoting them in the course.
