@@ -1,5 +1,7 @@
 # Worked Example: AIPB-19 — Worktree-isolated parallel agents, live
 
+**Task file:** [tasks/AIPB-19.md](../tasks/AIPB-19.md) — what was decided and why. This page is how the run went.
+
 **Trigger:** Earlier research (surfaced in a separate session, generalized into `docs/future-considerations.md`'s "personal AI-tooling decision log" entry) flagged git-worktree-based parallel agents and orchestrator/sub-agent patterns as one of 2026's most concrete trend shifts in agentic coding. Rather than write the pattern up speculatively, the actual test was to run it for real against this repo first — same AIPB-02 bar as everything else here: a real trace beats a documented hypothesis.
 
 **Workflow:** none of the existing three (`feature-delivery`/`bugfix`/`design-system-update`) — this is new Agent Orchestration mechanics, not a delivery workflow.

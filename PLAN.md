@@ -5,6 +5,7 @@
 ## Status
 
 - **Spec-anchored task files** landed in [AIPB-22](./tasks/AIPB-22.md) — the first step of making spec-driven development (SDD) the default working style (decided 2026-10-29). Task files are kept, not deleted: closed out when the PR opens, linked by `Updated by` / `Superseded by` when a later ticket changes the same behavior, and moved to a visible `tasks/` folder. The rules live in `AGENTS.md` → Task file lifecycle; `/commit`, `/create-task` and `/implement-task` enforce them. Every AIPB ticket now has a task file, indexed in [`tasks/README.md`](./tasks/README.md): 11 restored from git history (`git log --full-history` is needed to see AIPB-03, 04 and 06, whose files were added and deleted on their own branches), 10 reconstructed from PRs and commits and marked as such. This repo publishes them; nothing new is exposed, since every restored file was already public in history.
+- **Post-mortems** joined them in [AIPB-23](./tasks/AIPB-23.md): `/postmortem` keeps a blameless Markdown post-mortem at `tasks/postmortems/TICKET-ID.md`, linked both ways with the ticket's task file (`**Task:**` / `**Postmortem:**`). The post-mortem is committed; only the raw scratch notes stay out of git, and the wiki is an optional copy. Worked examples stay (how a run went) and link their task files (what was decided and why) both ways. `done` means the PR exists; `/branch-cleanup` Step 8 reads the merge state live and reports mismatches.
 - 22 skills documented in [`skills/`](./skills/), all tool-agnostic in [`AGENTS.md`](./AGENTS.md) with `CLAUDE.md` as a thin import shim.
 - Remote MCP server (`ai-delivery-playbook.mikulas-frenak.workers.dev`) is live on Cloudflare Workers, serving `search_skills`/`get_skill` — confirmed via `curl` and a real Claude Code CLI connection (AIPB-12).
 - [`/agent-eval`](./skills/agent-eval.md) landed (AIPB-15/16), wired into the skill-change and vocabulary docs. **First real scorecard now exists** — [`evals/branch-cleanup.md`](./evals/branch-cleanup.md), 20 real cases (19 confirmed-merged, 1 open-PR-leave-alone), 20/20 baseline, via the MCP server's `get_skill` since the local `/agent-eval` slash command wasn't resolving in this session (file itself checked fine — cause not confirmed, a CLI restart is the likely fix). Coverage gap stated plainly in the scorecard itself: the "delete" path is thoroughly verified, "no PR found" and "host unavailable" have zero real cases yet — extend when they occur for real, don't invent them.
@@ -34,7 +35,7 @@
 
   Remaining:
   - **Constitution:** write the Principles doc parked in `docs/future-considerations.md` — SDD is the real trigger it was waiting for. Keep it short and grounded in principles this repo already follows (human checkpoint, `disable-model-invocation` by default, research before implementing, no speculative features).
-  - **Spec trail in practice:** the `Updated by` links only pay off once new tickets search `tasks/` for earlier specs (`/create-task` Step 5). Check after the next few tickets whether that search actually finds and links anything; tighten the step if not.
+  - **Spec trail in practice:** the `Updated by` links only pay off once new tickets search `tasks/` for earlier specs (`/create-task` Step 5). Check after the next few tickets whether that search actually finds and links anything; tighten the step if not. First real run, AIPB-23: it found AIPB-22 (which had parked the `.postmortems` question) and linked it; `/postmortem` itself had no earlier spec, since it came in a `TRIVIAL` commit.
   - Re-check Spec Kit's current command names against github.com/github/spec-kit before quoting them in any doc.
 
 - **Release ≠ deploy** — `lifecycle/release.md` currently defines Release as "PR merged, ticket closed" with no rollout/rollback/flag-lifecycle content; feature flags exist only as an `implement-task` implementation mechanic (register + on/off check), not a release strategy. Candidate next ticket after AIPB-20: a `create-task` addition (or a `release-plan`-style skill, TBD) covering rollout/rollback decided before merge, flag lifecycle (a flag created without a removal ticket is debt), and why flags alone don't protect data (schema/API changes need expand-contract, not just a toggle) — this playbook's own mobile focus makes this sharper than it would be for web-only: a shipped app binary can't be rolled back, and old app versions keep calling the API for months.
@@ -42,7 +43,7 @@
 
 ## Open questions / decisions needed
 
-- **`tasks/.postmortems/` — keep the dot?** AIPB-22 renamed strictly `.tasks/` → `tasks/`, leaving `/postmortem`'s notes folder hidden. Whether raw incident notes should be visible next to other task files is a separate call: they can hold details a ticket's task file wouldn't.
+- None right now.
 
 ## Parked (noted, not active)
 

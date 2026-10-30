@@ -5,6 +5,7 @@ One file per ticket of this repo's own work. Each is the ticket's spec and plan 
 - **Source** says how a file came to exist. *Written at the time* means it was the live planning doc. *Restored* means it was written at the time, deleted under the old delete-on-merge rule, and brought back from git history in AIPB-22. *Reconstructed* means no task file was ever written, so it was rebuilt in AIPB-22 from the PR description and commit messages only. Those files contain no invented acceptance criteria.
 - `TRIVIAL` changes have no ticket and no task file, by design.
 - **Example** links to a worked-example trace in [`examples/`](../examples/) where one exists. Examples are historical narratives and keep the paths of their time (`.tasks/`).
+- **Post-mortems** for bugs that were incidents go in `postmortems/`, written by [`/postmortem`](../skills/postmortem.md) and linked from the ticket's `**Postmortem:**` line. This repo has none yet.
 
 | Ticket | Title | Status | PR | Source | Example |
 |---|---|---|---|---|---|
@@ -30,3 +31,4 @@ One file per ticket of this repo's own work. Each is the ticket's spec and plan 
 | [AIPB-20](./AIPB-20.md) | security-check skill + docs/security.md | done | [#43](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/43) | written at the time |  |
 | [AIPB-21](./AIPB-21.md) | Add review-pr and review-comment-style skills | done | — (direct to `main`) | reconstructed |  |
 | [AIPB-22](./AIPB-22.md) | Spec-anchored task files: keep them, close them out, move to tasks/ | done | [#47](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/47) | written at the time |  |
+| [AIPB-23](./AIPB-23.md) | Link post-mortems and worked examples to task files; check merge state live | done | [#48](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/48) | written at the time |  |

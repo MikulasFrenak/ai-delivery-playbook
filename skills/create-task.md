@@ -167,6 +167,7 @@ Before writing the file, read enough code to give real answers. Do not fill in p
 **Always do — earlier specs for the same behavior:**
 - Search `<package-root>/tasks/` for earlier task files about the same feature, module or behavior (grep the module name, the feature name, key terms from the ticket). Their Acceptance Criteria and Architecture Notes are the existing spec this ticket builds on — read them before planning.
 - If this ticket changes behavior an earlier task file specified, list it on a `**Related:**` line in the new file, and add this ticket's ID to that earlier file's `**Updated by:**` line (or `**Superseded by:**` if this replaces its decision outright) as part of this ticket's own PR. Don't edit the earlier file's content — it records what was true then.
+- If this ticket is a corrective action from a post-mortem in `<package-root>/tasks/postmortems/`, add a `**Postmortem:**` line linking it, and put this ticket's ID and task-file link on that action's line in the post-mortem (per `AGENTS.md` → Task file lifecycle).
 
 From this exploration, produce:
 - A concrete **Implementation Plan** (not placeholder bullets)

@@ -1,5 +1,7 @@
 # Worked Example: AIPB-01 — Add CONTRIBUTING.md
 
+**Task file:** [tasks/AIPB-01.md](../tasks/AIPB-01.md) — what was decided and why. This page is how the run went.
+
 A real `feature-delivery` run, not a hypothetical. Ticket ID was invented for the dry run (no issue tracker was connected in this session) — everything after that is what actually happened.
 
 **Trigger:** A chore — add a `CONTRIBUTING.md` documenting how to add a new skill to this playbook.

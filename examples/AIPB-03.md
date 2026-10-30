@@ -1,5 +1,7 @@
 # Worked Example: AIPB-03 — Positioning pass
 
+**Task file:** [tasks/AIPB-03.md](../tasks/AIPB-03.md) — what was decided and why. This page is how the run went.
+
 **Trigger:** An external review reframed this repo from "a Claude skills folder" to "an engineering methodology," and proposed several naming and structural changes to match that framing.
 
 **Workflow:** [`feature-delivery`](../workflows/feature-delivery.md), Task/chore path.

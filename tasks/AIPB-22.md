@@ -4,6 +4,7 @@
 **Type:** Chore
 **Status:** done — [PR #47](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/47), closed 2026-10-29
 **Supersedes:** [AIPB-05](./AIPB-05.md)
+**Updated by:** [AIPB-23](./AIPB-23.md) — `tasks/.postmortems/` became visible `tasks/postmortems/`, and `done` is now checked against the live PR state by `/branch-cleanup`
 **Related:** [AIPB-02](./AIPB-02.md), [AIPB-04](./AIPB-04.md), [AIPB-15](./AIPB-15.md), [AIPB-16](./AIPB-16.md) — earlier specs this ticket changes; each carries `Updated by: AIPB-22`
 
 ---

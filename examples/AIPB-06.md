@@ -1,5 +1,7 @@
 # Worked Example: AIPB-06 — Label relationships, defer the rest
 
+**Task file:** [tasks/AIPB-06.md](../tasks/AIPB-06.md) — what was decided and why. This page is how the run went.
+
 **Trigger:** A second external review (8.5/10), whose own closing lines said: stop redesigning, go back to polishing, no changes unless a real problem shows up.
 
 **Workflow:** [`feature-delivery`](../workflows/feature-delivery.md), Task/chore path.

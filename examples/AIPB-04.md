@@ -1,5 +1,7 @@
 # Worked Example: AIPB-04 — Vocabulary doc + terminology fix
 
+**Task file:** [tasks/AIPB-04.md](../tasks/AIPB-04.md) — what was decided and why. This page is how the run went.
+
 **Trigger:** A one-line user question — "tasks and tickets, are we misaligned or is this correct?" — not a formal review.
 
 **Workflow:** [`feature-delivery`](../workflows/feature-delivery.md), Task/chore path.

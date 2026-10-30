@@ -103,6 +103,7 @@ Before running any `git add` command, output a clearly visible summary:
 
 **Files NOT staged (and why):**
 - `.env*`, generated/auto-generated code — never staged
+- `tasks/postmortems/*.notes.md` — raw scratch notes only (see [`/postmortem`](./postmortem.md)). The post-mortem itself, `tasks/postmortems/TICKET-ID.md`, is staged and committed normally
 
 > If the task file is being closed out, include it here as:
 > - `tasks/TICKET-ID.md` *(close-out — status done, PR linked)*
