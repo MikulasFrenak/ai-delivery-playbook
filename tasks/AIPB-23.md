@@ -22,7 +22,7 @@ Also in this PR, to keep one open branch at a time: `mcp-server/doc.md` still sa
 ## Acceptance Criteria
 
 - [x] `/postmortem` writes a Markdown blameless post-mortem to `tasks/postmortems/TICKET-ID.md`, the durable copy; Confluence (or other wiki) markup becomes an optional publish step converted from it
-- [x] Raw notes live in `tasks/postmortems/TICKET-ID.notes.md`, gitignored; `/postmortem` checks that before reading them, and `/commit` never stages them
+- [x] The post-mortem is committed like a task file; only the raw scratch notes (`tasks/postmortems/TICKET-ID.notes.md`) stay out of git — `/postmortem` checks they're ignored before reading them, and `/commit` never stages them
 - [x] Links run both ways: the post-mortem's `**Task:**` points to `tasks/TICKET-ID.md`, which gets a `**Postmortem:**` line; so does each corrective-action ticket, whose ID goes on its action line in the post-mortem (`/create-task` Step 5)
 - [x] The skill writes roles instead of names and leaves out customer data and secrets/internal hosts from log excerpts
 - [x] `workflows/bugfix.md` has an optional post-mortem step for bugs that were incidents; `AGENTS.md` (layout, skills table, Task file lifecycle), `tasks/README.md`, `.gitignore` and `PLAN.md` match
@@ -35,7 +35,7 @@ Also in this PR, to keep one open branch at a time: `mcp-server/doc.md` still sa
 
 ## What was built
 
-`/postmortem` now writes the blameless post-mortem as Markdown to `tasks/postmortems/TICKET-ID.md`, reads raw notes from a gitignored `TICKET-ID.notes.md`, links the post-mortem both ways with the task file, and publishes to the wiki only as an optional copy. `AGENTS.md`, `/create-task`, `/commit`, the bugfix workflow, `tasks/README.md`, `.gitignore` and `PLAN.md` follow it. Worked examples and their task files link each other, and examples are scoped to how a run went. `/branch-cleanup` Step 8 checks stored statuses against live PR state, report only; its dry run on this repo found 20 merged, AIPB-23 in review and AIPB-21 uncheckable (no PR). `mcp-server/doc.md` now says the remote server is deployed, and that a different machine is still untried. The notify workflow shows GitHub's error message when it fails.
+`/postmortem` now writes the blameless post-mortem as Markdown to `tasks/postmortems/TICKET-ID.md`, keeps only the raw scratch notes (`TICKET-ID.notes.md`) out of git, links the post-mortem both ways with the task file, and publishes to the wiki only as an optional copy. `AGENTS.md`, `/create-task`, `/commit`, the bugfix workflow, `tasks/README.md`, `.gitignore` and `PLAN.md` follow it. Worked examples and their task files link each other, and examples are scoped to how a run went. `/branch-cleanup` Step 8 checks stored statuses against live PR state, report only; its dry run on this repo found 20 merged, AIPB-23 in review and AIPB-21 uncheckable (no PR). `mcp-server/doc.md` now says the remote server is deployed, and that a different machine is still untried. The notify workflow shows GitHub's error message when it fails.
 
 ## Architecture Notes
 

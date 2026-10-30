@@ -1,7 +1,7 @@
 ---
 name: postmortem
 disable-model-invocation: true
-description: Turns local incident notes (tasks/postmortems/TICKET-ID.notes.md, gitignored) into a blameless post-mortem kept at tasks/postmortems/TICKET-ID.md next to the task files, links it both ways with the ticket's task file, and optionally converts it to Confluence wiki markup to publish (or publishes directly via a wiki MCP). NEVER auto-invoke — only run when user explicitly types /postmortem.
+description: Writes a blameless post-mortem to tasks/postmortems/TICKET-ID.md — committed next to the task files like any task file, and linked both ways with the ticket's task file — from incident notes (pasted, or a raw scratch file that is never committed), and optionally converts it to Confluence wiki markup to publish (or publishes directly via a wiki MCP). NEVER auto-invoke — only run when user explicitly types /postmortem.
 ---
 
 # postmortem — Generate a Blameless Post-Mortem
@@ -14,10 +14,10 @@ A blameless post-mortem focuses on what happened and what prevents recurrence, n
 
 | File | Committed? | Holds |
 |---|---|---|
-| `tasks/postmortems/TICKET-ID.notes.md` | No — gitignored | Raw incident notes: names, log excerpts, customer details, whatever was captured at the time |
-| `tasks/postmortems/TICKET-ID.md` | Yes | The blameless post-mortem: roles instead of names, no customer data, no secrets |
+| `tasks/postmortems/TICKET-ID.md` | **Yes** — the post-mortem, kept like a task file | The blameless write-up: roles instead of names, no customer data, no secrets |
+| `tasks/postmortems/TICKET-ID.notes.md` | No — raw scratch input only, ignored by git | Whatever was captured during the incident: names, log excerpts, customer details |
 
-The notes stay local because a committed file can't be taken back: rewriting it later still leaves the raw version in git history.
+Only the scratch notes stay out of git, because a committed file can't be taken back: rewriting it later still leaves the raw version in git history. The post-mortem itself is always committed.
 
 ---
 
