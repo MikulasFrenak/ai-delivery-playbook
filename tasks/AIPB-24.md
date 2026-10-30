@@ -2,7 +2,8 @@
 
 **Ticket:** self-assigned (solo repo, no external tracker — see AGENTS.md "Ticket IDs for solo/no-tracker projects")
 **Type:** Chore
-**Status:** open
+**Status:** done — [PR #49](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/49), closed 2026-10-30
+**Source:** written at the time
 
 ---
 
@@ -35,41 +36,29 @@ Claude Code's `/install-github-app`, which installs the Claude GitHub App and an
 
 ## Acceptance Criteria
 
-- [ ] `skills/github-actions-setup.md` exists, with frontmatter per `CONTRIBUTING.md`, Guardrails, a numbered
+- [x] `skills/github-actions-setup.md` exists, with frontmatter per `CONTRIBUTING.md`, Guardrails, a numbered
       Workflow, templates for `ci.yml`, `pr-hygiene.yml` and the AI review, and a Project-specific section.
-- [ ] It never has the agent see or store a secret: the person runs `gh secret set` themselves.
-- [ ] It's tool- and project-agnostic: no names, URLs, account IDs or ticket prefixes from the source project
+- [x] It never has the agent see or store a secret: the person runs `gh secret set` themselves.
+- [x] It's tool- and project-agnostic: no names, URLs, account IDs or ticket prefixes from the source project
       (`/public-repo-check` clean).
-- [ ] Registered in `architecture.md`'s Level 1 list and `AGENTS.md`'s skills table; `lifecycle/release.md`'s Skills
+- [x] Registered in `architecture.md`'s Level 1 list and `AGENTS.md`'s skills table; `lifecycle/release.md`'s Skills
       used and Gap updated; `docs/deployment.md` points to it.
-- [ ] The templates match a setup that ran: the check job and the hygiene check passed on the source project's own PR.
+- [x] The templates match a setup that ran: the check job and the hygiene check passed on the source project's own PR.
 
 ---
 
-## Plan
+## What was built
 
-- [ ] Write the skill from the source project's workflows, generalized.
-- [ ] Register it, and update `lifecycle/release.md`, `docs/deployment.md`, `PLAN.md`.
-- [ ] `/public-repo-check` on the diff; PR; close-out and `tasks/README.md` row.
-
----
-
-## Files to Touch
-
-| File | Change |
-|---|---|
-| `skills/github-actions-setup.md` | new |
-| `architecture.md`, `AGENTS.md` | registration |
-| `lifecycle/release.md`, `docs/deployment.md` | Skills used, Gap; artifact-deploy paragraph |
-| `PLAN.md`, `tasks/README.md` | status, index |
+`skills/github-actions-setup.md`: templates for a check job, a PR hygiene check, a deploy-on-merge job and a
+label-triggered AI review, plus a deploy table per host and a Project-specific section. Registered in all three places;
+`lifecycle/release.md`'s Gap narrowed to rollout/rollback, and `docs/deployment.md` gains the artifact-deploy option.
 
 ---
 
-## Open Questions
+## Open Questions — answers
 
-- The source project's deploy job and AI review hadn't run yet when this was written: both first run on its first
-  merge with the secrets in place. The templates are copied from files that passed `yaml` parsing and, for the check
-  job and the hygiene check, a real run.
+- **The source project's deploy job and AI review haven't run yet**: they first run on its first merge with the
+  secrets in place. Moved to `PLAN.md` → Decision points, to check after that merge.
 
 ---
 

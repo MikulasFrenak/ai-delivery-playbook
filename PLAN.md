@@ -52,6 +52,8 @@ See [`docs/future-considerations.md`](./docs/future-considerations.md) — the e
 
 ## Decision points
 
+- **After the first merge in the project `/github-actions-setup` came from (AIPB-24):** check that its deploy job shipped the merge commit and that its AI review posted when labelled. If either needed a change, carry it back into the skill's templates.
+
 - **Reference-architecture level (docs/future-considerations.md):** revisit once a second real adoption in a different stack exists — not before.
 - **`/agent-eval` golden sets:** build one only once a skill has real usage history behind it, per the skill's own guardrail — not on day one for any new skill. First one built for `branch-cleanup` (AIPB-20 cycle); extend its "leave alone"/"no PR found"/"host unavailable" coverage the first time a real case of each occurs, don't invent examples to fill the gap early.
 
