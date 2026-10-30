@@ -29,7 +29,7 @@ Don't rely on memory of the conversation alone — cross-check against the repo:
 
 - `git log --oneline -20` (and further back if the last `PLAN.md` update is older than that) for merged work since the file was last touched.
 - Open branches/PRs (`git branch --list`, `gh pr list` or host equivalent) for what's actively in flight.
-- `.tasks/*.md` for tickets currently open (per this repo's task-file lifecycle, a file here means the ticket isn't done yet).
+- `tasks/*.md` with `**Status:** open` for tickets currently in progress (task files are kept after merge, so a file existing doesn't mean the ticket is open — check its status line).
 - Any other durable artifact relevant to this repo's own conventions (`evals/*.md`, `docs/future-considerations.md`) if the update touches areas they track.
 
 ### Step 3: Reconcile Each Section — Rewrite in Place, Don't Append
@@ -44,7 +44,7 @@ Per AGENTS.md's rules for this file:
 
 ### Step 4: Promote, Don't Duplicate
 
-If an item in **Next up** is now actually being worked on, it should get a real ticket (self-assigned `AIPB-NN` or an external tracker ID, per AGENTS.md) and `.tasks/TICKET-ID.md` file via `/create-task` — `PLAN.md` keeps only the one-line backlog entry (optionally noting the ticket ID once assigned), not the task file's full detail. Don't let `PLAN.md` grow into a second task tracker.
+If an item in **Next up** is now actually being worked on, it should get a real ticket (self-assigned `AIPB-NN` or an external tracker ID, per AGENTS.md) and `tasks/TICKET-ID.md` file via `/create-task` — `PLAN.md` keeps only the one-line backlog entry (optionally noting the ticket ID once assigned), not the task file's full detail. Don't let `PLAN.md` grow into a second task tracker.
 
 ### Step 5: Confirm
 

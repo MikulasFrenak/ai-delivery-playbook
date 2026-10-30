@@ -19,12 +19,12 @@ Runs alongside or just before [`create-task`](./create-task.md) for any ticket w
 ## Inputs
 
 - The client-driven ask, in whatever words it was actually said ("needs to be fast," "can't go down," "must never lose data")
-- The ticket or feature this applies to (for `<package-root>/.tasks/TICKET-ID.md` output, if one exists)
+- The ticket or feature this applies to (for `<package-root>/tasks/TICKET-ID.md` output, if one exists)
 - Access to whoever can answer "what does missing this actually cost" — the user, or documented product/business context. Don't guess this.
 
 ## Output
 
-- A **Reliability Target** section, written into `<package-root>/.tasks/TICKET-ID.md` if that file exists (append to it — don't duplicate `create-task`'s sections); otherwise reported directly in conversation for the user to place.
+- A **Reliability Target** section, written into `<package-root>/tasks/TICKET-ID.md` if that file exists (append to it — don't duplicate `create-task`'s sections); otherwise reported directly in conversation for the user to place.
 - Each SLI gets: target value, measurement window, stated exclusions, computed error budget, instrumentation status, and named ownership.
 
 ## Guardrails
@@ -85,7 +85,7 @@ If the conversation hasn't actually established this, leave it as an open questi
 
 ### Step 7: Write the Output
 
-Append a **Reliability Target** section to `<package-root>/.tasks/TICKET-ID.md` if it exists:
+Append a **Reliability Target** section to `<package-root>/tasks/TICKET-ID.md` if it exists:
 
 ```markdown
 ## Reliability Target

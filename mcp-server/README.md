@@ -1,6 +1,6 @@
 # ai-delivery-playbook skill server
 
-An MCP server that serves this repo's `skills/*.md` files at runtime, so any MCP-compatible agent can pull them without cloning the repo or copying files into `.claude/skills/`. See [`../.tasks/AIPB-11.md`](../.tasks/AIPB-11.md) for the research and design decisions behind this shape, and [`../docs/future-considerations.md`](../docs/future-considerations.md) for why a fuller version (wrapping each skill as its own tool) isn't what got built.
+An MCP server that serves this repo's `skills/*.md` files at runtime, so any MCP-compatible agent can pull them without cloning the repo or copying files into `.claude/skills/`. See [`../tasks/AIPB-11.md`](../tasks/AIPB-11.md) for the research and design decisions behind this shape, and [`../docs/future-considerations.md`](../docs/future-considerations.md) for why a fuller version (wrapping each skill as its own tool) isn't what got built.
 
 ## What it does
 

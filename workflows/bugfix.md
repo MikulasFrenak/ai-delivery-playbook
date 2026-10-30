@@ -19,4 +19,4 @@ uses_skills: [create-task, implement-task, verify-browser, commit, pr-update]
 
 **Difference from `feature-delivery`:** no `analyze-story` (bugs aren't Stories to decompose), and `verify-browser` moves from optional to expected — a bugfix without a demonstrated repro-then-fixed check is an unverified guess.
 
-**Exit criteria:** PR/MR merged, ticket closed, task file cleaned up. The root cause is documented in the merged commit message or PR description — not just "it works now."
+**Exit criteria:** PR/MR merged, ticket closed, task file closed out. The confirmed root cause is documented in the task file (its Root Cause Hypothesis rewritten at close-out) and in the merged commit message or PR description — not just "it works now."

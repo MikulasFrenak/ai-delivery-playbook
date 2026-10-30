@@ -6,7 +6,7 @@
  *
  * Serves this repo's skills/*.md files over the Model Context Protocol so any
  * MCP-compatible agent can pull them at runtime instead of a human copying
- * files into a project's .claude/skills/. See AIPB-11 (.tasks/AIPB-11.md) for
+ * files into a project's .claude/skills/. See AIPB-11 (tasks/AIPB-11.md) for
  * why this shape (two generic tools, content served as-is) was chosen over
  * wrapping each skill as its own bespoke tool.
  *

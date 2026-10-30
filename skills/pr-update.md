@@ -87,7 +87,7 @@ git log -1 --format="%s%n%n%b"
 git diff HEAD~1 HEAD
 ```
 
-Also check if a task file exists for this ticket (see the `create-task` skill), e.g. `<package-root>/.tasks/TICKET-ID.md`.
+Also check if a task file exists for this ticket (see the `create-task` skill), e.g. `<package-root>/tasks/TICKET-ID.md`.
 
 Use the commit message, diff, and task file (if present) to understand:
 - What areas / files changed

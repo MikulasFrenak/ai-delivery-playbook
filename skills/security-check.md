@@ -20,12 +20,12 @@ Runs alongside or just before [`create-task`](./create-task.md) for any ticket �
 
 ## Inputs
 
-- The ticket or feature this applies to (for `<package-root>/.tasks/TICKET-ID.md` output, if one exists)
+- The ticket or feature this applies to (for `<package-root>/tasks/TICKET-ID.md` output, if one exists)
 - Enough of the ticket's actual scope to answer the 5 trigger questions honestly — not a guess from the title alone
 
 ## Output
 
-- A **Security Considerations** section written into `<package-root>/.tasks/TICKET-ID.md` if that file exists (append to it — don't duplicate `create-task`'s sections); otherwise reported directly in conversation.
+- A **Security Considerations** section written into `<package-root>/tasks/TICKET-ID.md` if that file exists (append to it — don't duplicate `create-task`'s sections); otherwise reported directly in conversation.
 - Only written when at least one trigger question is "yes." A ticket that trips none of them gets no section — an empty checklist is review noise, not a decision.
 
 ## Guardrails
@@ -63,7 +63,7 @@ For each concern from Step 2, state the concrete mitigation (e.g. "enforce `user
 
 ### Step 4: Write the Output
 
-If at least one trigger question was "yes," append to `<package-root>/.tasks/TICKET-ID.md`:
+If at least one trigger question was "yes," append to `<package-root>/tasks/TICKET-ID.md`:
 
 ```markdown
 ## Security Considerations
