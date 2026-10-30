@@ -43,6 +43,7 @@ mcp-check
 security-check
 review-pr
 review-comment-style
+github-actions-setup
 ...
 
 ↓

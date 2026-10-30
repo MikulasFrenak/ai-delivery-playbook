@@ -45,6 +45,8 @@ When the host builds from your repo directly (rather than receiving a pre-built 
 
 If the platform supports preview/PR deployments, **these settings are configured separately for previews**, and getting production right doesn't fix previews. Expect to hit the same problem twice.
 
+**The alternative is to build in CI and hand the host an artifact.** A GitHub Actions job runs the tests and the build, and only a green build is uploaded with the host's CLI. The host never builds, so these two settings can't be wrong there. The tests gate the deploy, which a host's own build doesn't do, and a project created by direct upload stays as it is. The cost is a deploy token stored as a CI secret. [`/github-actions-setup`](../skills/github-actions-setup.md) sets this up.
+
 ---
 
 ## Worked example — Cloudflare Workers (this ecosystem's actual setup)

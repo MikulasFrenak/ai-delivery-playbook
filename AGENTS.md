@@ -159,7 +159,7 @@ Rules:
 
 ## Testing Infrastructure *(template)*
 
-Document your actual test runner setup here (unit / component / e2e, and where each runs — locally vs CI).
+Document your actual test runner setup here (unit / component / e2e, and where each runs — locally vs CI). To put the CI half in place on GitHub, run [`/github-actions-setup`](./skills/github-actions-setup.md).
 
 **Selector drift and flaky E2E tests are a maintenance-cost problem, not just a debugging annoyance.** If broken selectors after UI changes are a recurring source of red builds, see [`docs/test-maintenance.md`](./docs/test-maintenance.md) for the underlying architecture and vocabulary, and run [`/self-healing-selectors`](./skills/self-healing-selectors.md) to scaffold it — but note that doc's own point that selector healing addresses roughly a quarter to a third of flaky-test causes; async/timing issues and quarantine practices (also covered there) are separate, larger levers.
 
@@ -261,6 +261,7 @@ That's about invoking a tool call in the moment; a separate, earlier decision is
 | [`/security-check`](./skills/security-check.md) | Run 5 trigger questions against a ticket (new input surface, access/role changes, sensitive data, new dependencies, secrets/tokens) during Requirements, and write a Security Considerations section when one applies — not a substitute for `/security-review`'s diff-time scan |
 | [`/review-pr`](./skills/review-pr.md) | Read-only review of a PR/MR: gather it and its existing threads, verify claims in a throwaway worktree, return verified findings, a verdict and paste-ready comment drafts. Has a Project-specific section per repo and a Private overlay rule for company details |
 | [`/review-comment-style`](./skills/review-comment-style.md) | Format review drafts: one inline comment per finding with a severity tag, evidence and fix (optional suggestion block), plus a summary with Verified / Must fix / Non-blocking / Not verified |
+| [`/github-actions-setup`](./skills/github-actions-setup.md) | Set up GitHub Actions for a repo: a check job (type-check, tests, build) on every PR, a PR hygiene check (ticket ID with matching branch and task file, a real description, tests alongside changed source), a deploy-on-merge job that ships only the checked build, an optional label-triggered read-only AI review, `docs/ci.md`, and the one-time secret setup the person does themselves |
 | ... | Add your own following the same skill-doc pattern |
 
 ### Task file lifecycle
@@ -419,4 +420,4 @@ When generalizing a skill sourced from a real project — as every one in `skill
 
 See [`docs/mcp-servers.md`](./docs/mcp-servers.md) for MCP server setup. Add your own machine-setup doc (runtime versions, package manager, auth proxy/VPN requirements, token-usage visibility) as `docs/setup.md` — that content is inherently org-specific, so it isn't templated here.
 
-For deployment, see [`docs/deployment.md`](./docs/deployment.md) — the vendor-agnostic set of decisions any deploy setup has to answer, with this ecosystem's own Cloudflare setup as one worked example. Fill it in with your own host (Azure, AWS, Kubernetes, Vercel, self-hosted); the questions don't change.
+For deployment, see [`docs/deployment.md`](./docs/deployment.md) — the vendor-agnostic set of decisions any deploy setup has to answer, with this ecosystem's own Cloudflare setup as one worked example. Fill it in with your own host (Azure, AWS, Kubernetes, Vercel, self-hosted); the questions don't change. To deploy from GitHub Actions after the tests pass, rather than through a host's Git integration, run [`/github-actions-setup`](./skills/github-actions-setup.md).
