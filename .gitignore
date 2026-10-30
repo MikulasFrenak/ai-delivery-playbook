@@ -2,6 +2,9 @@
 # node mcp-server/remote/build.js
 mcp-server/remote/skills-data.js
 
+# Raw incident notes — local only; /postmortem commits the blameless version
+**/tasks/postmortems/*.notes.md
+
 # Claude Code local-only state — see CLAUDE.md's Claude Code Settings section
 .claude/settings.local.json
 .claude/worktrees/

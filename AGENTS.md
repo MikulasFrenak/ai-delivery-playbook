@@ -23,7 +23,7 @@ If you're using Claude Code specifically, also read `CLAUDE.md` — it's a thin 
 | `examples/` | 4 — Worked Examples | Real traces of a workflow run end to end |
 | `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `mcp-governance.md`, `deployment.md`, `error-handling.md`, `sla-framework.md`, `test-maintenance.md`, `security.md`, `eval-framework.md`, `vocabulary.md`, `future-considerations.md`) |
 | `evals/` | Reference | Golden-set scorecards produced by [`/agent-eval`](./skills/agent-eval.md) — one `<skill-name>.md` per evaluated skill, kept durable so score history stays comparable over time |
-| `tasks/` | Reference | One `AIPB-NN.md` per ticket of this repo's own work — durable records, not deleted on merge (see "Task file lifecycle" below). [`tasks/README.md`](./tasks/README.md) indexes them |
+| `tasks/` | Reference | One `AIPB-NN.md` per ticket of this repo's own work — durable records, not deleted on merge (see "Task file lifecycle" below). [`tasks/README.md`](./tasks/README.md) indexes them. Post-mortems for bugs that were incidents go in `tasks/postmortems/` |
 
 See [`architecture.md`](./architecture.md) for how these levels relate.
 
@@ -252,7 +252,7 @@ That's about invoking a tool call in the moment; a separate, earlier decision is
 | [`/public-repo-check`](./skills/public-repo-check.md) | Scan working tree + git history for secrets, UUIDs, and org-specific naming before pushing to a public remote |
 | [`/generate-agents-md`](./skills/generate-agents-md.md) | Split a repo's `CLAUDE.md` into a tool-agnostic `AGENTS.md` + a thin Claude-only `CLAUDE.md` import shim, following this repo's own split |
 | [`/diagram`](./skills/diagram.md) | Generate a draw.io flow/activity/swimlane diagram from a module's code — useful for documenting a non-obvious multi-step or multi-actor flow |
-| [`/postmortem`](./skills/postmortem.md) | Turn `tasks/.postmortems/TICKET-ID.md` incident notes into a blameless post-mortem, in Confluence wiki markup by default |
+| [`/postmortem`](./skills/postmortem.md) | Turn local incident notes into a blameless post-mortem kept at `tasks/postmortems/TICKET-ID.md`, linked both ways with the ticket's task file — optionally published to the wiki, in Confluence wiki markup by default |
 | [`/test-scaffold`](./skills/test-scaffold.md) | Scaffold a component/CT test driven by the issue tracker's own Test Case work items, written in user language rather than implementation detail |
 | [`/agent-eval`](./skills/agent-eval.md) | Build a golden set + rubric for one specific judgment call a skill makes, score the current implementation against it, and gate a pending skill change on the score not regressing — run when a skill has real usage history, not on day one |
 | [`/plan-update`](./skills/plan-update.md) | Create or reconcile this repo's root `PLAN.md` (Status/Next-up/Open-questions/Parked/Decision-points) against what actually changed — edits the file only, does not commit |
@@ -282,6 +282,8 @@ That's about invoking a tool call in the moment; a separate, earlier decision is
 Claude Code's [`/commit`](./skills/commit.md) skill enforces this: right after it creates a new PR/MR it closes the task file out in a dedicated follow-up commit (the PR link can't exist in the commit that creates the PR), and on any later commit it closes out a task file still marked `open` while a PR exists — which catches PRs opened outside `/commit`. Any other tool implementing the `commit` skill should follow the same rule.
 
 A task file written after the fact (from a PR and its commits rather than at the time) says so with `**Source:** reconstructed from PR #N and its commits` and records only what those sources state — never invented acceptance criteria.
+
+**Post-mortems** for bugs that were incidents live next to the task files at `<package-root>/tasks/postmortems/TICKET-ID.md`, written by [`/postmortem`](./skills/postmortem.md) and kept the same way. Links run both ways: the post-mortem's `**Task:**` line points to the ticket's task file, which gets a `**Postmortem:**` line — and so does every corrective-action ticket, whose ID goes on its action line in the post-mortem. Raw incident notes (`tasks/postmortems/TICKET-ID.notes.md`) are gitignored; only the blameless version is committed.
 
 ### Design-tool skills
 
