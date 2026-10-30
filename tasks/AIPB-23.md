@@ -2,7 +2,7 @@
 
 **Ticket:** self-assigned (see `AGENTS.md` → Ticket IDs for solo/no-tracker projects)
 **Type:** Chore
-**Status:** open
+**Status:** done — [PR #48](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/48), closed 2026-10-30
 **Related:** [AIPB-22](./AIPB-22.md) — left `tasks/.postmortems/` hidden and parked the question in `PLAN.md`; carries `Updated by: AIPB-23`
 
 ---
@@ -17,37 +17,18 @@ Also in this PR, to keep one open branch at a time: `mcp-server/doc.md` still sa
 
 ## Acceptance Criteria
 
-- [ ] `/postmortem` writes a Markdown blameless post-mortem to `tasks/postmortems/TICKET-ID.md`, the durable copy; Confluence (or other wiki) markup becomes an optional publish step converted from it
-- [ ] Raw notes live in `tasks/postmortems/TICKET-ID.notes.md`, gitignored; `/postmortem` checks that before reading them, and `/commit` never stages them
-- [ ] Links run both ways: the post-mortem's `**Task:**` points to `tasks/TICKET-ID.md`, which gets a `**Postmortem:**` line; so does each corrective-action ticket, whose ID goes on its action line in the post-mortem (`/create-task` Step 5)
-- [ ] The skill writes roles instead of names and leaves out customer data and secrets/internal hosts from log excerpts
-- [ ] `workflows/bugfix.md` has an optional post-mortem step for bugs that were incidents; `AGENTS.md` (layout, skills table, Task file lifecycle), `tasks/README.md`, `.gitignore` and `PLAN.md` match
-- [ ] No `.postmortems` path left in current-state docs (`examples/` and AIPB-22's own text stay as written)
-- [ ] `mcp-server/doc.md` describes the remote server as deployed
-- [ ] `/public-repo-check` passes before push
+- [x] `/postmortem` writes a Markdown blameless post-mortem to `tasks/postmortems/TICKET-ID.md`, the durable copy; Confluence (or other wiki) markup becomes an optional publish step converted from it
+- [x] Raw notes live in `tasks/postmortems/TICKET-ID.notes.md`, gitignored; `/postmortem` checks that before reading them, and `/commit` never stages them
+- [x] Links run both ways: the post-mortem's `**Task:**` points to `tasks/TICKET-ID.md`, which gets a `**Postmortem:**` line; so does each corrective-action ticket, whose ID goes on its action line in the post-mortem (`/create-task` Step 5)
+- [x] The skill writes roles instead of names and leaves out customer data and secrets/internal hosts from log excerpts
+- [x] `workflows/bugfix.md` has an optional post-mortem step for bugs that were incidents; `AGENTS.md` (layout, skills table, Task file lifecycle), `tasks/README.md`, `.gitignore` and `PLAN.md` match
+- [x] No `.postmortems` path left in current-state docs (`examples/` and AIPB-22's own text stay as written)
+- [x] `mcp-server/doc.md` describes the remote server as deployed
+- [x] `/public-repo-check` passes before push
 
-## Plan
+## What was built
 
-- `skills/postmortem.md`: notes → `tasks/postmortems/TICKET-ID.notes.md` with an ignore check; Markdown template saved as `TICKET-ID.md` with `**Task:**` / `**Wiki:**` header lines; new link step; Confluence conversion moves into the optional publish step
-- `AGENTS.md`, `skills/create-task.md` (Step 5), `skills/commit.md` (files not staged), `workflows/bugfix.md`, `tasks/README.md`, `.gitignore`, `PLAN.md`
-- `tasks/AIPB-22.md`: `**Updated by:** AIPB-23`
-- `mcp-server/doc.md`: deployed status, file count, the verified-in-a-separate-session TODO (done per `mcp-server/README.md`)
-
-## Files to Touch
-
-| File | Change |
-|---|---|
-| `skills/postmortem.md` | new paths, Markdown output, link step, publish step |
-| `AGENTS.md` | `tasks/` layout row, `/postmortem` row, Task file lifecycle paragraph |
-| `skills/create-task.md` | Step 5: link corrective-action tickets to their post-mortem |
-| `skills/commit.md` | never stage `*.notes.md` |
-| `workflows/bugfix.md` | optional post-mortem step, exit criteria |
-| `tasks/README.md`, `.gitignore`, `PLAN.md`, `tasks/AIPB-22.md` | as above |
-| `mcp-server/doc.md` | stale remote status |
-
-## Open Questions
-
-- none
+`/postmortem` now writes the blameless post-mortem as Markdown to `tasks/postmortems/TICKET-ID.md`, reads raw notes from a gitignored `TICKET-ID.notes.md`, links the post-mortem both ways with the task file, and publishes to the wiki only as an optional copy. `AGENTS.md`, `/create-task`, `/commit`, the bugfix workflow, `tasks/README.md`, `.gitignore` and `PLAN.md` follow it. `mcp-server/doc.md` now says the remote server is deployed, and that a different machine is still untried.
 
 ## Architecture Notes
 
