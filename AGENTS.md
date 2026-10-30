@@ -22,7 +22,8 @@ If you're using Claude Code specifically, also read `CLAUDE.md` — it's a thin 
 | `lifecycle/` | 3 — Software Delivery Lifecycle | Stage-level docs (Requirements → Release) |
 | `examples/` | 4 — Worked Examples | Real traces of a workflow run end to end |
 | `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `mcp-governance.md`, `deployment.md`, `error-handling.md`, `sla-framework.md`, `test-maintenance.md`, `security.md`, `eval-framework.md`, `vocabulary.md`, `future-considerations.md`) |
-| `evals/` | Reference | Golden-set scorecards produced by [`/agent-eval`](./skills/agent-eval.md) — one `<skill-name>.md` per evaluated skill, kept durable (not deleted like `.tasks/`) so score history stays comparable over time |
+| `evals/` | Reference | Golden-set scorecards produced by [`/agent-eval`](./skills/agent-eval.md) — one `<skill-name>.md` per evaluated skill, kept durable so score history stays comparable over time |
+| `tasks/` | Reference | One `AIPB-NN.md` per ticket of this repo's own work — durable records, not deleted on merge (see "Task file lifecycle" below). [`tasks/README.md`](./tasks/README.md) indexes them |
 
 See [`architecture.md`](./architecture.md) for how these levels relate.
 
@@ -92,11 +93,11 @@ Adapt to your own team's actual policy, but decide and document explicitly:
 **This repo already does this for its own meta-work, it just was never written down.** Every `AIPB-NN` commit/branch/task-file in this repo's own history is a self-assigned ID, not a real Jira/Linear ticket (`git log --oneline --all | grep AIPB` — currently up to `AIPB-14`). That's the pattern to copy, not invent fresh per repo:
 
 1. **Pick a short, stable, all-caps prefix once** — 3–5 letters, derived from the repo name, memorable enough to type from memory. Record it in the registry table below *and* in that repo's own `AGENTS.md`, so it's discoverable from either side.
-2. **Number sequentially from 01.** Find the next number from git log, not `.tasks/` — merged task files get deleted (see this file's rule on that above), so branch/commit history is the durable record:
+2. **Number sequentially from 01.** Find the next number from git log across all branches, not just `tasks/` on your current branch — a ticket in flight on another branch already owns its number before its task file reaches yours:
    ```bash
    git log --oneline --all | grep -oE '<PREFIX>-[0-9]+' | sort -t- -k2 -n | tail -1
    ```
-3. **Everything downstream is identical to the ticketed case** — branch names (`feature/PRCH-03/short-kebab-desc`), commit format (`PRCH-03 - Summary`), task files (`.tasks/PRCH-03.md`, deleted once merged). A self-assigned ID is a drop-in `TICKET-ID`, not a parallel mechanism `create-task` or `pr-update` need to special-case.
+3. **Everything downstream is identical to the ticketed case** — branch names (`feature/PRCH-03/short-kebab-desc`), commit format (`PRCH-03 - Summary`), task files (`tasks/PRCH-03.md`, closed out when its PR opens, kept after merge). A self-assigned ID is a drop-in `TICKET-ID`, not a parallel mechanism `create-task` or `pr-update` need to special-case.
 4. **`create-task`'s Step 1** needs a third path for these repos: if there's no tracker at all (not just "no ticket yet" for a tracker that does exist), self-assign the next number under the repo's registered prefix instead of branching to Step 1a's external-filing flow.
 
 **Registry — personal/solo repo prefixes** *(the only place all of them are listed together; add a row here the first time a repo adopts one, and check no other repo already claimed it)*:
@@ -115,7 +116,7 @@ Adapt to your own team's actual policy, but decide and document explicitly:
 
 ## PLAN.md — living delivery/roadmap doc *(template)*
 
-A ticket tracker (real or self-assigned, see above) answers "what is this one task." Neither it nor `AGENTS.md`'s own Phases/architecture sections answer "what's the actual state of the project right now, what's next, and why" — `AGENTS.md` is deliberately stable (it's the architecture, not the status), and a `.tasks/PREFIX-NN.md` file gets deleted the moment its ticket merges, so neither is the right place for a running view of the backlog.
+A ticket tracker (real or self-assigned, see above) answers "what is this one task." Neither it nor `AGENTS.md`'s own Phases/architecture sections answer "what's the actual state of the project right now, what's next, and why" — `AGENTS.md` is deliberately stable (it's the architecture, not the status), and a `tasks/PREFIX-NN.md` file records one ticket's spec and outcome, not the project as a whole, so neither is the right place for a running view of the backlog.
 
 **`money-save/PLAN.md` is the real precedent this generalizes from** — a living, top-level file the model reads and updates as thinking evolves, rather than being reconstructed from git history every session. Same shape, one per repo, root-level:
 
@@ -239,7 +240,7 @@ That's about invoking a tool call in the moment; a separate, earlier decision is
 | Skill | When to use |
 |---|---|
 | [`/analyze-story`](./skills/analyze-story.md) | Deep-analyze a Story ticket — Event Model diagram, FE/backend breakdown, splittability, create subtasks. Run this *before* `create-task` when starting from a Story |
-| [`/create-task`](./skills/create-task.md) | Create `.tasks/TICKET-ID.md` from a ticket (or from one of `analyze-story`'s subtasks) — planning only, no code |
+| [`/create-task`](./skills/create-task.md) | Create `tasks/TICKET-ID.md` from a ticket (or from one of `analyze-story`'s subtasks) — planning only, no code |
 | [`/define-slo`](./skills/define-slo.md) | Translate a vague, client-driven reliability ask into a measurable technical SLO (target, window, exclusions, error budget, instrumentation, owner) — run during Requirements when a ticket has a non-functional/reliability ask |
 | [`/design-brief`](./skills/design-brief.md) | Turn a Figma node into a Design Brief mapped to this project's own color/spacing/typography tokens and component library — run before implementing a UI task with a design link |
 | [`/implement-task`](./skills/implement-task.md) | Full implementation flow for a ticket — reads the task file, design, implements, tests, docs, commit |
@@ -251,7 +252,7 @@ That's about invoking a tool call in the moment; a separate, earlier decision is
 | [`/public-repo-check`](./skills/public-repo-check.md) | Scan working tree + git history for secrets, UUIDs, and org-specific naming before pushing to a public remote |
 | [`/generate-agents-md`](./skills/generate-agents-md.md) | Split a repo's `CLAUDE.md` into a tool-agnostic `AGENTS.md` + a thin Claude-only `CLAUDE.md` import shim, following this repo's own split |
 | [`/diagram`](./skills/diagram.md) | Generate a draw.io flow/activity/swimlane diagram from a module's code — useful for documenting a non-obvious multi-step or multi-actor flow |
-| [`/postmortem`](./skills/postmortem.md) | Turn `.tasks/.postmortems/TICKET-ID.md` incident notes into a blameless post-mortem, in Confluence wiki markup by default |
+| [`/postmortem`](./skills/postmortem.md) | Turn `tasks/.postmortems/TICKET-ID.md` incident notes into a blameless post-mortem, in Confluence wiki markup by default |
 | [`/test-scaffold`](./skills/test-scaffold.md) | Scaffold a component/CT test driven by the issue tracker's own Test Case work items, written in user language rather than implementation detail |
 | [`/agent-eval`](./skills/agent-eval.md) | Build a golden set + rubric for one specific judgment call a skill makes, score the current implementation against it, and gate a pending skill change on the score not regressing — run when a skill has real usage history, not on day one |
 | [`/plan-update`](./skills/plan-update.md) | Create or reconcile this repo's root `PLAN.md` (Status/Next-up/Open-questions/Parked/Decision-points) against what actually changed — edits the file only, does not commit |
@@ -264,14 +265,23 @@ That's about invoking a tool call in the moment; a separate, earlier decision is
 
 ### Task file lifecycle
 
-`.tasks/TICKET-ID.md` is a **living planning doc** — open with it, close by deleting it:
+`<package-root>/tasks/TICKET-ID.md` is a **durable record** — the ticket's spec and plan while the work is open, and afterwards the record of *why* the change happened and what it had to satisfy. It is never deleted. This is what makes the playbook spec-anchored rather than spec-first: the spec outlives the change. It doesn't duplicate `doc.md` ([`/code-doc`](./skills/code-doc.md)) — `doc.md` describes how the code works *now*; task files describe the decisions that got it there.
 
 | State | Task file action |
 |---|---|
-| PR not open yet | Keep & update — ongoing work, file is active context |
-| PR already open | Delete in the same commit — ticket is done |
+| PR/MR not open yet | Keep & update — `**Status:** open`, the plan and notes are active context |
+| PR/MR open | Close out (below). Later commits on the same PR update it only if they change acceptance criteria or a decision |
+| A later ticket changes the same behavior | That ticket adds its ID to this file's `**Updated by:**` line — or `**Superseded by:**` when it replaces the decision outright — in its own PR |
 
-The file's content is preserved in git history on the branch forever, so deleting it from the working tree loses nothing. Claude Code's [`/commit`](./skills/commit.md) skill enforces this automatically — it checks for an open PR/MR and stages the deletion if one exists, rather than relying on manual cleanup. Any other tool implementing the `commit` skill should follow the same rule.
+**Close-out:**
+- **Keep as written:** Goal / What & Why, Acceptance Criteria, Architecture Notes; for bugfixes also Expected vs Actual and Reproduction Steps. Tick the acceptance criteria that were met; leave unmet ones unticked with a one-line reason.
+- **Rewrite:** Open Questions → each answered, or moved to `PLAN.md` if still open; Root Cause Hypothesis → the confirmed root cause; Implementation Plan / Plan → **What was built**, 2–3 lines.
+- **Drop:** Files to Touch (`git log -- <file>` is authoritative) and the Changes table (it lives in the PR/MR description).
+- **Header:** `**Status:** done — [PR #N](url), closed YYYY-MM-DD`. Other statuses: `dropped` (never implemented — say why) and `superseded` (pair with `**Superseded by:**`).
+
+Claude Code's [`/commit`](./skills/commit.md) skill enforces this: right after it creates a new PR/MR it closes the task file out in a dedicated follow-up commit (the PR link can't exist in the commit that creates the PR), and on any later commit it closes out a task file still marked `open` while a PR exists — which catches PRs opened outside `/commit`. Any other tool implementing the `commit` skill should follow the same rule.
+
+A task file written after the fact (from a PR and its commits rather than at the time) says so with `**Source:** reconstructed from PR #N and its commits` and records only what those sources state — never invented acceptance criteria.
 
 ### Design-tool skills
 

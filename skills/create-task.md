@@ -1,14 +1,14 @@
 ---
 name: create-task
 disable-model-invocation: true
-description: Creates a structured task planning file in <package-root>/.tasks/TICKET-ID.md. Run at the start of a ticket — before any implementation — to capture scope, plan, and relevant files. NEVER auto-invoke — only run when user explicitly types /create-task.
+description: Creates a structured, durable task file (the ticket's spec and plan) in <package-root>/tasks/TICKET-ID.md. Run at the start of a ticket — before any implementation — to capture scope, acceptance criteria, plan, and relevant files. NEVER auto-invoke — only run when user explicitly types /create-task.
 ---
 
 # create-task — Task Planning File
 
 ## Overview
 
-Run this skill when you pick up a new ticket and want to scope it before writing any code. It produces a living `.tasks/TICKET-ID.md` document at the package root with the ticket context, implementation plan, and relevant files pre-populated from codebase exploration.
+Run this skill when you pick up a new ticket and want to scope it before writing any code. It produces a `tasks/TICKET-ID.md` document at the package root with the ticket context, implementation plan, and relevant files pre-populated from codebase exploration. The file is durable: it's the working plan while the ticket is open, and is closed out (not deleted) once the PR/MR opens — see `AGENTS.md`'s Task file lifecycle. Write Goal, Acceptance Criteria and Architecture Notes for someone reading them months later, not just for this session.
 
 `/implement-task` reads this file in its own Step 2 — run this first if you want the planning separate from execution.
 
@@ -25,7 +25,7 @@ Run this skill when you pick up a new ticket and want to scope it before writing
 
 ## Output
 
-- `<package-root>/.tasks/TICKET-ID.md`
+- `<package-root>/tasks/TICKET-ID.md`
 
 ## Guardrails
 
@@ -61,7 +61,7 @@ Determine the target package (for a monorepo) or the working directory (for a si
 
 **Resolve `<package-root>`.** For monorepos, packages may live under different roots depending on convention (e.g. `apps/`, `packages/`, `services/`). Check the repo's own docs/config for the layout, then confirm the target directory exists before proceeding. For single-repo projects, `<package-root>` is the repo root.
 
-Check whether `.tasks/TICKET-ID.md` already exists at `<package-root>/.tasks/`. If it does, read it, report its current state to the user, and ask whether to overwrite or just review it.
+Check whether `tasks/TICKET-ID.md` already exists at `<package-root>/tasks/`. If it does, read it, report its current state (including its `**Status:**`) to the user, and ask whether to overwrite or just review it. A file with `**Status:** done` belongs to a finished ticket — never overwrite it; a new change to that behavior is a new ticket that links back to it (Step 5).
 
 ---
 
@@ -164,6 +164,10 @@ Before writing the file, read enough code to give real answers. Do not fill in p
 - Look for the logic handling the broken behaviour (filtering, sorting, state mutations, routing)
 - Check git log for recent changes to the relevant files: `git log --oneline -10 -- <file>` to see if there's a recent regression
 
+**Always do — earlier specs for the same behavior:**
+- Search `<package-root>/tasks/` for earlier task files about the same feature, module or behavior (grep the module name, the feature name, key terms from the ticket). Their Acceptance Criteria and Architecture Notes are the existing spec this ticket builds on — read them before planning.
+- If this ticket changes behavior an earlier task file specified, list it on a `**Related:**` line in the new file, and add this ticket's ID to that earlier file's `**Updated by:**` line (or `**Superseded by:**` if this replaces its decision outright) as part of this ticket's own PR. Don't edit the earlier file's content — it records what was true then.
+
 From this exploration, produce:
 - A concrete **Implementation Plan** (not placeholder bullets)
 - A **Files to Touch** table with real file paths and what each change is
@@ -173,7 +177,7 @@ From this exploration, produce:
 
 ### Step 6: Write the Task File
 
-Create `<package-root>/.tasks/TICKET-ID.md` (use the package detected in Step 1) using the appropriate template below.
+Create `<package-root>/tasks/TICKET-ID.md` (use the package detected in Step 1) using the appropriate template below.
 
 Fill in **every field** from Steps 2 and 4. Do not leave placeholder text (`...`, `?`, `TBD`) unless it genuinely cannot be answered yet — and if you leave a `?`, add a note explaining what information is needed.
 
@@ -188,6 +192,7 @@ Fill in **every field** from Steps 2 and 4. Do not leave placeholder text (`...`
 **Design (UX flows):** [UX link or —]
 **Design (UI / implementation):** [UI link or —]
 **Feature flag:** `flag_name_here` (or — if none)
+**Status:** open
 
 ---
 
@@ -242,6 +247,7 @@ _Add non-obvious decisions here as you discover them during implementation._
 
 **Ticket:** [ticket URL]
 **Type:** Bugfix
+**Status:** open
 
 ---
 
@@ -312,6 +318,7 @@ _Add findings here as you investigate and implement._
 
 **Ticket:** [ticket URL]
 **Type:** Chore
+**Status:** open
 
 ---
 
@@ -340,7 +347,7 @@ _Add findings here as you investigate and implement._
 ### Step 7: Report
 
 Tell the user:
-- Where the file was written: `<package-root>/.tasks/TICKET-ID.md`
+- Where the file was written: `<package-root>/tasks/TICKET-ID.md`
 - A brief summary of what the implementation plan contains
 - Any open questions that need an answer before implementation can start
 - Any notable structural quirks in the target module (e.g. legacy wrapper/composition patterns) that a downstream `/implement-task` run should account for

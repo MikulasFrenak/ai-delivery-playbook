@@ -70,7 +70,7 @@ Same JSON shape, added wherever that client's own docs say its MCP config lives 
 
 ## Remote (no clone needed)
 
-All of the above requires the repo cloned locally. A remote version — deployed, live, verified — is at [`remote/`](./remote/) (see `remote/README.md` and `.tasks/AIPB-12.md`). Connecting is simpler: swap the `command`/`args` local-stdio block in any of the examples above for:
+All of the above requires the repo cloned locally. A remote version — deployed, live, verified — is at [`remote/`](./remote/) (see `remote/README.md` and `tasks/AIPB-12.md`). Connecting is simpler: swap the `command`/`args` local-stdio block in any of the examples above for:
 
 ```json
 {
@@ -95,4 +95,4 @@ Don't just check that the tool appears in a tool list — ask the connected sess
 
 If it comes back with real content pulled from `skills/commit.md`, the loop works end to end.
 
-**Confirmed working, live, in all four surfaces above:** Claude Code CLI (`claude mcp list` showed it connected), the VS Code extension (asked from `review-spa`, repo not cloned there — got back an accurate answer pulled from `skills/design-brief.md`), the Claude Desktop app, and a Cowork session (called `search_skills("postmortem incident")` directly and got the real `skills/postmortem.md` description back). See `.tasks/AIPB-11.md` for the full trace.
+**Confirmed working, live, in all four surfaces above:** Claude Code CLI (`claude mcp list` showed it connected), the VS Code extension (asked from `review-spa`, repo not cloned there — got back an accurate answer pulled from `skills/design-brief.md`), the Claude Desktop app, and a Cowork session (called `search_skills("postmortem incident")` directly and got the real `skills/postmortem.md` description back). See `tasks/AIPB-11.md` for the full trace.
