@@ -82,7 +82,8 @@ Worked Examples
 ----------------
 Real traces of a workflow run end to end —
 trigger → workflow → skills → tools → human confirmation.
-See examples/
+See examples/ — each links its task file in tasks/,
+which holds what was decided and why.
 
 ---
 

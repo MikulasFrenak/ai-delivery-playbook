@@ -4,6 +4,7 @@
 **Type:** Chore
 **Status:** done — [PR #26](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/26), closed 2026-07-24
 **Source:** reconstructed on 2026-10-29 from PR #26's commit (the PR has no description, and the commit was prefixed `CHORE -` rather than the ticket ID) — not written at the time; no acceptance criteria were recorded
+**Updated by:** [AIPB-23](./AIPB-23.md) — `/branch-cleanup` Step 8, a report-only task-file status check using the same host detection
 
 ---
 

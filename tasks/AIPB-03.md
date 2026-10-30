@@ -5,6 +5,7 @@
 **Status:** done — [PR #4](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/4), closed 2026-07-07
 **Source:** restored from git history and closed out in [AIPB-22](./AIPB-22.md)
 **Updated by:** [AIPB-07](./AIPB-07.md), [AIPB-08](./AIPB-08.md) — AIPB-08 reversed the "Capabilities" label back to "Skill"
+**Worked example:** [examples/AIPB-03.md](../examples/AIPB-03.md)
 
 ---
 

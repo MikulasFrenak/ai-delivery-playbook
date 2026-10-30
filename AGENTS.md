@@ -20,7 +20,7 @@ If you're using Claude Code specifically, also read `CLAUDE.md` — it's a thin 
 | `skills/` | 1 — Skills | One `<name>.md` per skill. Written as Claude Code skills today (invoked as `/<name>`) — see "Skills" below for how other tools use the same content |
 | `workflows/` | 2 — Workflows | Multi-skill sequences for a delivery scenario |
 | `lifecycle/` | 3 — Software Delivery Lifecycle | Stage-level docs (Requirements → Release) |
-| `examples/` | 4 — Worked Examples | Real traces of a workflow run end to end |
+| `examples/` | 4 — Worked Examples | Real traces of a workflow run end to end — how the run went and what it proved. The ticket's task file holds what was decided and why; the two link each other |
 | `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `mcp-governance.md`, `deployment.md`, `error-handling.md`, `sla-framework.md`, `test-maintenance.md`, `security.md`, `eval-framework.md`, `vocabulary.md`, `future-considerations.md`) |
 | `evals/` | Reference | Golden-set scorecards produced by [`/agent-eval`](./skills/agent-eval.md) — one `<skill-name>.md` per evaluated skill, kept durable so score history stays comparable over time |
 | `tasks/` | Reference | One `AIPB-NN.md` per ticket of this repo's own work — durable records, not deleted on merge (see "Task file lifecycle" below). [`tasks/README.md`](./tasks/README.md) indexes them. Post-mortems for bugs that were incidents go in `tasks/postmortems/` |
@@ -279,11 +279,15 @@ That's about invoking a tool call in the moment; a separate, earlier decision is
 - **Drop:** Files to Touch (`git log -- <file>` is authoritative) and the Changes table (it lives in the PR/MR description).
 - **Header:** `**Status:** done — [PR #N](url), closed YYYY-MM-DD`. Other statuses: `dropped` (never implemented — say why) and `superseded` (pair with `**Superseded by:**`).
 
+`done` means delivered: the PR/MR exists and the spec is closed. Whether it merged is read live from that link, never stored — the merge happens on the host, where nothing writes back to the file. [`/branch-cleanup`](./skills/branch-cleanup.md) runs that check after merges and reports any `done` file whose PR/MR closed unmerged, and any `open` file whose ticket already has a merged PR/MR.
+
 Claude Code's [`/commit`](./skills/commit.md) skill enforces this: right after it creates a new PR/MR it closes the task file out in a dedicated follow-up commit (the PR link can't exist in the commit that creates the PR), and on any later commit it closes out a task file still marked `open` while a PR exists — which catches PRs opened outside `/commit`. Any other tool implementing the `commit` skill should follow the same rule.
 
 A task file written after the fact (from a PR and its commits rather than at the time) says so with `**Source:** reconstructed from PR #N and its commits` and records only what those sources state — never invented acceptance criteria.
 
 **Post-mortems** for bugs that were incidents live next to the task files at `<package-root>/tasks/postmortems/TICKET-ID.md`, written by [`/postmortem`](./skills/postmortem.md) and kept the same way. Links run both ways: the post-mortem's `**Task:**` line points to the ticket's task file, which gets a `**Postmortem:**` line — and so does every corrective-action ticket, whose ID goes on its action line in the post-mortem. Raw incident notes (`tasks/postmortems/TICKET-ID.notes.md`) are gitignored; only the blameless version is committed.
+
+**Worked examples** link the same way. A ticket whose run is written up in `examples/` gets a `**Worked example:**` line, and the example opens with `**Task file:**` pointing back. The example doesn't repeat the task file's What & Why — it covers how the run went, which skill caught what, and what that proved. Write one only when a run taught something about the workflow itself; most tickets don't need one.
 
 ### Design-tool skills
 

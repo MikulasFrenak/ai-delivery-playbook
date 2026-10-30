@@ -3,7 +3,8 @@
 **Ticket:** self-assigned (no tracker)
 **Type:** Chore
 **Status:** done — [PR #42](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/42), closed 2026-09-06
-**Source:** reconstructed on 2026-10-29 from PR #42 and its commit — not written at the time; no acceptance criteria were recorded. The run itself is traced in [`examples/AIPB-19.md`](../examples/AIPB-19.md)
+**Source:** reconstructed on 2026-10-29 from PR #42 and its commit — not written at the time; no acceptance criteria were recorded
+**Worked example:** [examples/AIPB-19.md](../examples/AIPB-19.md)
 
 ---
 

@@ -31,4 +31,4 @@ One file per ticket of this repo's own work. Each is the ticket's spec and plan 
 | [AIPB-20](./AIPB-20.md) | security-check skill + docs/security.md | done | [#43](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/43) | written at the time |  |
 | [AIPB-21](./AIPB-21.md) | Add review-pr and review-comment-style skills | done | — (direct to `main`) | reconstructed |  |
 | [AIPB-22](./AIPB-22.md) | Spec-anchored task files: keep them, close them out, move to tasks/ | done | [#47](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/47) | written at the time |  |
-| [AIPB-23](./AIPB-23.md) | Keep post-mortems next to task files, linked both ways | done | [#48](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/48) | written at the time |  |
+| [AIPB-23](./AIPB-23.md) | Link post-mortems and worked examples to task files; check merge state live | done | [#48](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/48) | written at the time |  |

@@ -1,5 +1,7 @@
 # Worked Example: AIPB-02 — Polish create-task.md from external review
 
+**Task file:** [tasks/AIPB-02.md](../tasks/AIPB-02.md) — what was decided and why. This page is how the run went.
+
 **Trigger:** An external review of [`skills/create-task.md`](../skills/create-task.md) flagged 4 items. Rather than acting on the review text at face value, each claim was checked against the actual file first.
 
 **Workflow:** [`feature-delivery`](../workflows/feature-delivery.md), Task/chore path.

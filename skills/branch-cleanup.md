@@ -113,3 +113,27 @@ Cleans up stale `remotes/origin/*` refs for branches already deleted on the host
 ### Step 7: Report
 
 List what was deleted, what was deliberately left alone and why (open PR, no PR found, or host unavailable), and confirm `git fetch --prune` ran. If the host CLI wasn't available in Step 1, repeat that caveat here — don't let a partial cleanup read as a complete one.
+
+### Step 8: Task-File Status Check (Report Only)
+
+Skip this step if the repo has no `tasks/` folder, or if Step 1 found no queryable host (say so). It runs after the cleanup and never feeds back into Steps 3–6: which branches get deleted is decided before it, and nothing here deletes or edits anything.
+
+A closed-out task file says `**Status:** done — [PR #N](url)` from the moment its PR/MR opens; whether that PR/MR then merged lives only on the host (see `AGENTS.md` → Task file lifecycle). Check it live, with the same host CLI as Step 4:
+
+```bash
+# GitHub — one call for every PR state, joined against the links in the task files
+gh pr list --state all --limit 500 --json number,state,title
+grep -H '^\*\*Status:\*\*' <package-root>/tasks/*.md
+```
+
+For GitLab, Azure DevOps or Bitbucket, use the same host's list command as Step 4 with every state included.
+
+| Task file says | PR/MR on the host | Report |
+|---|---|---|
+| `done`, linked PR/MR | Merged | Nothing — count it only |
+| `done`, linked PR/MR | Open | "In review" — expected right after `/commit` closes it out |
+| `done`, linked PR/MR | Closed without merging | **Flag:** the file claims done but nothing landed — reopen the work, or change the status to `dropped` with a reason |
+| `open` | A merged PR/MR whose title starts with this TICKET-ID | **Flag:** close-out was missed (PR opened outside `/commit`, no commit after) — close it out |
+| `done`, no PR/MR link | — | "Can't check" — e.g. work committed straight to the base branch; list it so the gap is visible |
+
+Add the flags to the Step 7 report, one line each with the file and the PR/MR. Don't fix them here: this skill runs on the base branch, and a task-file fix is a change like any other — its own branch and PR/MR.

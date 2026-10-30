@@ -5,6 +5,7 @@
 **Status:** done — [PR #7](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/7), closed 2026-07-07
 **Source:** restored from git history and closed out in [AIPB-22](./AIPB-22.md)
 **Updated by:** [AIPB-07](./AIPB-07.md), [AIPB-08](./AIPB-08.md), [AIPB-11](./AIPB-11.md)
+**Worked example:** [examples/AIPB-06.md](../examples/AIPB-06.md)
 
 ---
 
