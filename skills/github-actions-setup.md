@@ -316,6 +316,9 @@ The preview command for each host:
 Notes:
 - **Grep the output for the URL's shape** (`https://pr-<n>-…`), not for a label like "Preview URL:". The wording of CLI output changes.
 - **The preview environment has its own runtime secrets** on most hosts. A fail-closed app (a password gate) answers its "not configured" fallback there until they're set, e.g. `wrangler pages secret put <NAME> --project-name <project> --env preview`. That's the right default; set them once.
+- **A password-gated app's testing page is smoke-tested at its gate, not its content.** The password stays in the host and never goes to CI. So check what a stranger would get: the expected `401` with the app's own sign-in prompt (its realm), retried for about 30 seconds.
+  - Fail on the app's "not configured" answer, with the one command that sets the preview password.
+  - After setting it, re-run the testing job: its own deploy is what picks the new secret up.
 - **Smoke-test with one real request**, the way a user or client would (a page that answers, an API that returns data). "The upload succeeded" isn't "the preview works".
 - **The PR that adds this job** runs it before the secrets exist, unless the person stores them first. Say so: that first testing job goes red until they're set, then a re-run proves it.
 
