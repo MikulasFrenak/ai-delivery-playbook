@@ -34,3 +34,4 @@ One file per ticket of this repo's own work. Each is the ticket's spec and plan 
 | [AIPB-23](./AIPB-23.md) | Link post-mortems and worked examples to task files; check merge state live | done | [#48](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/48) | written at the time |  |
 | [AIPB-24](./AIPB-24.md) | github-actions-setup skill: CI checks, PR hygiene, deploy on merge, on-demand AI review | done | [#49](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/49) | written at the time | [trace](../examples/AIPB-24.md) |
 | [AIPB-25](./AIPB-25.md) | Trace github-actions-setup's first adoption; carry its lessons into the skills | done | [#51](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/51) | written at the time |  |
+| [AIPB-26](./AIPB-26.md) | This repo's own CI: checks, a testing deploy per PR, the real deploy on merge | done | [#52](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/52) | written at the time |  |

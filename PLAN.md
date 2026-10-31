@@ -9,6 +9,13 @@
 - 23 skills documented in [`skills/`](./skills/), all tool-agnostic in [`AGENTS.md`](./AGENTS.md) with `CLAUDE.md` as a thin import shim.
 - [`/github-actions-setup`](./skills/github-actions-setup.md) added (AIPB-24) from a real solo-project setup. It covers checks on every PR, a PR hygiene check (ticket ID with matching branch and task file, a description, tests alongside changed source), a deploy on merge of the checked build, and a label-triggered read-only AI review. It narrows `lifecycle/release.md`'s Gap to rollout/rollback: the deploy after a merge now has a skill, while how a change reaches users still doesn't.
 - `/github-actions-setup`'s first real adoption is traced in [`examples/AIPB-24.md`](./examples/AIPB-24.md) (AIPB-25). All four jobs ran; every failure was in the one-time secret setup, none in the workflows. Its lessons are in the skill (the AI review's credential and failure signature), in a new `AGENTS.md` section on secrets a person stores, and in `review-pr` / `review-comment-style` (inline comments only on diff lines, an author can only Comment on their own PR, never link generated folders into a review worktree).
+- **This repo's own CI** (AIPB-26, [`docs/ci.md`](./docs/ci.md)):
+  - every PR runs the MCP tests and a docs check (skill frontmatter, registration in all places, relative links) plus PR hygiene;
+  - a PR from this repo gets a testing deploy of the MCP server at its own `pr-<n>` address;
+  - a merge deploys the real server from GitHub Actions instead of Cloudflare's Git build;
+  - the Claude review runs on a label.
+
+  `/github-actions-setup` gained the testing-deploy step from it.
 - Remote MCP server (`ai-delivery-playbook.mikulas-frenak.workers.dev`) is live on Cloudflare Workers, serving `search_skills`/`get_skill` — confirmed via `curl` and a real Claude Code CLI connection (AIPB-12).
 - [`/agent-eval`](./skills/agent-eval.md) landed (AIPB-15/16), wired into the skill-change and vocabulary docs. **First real scorecard now exists** — [`evals/branch-cleanup.md`](./evals/branch-cleanup.md), 20 real cases (19 confirmed-merged, 1 open-PR-leave-alone), 20/20 baseline, via the MCP server's `get_skill` since the local `/agent-eval` slash command wasn't resolving in this session (file itself checked fine — cause not confirmed, a CLI restart is the likely fix). Coverage gap stated plainly in the scorecard itself: the "delete" path is thoroughly verified, "no PR found" and "host unavailable" have zero real cases yet — extend when they occur for real, don't invent them.
 - [`/branch-cleanup`](./skills/branch-cleanup.md) made genuinely host-agnostic (not GitHub-only) and is now the most-exercised skill in practice this cycle.

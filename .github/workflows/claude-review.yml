@@ -1,0 +1,63 @@
+# A read-only Claude code review of a PR, on request: add the `claude-review` label (remove and re-add it for another
+# pass). On demand, since each run is a paid session. Same-repo PRs only: this repo is public. See docs/ci.md.
+name: Claude review
+
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  review:
+    if: github.event.label.name == 'claude-review' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: anthropics/claude-code-action@v1
+        with:
+          # One of the two: a subscription token (`claude setup-token`) or an API key. See docs/ci.md for storing it.
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Comments come from github-actions with the workflow's own token, so no GitHub App is needed.
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            Review pull request #${{ github.event.pull_request.number }} in ${{ github.repository }}, a public playbook
+            of skills, workflows and lifecycle docs for AI-assisted delivery. The PR is checked out in the working
+            directory.
+
+            Read-only: read files, run `git log/diff/show` and `gh pr view/diff`, and post comments.
+            Never push, approve, request changes, merge, label or edit anything.
+
+            1. Read AGENTS.md and CONTRIBUTING.md for this repo's rules, and the PR's task file in tasks/ if it has one.
+            2. Read the description and the existing comments (`gh pr view ${{ github.event.pull_request.number }} --comments`).
+               Don't repeat a point someone already raised.
+            3. Read the whole diff (`gh pr diff ${{ github.event.pull_request.number }}`) and the text around each change.
+               Look for:
+               - instructions that contradict another skill or doc;
+               - step numbers or cross-references that no longer match;
+               - claims without a source;
+               - terms used against docs/vocabulary.md;
+               - anything unsafe to publish: names of a company or a private project, internal URLs, IDs, tokens.
+               For code (mcp-server/, .github/), look for bugs and new logic without tests.
+            4. Check every finding against the files before posting it, and name the file and line you saw. What the
+               files can't show goes under "Not verified". Don't guess. The CI check runs the tests, the skill rules
+               and the link check; don't run them.
+            5. Post each finding as one inline comment on a changed line, with
+               mcp__github_inline_comment__create_inline_comment (confirmed: true). Start it with
+               **[Must] / [Low] / [Nit] / [Question] <short imperative title>**, then the evidence and a concrete fix.
+               Use a ```suggestion block only for an exact replacement of a few lines. Under about 8 lines, polite,
+               no emojis. [Must] only for broken behaviour, a leak, or a broken repo rule.
+            6. Finish with one summary comment (`gh pr comment`): "### Claude review: <Request changes | Approve with
+               comment | Approve>", then **Verified**, **Must fix** (numbered, only if any), **Non-blocking** and
+               **Not verified**. A few real findings beat a long list. With none, say in two lines what you checked.
+          claude_args: |
+            --model claude-sonnet-5-5
+            --max-turns 40
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(git log:*),Bash(git diff:*),Bash(git show:*),Read,Glob,Grep"

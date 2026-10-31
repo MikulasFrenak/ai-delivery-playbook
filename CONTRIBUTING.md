@@ -50,4 +50,10 @@ If the skill has no scorecard yet, this doesn't apply — `agent-eval` isn't a d
 
 ## Before opening a PR
 
+CI checks every PR ([`docs/ci.md`](./docs/ci.md)):
+- a skill whose frontmatter is wrong, or that's missing from one of the registration places above, fails the check, and so does a relative link that points nowhere;
+- the PR's title, branch, task file and description are checked too.
+
+Run the checks locally first with the three commands in `docs/ci.md`.
+
 Run [`/public-repo-check`](./skills/public-repo-check.md) if you touched anything that could plausibly carry a secret, UUID, real hostname, or org-specific name — new MCP config, a new example, a new skill sourced from a real project.

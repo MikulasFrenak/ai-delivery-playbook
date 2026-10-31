@@ -1,3 +1,5 @@
 name = "ai-delivery-playbook"
 main = "worker.js"
 compatibility_date = "2026-07-01"
+# Each PR uploads a preview version at its own pr-<n> alias URL (docs/ci.md); main deploys the real one.
+preview_urls = true

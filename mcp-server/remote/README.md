@@ -4,7 +4,15 @@ The remote counterpart to [`../server.js`](../server.js) (local stdio): same two
 
 **Status: deployed and verified live.** `https://ai-delivery-playbook.mikulas-frenak.workers.dev/mcp` — confirmed with real `curl` calls: `initialize` returns the correct `serverInfo`, `tools/call` → `search_skills("commit")` returns real skill descriptions from the deployed bundle.
 
-Deployed via Cloudflare's **Git integration** (dashboard → Workers → connect repo), not a local `wrangler deploy` — worth knowing because the two build settings below aren't wrangler defaults, they're specific to that flow:
+**Deployed by GitHub Actions** since AIPB-26 ([`docs/ci.md`](../../docs/ci.md)):
+
+- **Every PR from this repo** gets the checked bundle as a preview version at its own address,
+  `https://pr-<n>-ai-delivery-playbook.<subdomain>.workers.dev/mcp`, smoke-tested with one MCP call. The real server
+  isn't touched.
+- **Every merge to `main`** deploys the real one, after the same checks.
+
+Before that it deployed through Cloudflare's Git integration (dashboard → Workers → connect repo). Its two build settings
+aren't wrangler defaults, which is worth knowing if it's ever reconnected:
 
 - **Root directory:** `mcp-server/remote` (wrangler.toml doesn't live at the repo root)
 - **Build command:** `node build.js` (generates the gitignored `skills-data.js` before `wrangler deploy` runs — without this, the deploy fails with "Could not detect a directory containing static files", because `wrangler deploy` finds no config and no import target)
@@ -29,7 +37,7 @@ npx wrangler deploy    # needs a Cloudflare account; prompts to log in on first 
 
 Deploys to `https://ai-delivery-playbook.<your-subdomain>.workers.dev/mcp` (name comes from `wrangler.toml`). Re-run `node build.js` before every deploy if `skills/*.md` changed since the last one.
 
-The live deployment actually runs through Cloudflare's Git integration instead (auto-builds on push to `main`) — see the Root directory / Build command settings above. Either path works; the Git integration just means new skills or fixes go live automatically on merge, without a manual `wrangler deploy` step.
+The live deployment runs from GitHub Actions instead (`docs/ci.md`): the same `node build.js`, then `wrangler deploy` of the checked bundle on every merge to `main`, and `wrangler versions upload --preview-alias pr-<n>` for every PR. Deploying by hand like this remains the escape hatch.
 
 ## Verify it
 

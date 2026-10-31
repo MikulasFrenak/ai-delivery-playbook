@@ -4,7 +4,7 @@
 **Type:** Chore
 **Status:** done — [PR #20](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/20), closed 2026-07-24 (also #18, #19)
 **Source:** restored from git history and closed out in [AIPB-22](./AIPB-22.md)
-**Updated by:** [AIPB-13](./AIPB-13.md)
+**Updated by:** [AIPB-13](./AIPB-13.md), [AIPB-26](./AIPB-26.md)
 
 ---
 

@@ -51,7 +51,7 @@ If the platform supports preview/PR deployments, **these settings are configured
 
 ## Worked example — Cloudflare Workers (this ecosystem's actual setup)
 
-Every personal project this playbook runs on (`family-trails-eu`, `review-spa`, this repo's `mcp-server/remote`, ZenSmash) uses the same shape: **GitHub Actions** for cross-repo sync/notify steps, and **Cloudflare's Git integration** for the deploy itself — push to `main` → Cloudflare builds → live. No manual `wrangler deploy` in the normal flow, though it stays available as an escape hatch.
+The personal projects this playbook runs on (`family-trails-eu`, `review-spa`, ZenSmash) use the same shape: **GitHub Actions** for cross-repo sync/notify steps, and **Cloudflare's Git integration** for the deploy itself — push to `main` → Cloudflare builds → live. No manual `wrangler deploy` in the normal flow, though it stays available as an escape hatch. This repo's own `mcp-server/remote` used it too until AIPB-26 moved it to the other shape: a deploy from GitHub Actions after the checks, plus a testing deploy per PR at its own address ([`ci.md`](./ci.md)). The rows below describe the Git-integration shape.
 
 Filling in the table above:
 

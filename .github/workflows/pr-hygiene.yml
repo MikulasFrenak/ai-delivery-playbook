@@ -1,0 +1,74 @@
+# Checks a PR's paperwork, not its code: the ticket in the title with a matching branch and task file, a real
+# description, and tests alongside changed source. Its own workflow, so editing a description re-runs this alone.
+# See docs/ci.md.
+name: PR hygiene
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, edited, synchronize, reopened, labeled, unlabeled]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: pr-hygiene-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  hygiene:
+    name: Description, tests, ticket
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/github-script@v9
+        with:
+          script: |
+            const TITLE = /^(AIPB-\d+|TRIVIAL) - \S/;
+            const TASK_FILE = (id) => `tasks/${id}.md`;
+            const SOURCE = /^mcp-server\/.*\.js$|^\.github\/scripts\/.*\.(mjs|sh)$/;
+            const TEST = /(^|\/)test\.js$|\.test\.mjs$/;
+            const NOT_SOURCE = /skills-data\.js$/;
+            const NO_TESTS_LABEL = "no-tests-needed";
+            const MIN_DESCRIPTION = 100;
+
+            const pr = context.payload.pull_request;
+            const { owner, repo } = context.repo;
+            const problems = [];
+
+            const title = pr.title.match(TITLE);
+            if (!title) {
+              problems.push("**Title**: start it like a commit, `AIPB-<n> - Summary` or `TRIVIAL - Summary`.");
+            } else if (title[1] === "TRIVIAL") {
+              if (!pr.head.ref.startsWith("trivial/")) problems.push("**Branch**: a TRIVIAL change goes on a `trivial/` branch.");
+            } else {
+              const id = title[1];
+              if (!pr.head.ref.toLowerCase().includes(id.toLowerCase())) problems.push(`**Branch**: \`${pr.head.ref}\` doesn't name ${id}.`);
+              try {
+                await github.rest.repos.getContent({ owner, repo, path: TASK_FILE(id), ref: pr.head.sha });
+              } catch {
+                problems.push(`**Task file**: \`${TASK_FILE(id)}\` is missing (AGENTS.md → Task file lifecycle).`);
+              }
+            }
+
+            const body = (pr.body ?? "")
+              .replace(/<!--[\s\S]*?-->/g, "")
+              .replace(/^.*Generated with \[Claude Code\].*$/gm, "")
+              .trim();
+            if (body.length < MIN_DESCRIPTION) problems.push("**Description**: say what changed, why, and how it was checked.");
+
+            const files = await github.paginate(github.rest.pulls.listFiles, { owner, repo, pull_number: pr.number, per_page: 100 });
+            const changed = files.filter((file) => file.status !== "removed").map((file) => file.filename);
+            const sources = changed.filter((path) => SOURCE.test(path) && !TEST.test(path) && !NOT_SOURCE.test(path));
+            const labels = pr.labels.map((label) => label.name);
+            if (sources.length && !changed.some((path) => TEST.test(path)) && !labels.includes(NO_TESTS_LABEL)) {
+              const listed = sources.slice(0, 5).map((path) => `\`${path}\``).join(", ");
+              problems.push(`**Tests**: source changed with no test changes (${listed}). Add or update tests, or add the \`${NO_TESTS_LABEL}\` label and say why.`);
+            }
+
+            await core.summary
+              .addHeading("PR hygiene", 3)
+              .addRaw(problems.length ? problems.map((problem) => `- ${problem}`).join("\n") : "Title, branch, task file, description and tests all check out.")
+              .write();
+            if (problems.length) core.setFailed(problems.join("\n"));
