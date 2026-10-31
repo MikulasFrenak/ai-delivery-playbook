@@ -2,7 +2,7 @@
 
 **Ticket:** self-assigned (solo repo, no external tracker — see AGENTS.md "Ticket IDs for solo/no-tracker projects")
 **Type:** Chore
-**Status:** open
+**Status:** done — [PR #51](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/51), closed 2026-10-31
 **Source:** written at the time
 
 ---
@@ -24,38 +24,29 @@ run itself. The playbook's place for "how a run went and what it proved" is `exa
 
 ## Acceptance Criteria
 
-- [ ] `examples/AIPB-24.md` traces the adoption, and the AIPB-24 task file links it (`**Worked example:**`) both ways.
+- [x] `examples/AIPB-24.md` traces the adoption, and the AIPB-24 task file links it (`**Worked example:**`) both ways.
       No names, IDs or URLs from the source project.
-- [ ] `skills/github-actions-setup.md` covers the AI review credential:
+- [x] `skills/github-actions-setup.md` covers the AI review credential:
       - one credential, not both;
       - `claude setup-token`'s code vs. its token;
       - a shape-checked store;
       - the refused-credential signature (`is_error`, one turn, `$0`);
       - how to see the hidden message;
       - how a re-run picks up (or doesn't pick up) a workflow change.
-- [ ] `AGENTS.md` has a tool-agnostic section on secrets a person stores: who stores them, clipboard-check-stdin over a
+- [x] `AGENTS.md` has a tool-agnostic section on secrets a person stores: who stores them, clipboard-check-stdin over a
       paste prompt, what's being copied, one store per reader, explicit targets.
-- [ ] `review-pr` and `review-comment-style` carry the three review mechanics: inline comments only on diff lines, an
+- [x] `review-pr` and `review-comment-style` carry the three review mechanics: inline comments only on diff lines, an
       author can only Comment on their own PR, and no links to generated folders in a review worktree.
 
-## Plan
+## What was built
 
-- [ ] Write the example; link it from the AIPB-24 task file, the skill and `tasks/README.md`.
-- [ ] Skill, `AGENTS.md`, `review-pr`, `review-comment-style`; `PLAN.md`.
-- [ ] `/public-repo-check` on the diff; PR; close-out.
+`examples/AIPB-24.md` traces the first adoption: six failures, all in the one-time secret setup, and what that
+validated. Its lessons went into `/github-actions-setup` (the AI review credential), a new `AGENTS.md` section on secrets
+a person stores, and `review-pr` / `review-comment-style`.
 
-## Files to Touch
+## Open Questions — answers
 
-| File | Change |
-|---|---|
-| `examples/AIPB-24.md` | new |
-| `skills/github-actions-setup.md`, `skills/review-pr.md`, `skills/review-comment-style.md` | lessons |
-| `AGENTS.md` | Secrets a person stores |
-| `tasks/AIPB-24.md`, `tasks/README.md`, `PLAN.md` | links, status |
-
-## Open Questions
-
-_(none)_
+_(none were open)_
 
 ## Architecture Notes
 
