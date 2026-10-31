@@ -23,6 +23,7 @@ If you're using Claude Code specifically, also read `CLAUDE.md` — it's a thin 
 | `examples/` | 4 — Worked Examples | Real traces of a workflow run end to end — how the run went and what it proved. The ticket's task file holds what was decided and why; the two link each other |
 | `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `mcp-governance.md`, `deployment.md`, `error-handling.md`, `sla-framework.md`, `test-maintenance.md`, `security.md`, `eval-framework.md`, `vocabulary.md`, `future-considerations.md`) |
 | `evals/` | Reference | Golden-set scorecards produced by [`/agent-eval`](./skills/agent-eval.md) — one `<skill-name>.md` per evaluated skill, kept durable so score history stays comparable over time |
+| `.github/` | Reference | This repo's CI: `workflows/` and `scripts/` for the checks, a testing deploy of the MCP server per PR, the real deploy on merge, PR hygiene and an on-demand Claude review. What runs when, and the one-time setup, is in [`docs/ci.md`](./docs/ci.md) |
 | `tasks/` | Reference | One `AIPB-NN.md` per ticket of this repo's own work — durable records, not deleted on merge (see "Task file lifecycle" below). [`tasks/README.md`](./tasks/README.md) indexes them. Post-mortems for bugs that were incidents go in `tasks/postmortems/` |
 
 See [`architecture.md`](./architecture.md) for how these levels relate.

@@ -13,6 +13,7 @@ Run this when a repo on GitHub has no CI, or deploys by hand. It leaves the repo
 - **A check on every PR**: type-check, lint, tests and the build, shown on the PR, so a red change is visible before merge.
 - **A PR hygiene check**: the title carries the ticket ID (or `TRIVIAL`), the branch and the task file agree with it, the description says more than a title, and changed source comes with changed tests. It enforces in CI what [`commit`](./commit.md) and the task-file lifecycle in `AGENTS.md` already ask for.
 - **A deploy on every merge to the production branch** that ships the *artifact the check built*, one deploy at a time. A red check deploys nothing.
+- **Optionally, a testing deploy on every PR**: the same checked artifact at the PR's own address, never the production one, so the change can be tried before merge (Step 4b).
 - **Optionally, an AI review on request**: a label on the PR starts a read-only review that posts inline comments and a summary, written to the [`review-pr`](./review-pr.md) / [`review-comment-style`](./review-comment-style.md) rules.
 - **A `docs/ci.md`** saying what runs when, and the one-time setup steps.
 
@@ -43,7 +44,8 @@ Not to be confused with Claude Code's `/install-github-app`. That one installs t
 - **Never see or write a secret.** Name each secret and say how to create it. The person stores it, so it never passes through chat, a file or shell history: piped into `gh secret set <NAME>` after checking it against the host (Step 7), or typed at its prompt. Setting a secret, a label or a branch rule is the person's step, not yours. Tooling may block you from it anyway.
 - **Deploy credentials are CI secrets only.** Never add them to the host's runtime secrets or variables as well: the app doesn't read them there. The host's secrets page is where an app's own secret (a site password, an API key) gets deleted by mistake while someone is adding the deploy ones. After any edit there, list the runtime secrets and check the app's are still present.
 - **Least privilege.** Use workflow-level `permissions: contents: read` and widen per job only where needed. A deploy token covers the one product it deploys to (e.g. a Pages-edit token, not an account-wide key).
-- **Deploy only from the production branch, only what was checked.** The deploy job runs on `push` to that branch, `needs` the check, and uploads the check's artifact rather than building again. Never deploy from `pull_request` events. They also get no secrets from forks, which is GitHub's protection, not a bug to work around.
+- **Production only from the production branch, only what was checked.** The production deploy job runs on `push` to that branch, `needs` the check, and uploads the check's artifact rather than building again. Never deploy production from `pull_request` events.
+- **A PR may get a testing deploy, to a separate target, from same-repo PRs only** (Step 4b). Guard it with `github.event.pull_request.head.repo.full_name == github.repository`. A fork's PR gets no secrets, which is GitHub's protection and not a bug to work around, and its code must not reach a deploy.
 - **One deploy at a time.** The deploy job gets its own `concurrency` group with `cancel-in-progress: false`. PR runs may cancel superseded ones; runs on the production branch never do, or a merge would skip its deploy.
 - **Don't re-platform the hosting to fit CI.** If the project deploys by direct upload, keep it, and deploy from CI with the same command. Switching to the host's Git integration (or back) is the person's decision. Say what it costs: on some hosts a new project, new secrets, and a lost URL.
 - **Pin actions to their current major, looked up, not remembered:** `gh api repos/<owner>/<action>/releases/latest`. Examples in docs, this one included, go stale.
@@ -85,6 +87,7 @@ Run the check commands locally once, so you know they pass before CI runs them.
   - **(a) CI-driven upload.** The deploy job runs the host's CLI with an API token. It keeps the existing project, and the tests gate the deploy. Recommended when a project already exists, or when the tests must gate the deploy.
   - **(b) The host's Git integration.** The host builds on push. Simplest for a fresh project, but its builds don't run your tests. See `docs/deployment.md` → Git-connected builds for its failure modes.
   - **(c) No auto-deploy**, checks only.
+- **Testing deploy per PR:** yes when the host has preview targets and trying a change before merge is worth a few CI minutes (Step 4b), no for checks only.
 - **AI review:** none / on a label (default) / on every PR (state the cost). Which model: the mid-priced one, unless the repo's routing rules say otherwise.
 - **Branch rule** ("require the check before merging"): recommend it. Private repos get it on paid plans only. Without it a red check still blocks the deploy, but not the merge.
 
@@ -267,6 +270,55 @@ Check each command against the vendor's current docs before relying on it. CLIs 
 
 Runtime secrets the app itself reads (a site password, API keys) stay in the host's secret store, not in GitHub. CI only needs the deploy credentials.
 
+### Step 4b: A testing deploy per PR (if chosen)
+
+A third job in `ci.yml`. It runs after the check on `pull_request`, for same-repo PRs, and uploads the check's artifact to the host's **preview** target. Each PR gets its own address, the next push to the PR replaces it, and production is never touched.
+
+```yaml
+  testing:
+    name: Testing deploy (this PR's own address)
+    needs: check
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    concurrency:
+      group: testing-deploy-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    environment:
+      name: testing
+      url: ${{ steps.upload.outputs.url }}
+    steps:
+      - <checkout, runtime, download the artifact — as in the deploy job>
+      - id: upload
+        shell: bash
+        run: |
+          <preview command, below> | tee upload.log
+          url="$(grep -oE '<the preview URL pattern>' upload.log | head -1)"
+          [ -n "$url" ] || { echo "::error::No preview URL in the output."; exit 1; }
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+        env:
+          <the same deploy secrets>
+      - name: Smoke-test it
+        run: <one real request against "$URL", retried for ~30 s, failing the job if it doesn't answer as expected>
+        env:
+          URL: ${{ steps.upload.outputs.url }}
+```
+
+The preview command for each host:
+
+| Host | Preview command | Address |
+|---|---|---|
+| Cloudflare Workers | `wrangler versions upload --preview-alias pr-<n>`, with `preview_urls = true` in `wrangler.toml` | `pr-<n>-<worker>.<subdomain>.workers.dev` |
+| Cloudflare Pages | `wrangler pages deploy <dir> --branch <head-ref>` | `<branch>.<project>.pages.dev` |
+| Vercel | `vercel deploy --prebuilt` (no `--prod`) | the URL it prints |
+| Netlify | `netlify deploy --dir <dir> --alias pr-<n>` (no `--prod`) | `pr-<n>--<site>.netlify.app` |
+| GitHub Pages | none: one site per repo | — |
+
+Notes:
+- **Grep the output for the URL's shape** (`https://pr-<n>-…`), not for a label like "Preview URL:". The wording of CLI output changes.
+- **The preview environment has its own runtime secrets** on most hosts. A fail-closed app (a password gate) answers its "not configured" fallback there until they're set, e.g. `wrangler pages secret put <NAME> --project-name <project> --env preview`. That's the right default; set them once.
+- **Smoke-test with one real request**, the way a user or client would (a page that answers, an API that returns data). "The upload succeeded" isn't "the preview works".
+- **The PR that adds this job** runs it before the secrets exist, unless the person stores them first. Say so: that first testing job goes red until they're set, then a re-run proves it.
+
 ### Step 5: The AI review workflow (if chosen)
 
 This uses `anthropics/claude-code-action`. Check its `action.yml` for current inputs before writing it. Another vendor's review action takes the same shape: label trigger, read-only tools, the prompt below.
@@ -375,7 +427,7 @@ For another host, swap in its "read this project" endpoint and secret name. The 
 ### Step 8: Open the PR and verify what can be verified
 
 1. Open the PR. Its own runs are the first real test of the check job and the hygiene check. The PR must itself follow the title, branch, task-file and description rules. Read the results once; if one fails, fix the workflow on the same branch.
-2. The task file and the PR tick only the check and hygiene criteria. The deploy and the review stay unticked, with "first runs on the first merge / first label".
+2. The task file and the PR tick only what ran: the check and hygiene, plus the testing deploy if the secrets were stored first. The production deploy and the review stay unticked, with "first runs on the first merge / first label".
 3. After the person merges with the secrets in place, confirm the host shows a production deployment at the merge commit, and the site answers **as it did before** (a password-gated site still asks for its password, not a "not configured" fallback). A follow-up close-out can tick the deploy then.
 4. **If the first deploy fails, read the job log before changing anything**, then re-run only that job (`gh run rerun <run-id> --failed --repo <owner>/<repo>`; it reuses the run's artifact):
    - an empty secret in the step's `env:` means it isn't set yet;
@@ -398,6 +450,7 @@ For another host, swap in its "read this project" endpoint and secret name. The 
 | Downloaded assets to cache | e.g. a model file fetched by a setup script |
 | Tests that stay local, and why | e.g. E2E reading gitignored photos |
 | Host, deploy model, project | e.g. Cloudflare Pages, direct upload, `<project-name>` |
+| Testing deploy per PR | e.g. Workers preview alias `pr-<n>`, smoke-tested with one MCP call; or none |
 | Deploy secrets | names only, never values |
 | AI review trigger and model | e.g. label `ai-review`, the mid-priced model |
 | Where the docs go | e.g. `docs/ci.md`, `docs/deploy.md` |

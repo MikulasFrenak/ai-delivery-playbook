@@ -19,7 +19,12 @@ status: documented
 
 **Gap:** merging the PR/MR stays a human decision, and the playbook has no rollout/rollback skill yet. [`github-actions-setup`](../skills/github-actions-setup.md) automates the deploy *after* a merge on GitHub (checks first, then the checked build). It doesn't decide *how* a change reaches users: staged rollout, feature-flag lifecycle, rollback. [`docs/deployment.md`](../docs/deployment.md) writes down the shape of a deploy setup and the decisions it forces, but a doc isn't a skill, and those decisions still happen outside one.
 
-**In practice:** "existing CI/CD" isn't hypothetical — every personal project this playbook has actually run on (family-trails-eu, review-spa, this repo, and ZenSmash) deploys through the same real pipeline shape: GitHub Actions for cross-repo sync/build steps, Cloudflare Workers' own Git integration for the deploy itself (push to `main` → build → live, no manual `wrangler deploy` in the common case — see `mcp-server/remote/README.md` for the one build-config gotcha that shows up in that flow, twice now, once for production and once for PR previews). None of that lives in a skill yet, which is exactly the Gap above — but the absence of a skill isn't the same as the absence of practice.
+**In practice:** "existing CI/CD" isn't hypothetical. The personal projects this playbook has run on deploy through one of two real shapes:
+
+- **The host's Git integration** (family-trails-eu, review-spa, ZenSmash): GitHub Actions for cross-repo sync steps, Cloudflare's own Git build for the deploy. See `mcp-server/remote/README.md` for the build-config gotcha that shows up in that flow.
+- **A deploy from GitHub Actions after the checks**, with a testing deploy per PR at its own address: this repo's MCP server since AIPB-26 ([`docs/ci.md`](../docs/ci.md)), and the project traced in [`examples/AIPB-24.md`](../examples/AIPB-24.md).
+
+[`/github-actions-setup`](../skills/github-actions-setup.md) sets up the second, and says when to keep the first.
 
 This repo's own `mcp-server/` is the other side of "these are real projects, not a showcase" — it's what turns "documented skill" into "skill any of those other projects can actually pull and run at runtime," and review-spa/family-trails-eu both connect to it live rather than each carrying their own copy of `skills/*.md`. See `mcp-server/README.md` and `tasks/AIPB-13.md` for what changed once a second, independent agent session actually exercised that path.
 
