@@ -60,7 +60,7 @@ See [`docs/future-considerations.md`](./docs/future-considerations.md) — the e
 
 ## Decision points
 
-- **`/github-actions-setup`'s second adoption:** the first one (traced in `examples/AIPB-24.md`) was a static site on one host. When it runs on a different stack or host, check the deploy table and the token one-liners hold there, and fix the skill where they don't.
+- **`/github-actions-setup`'s next adoption:** the first ran on Cloudflare Pages (`examples/AIPB-24.md`). The second, this repo's own (AIPB-26), ran on Workers, adding a testing deploy per PR. Its preview alias, deploy and token check held on their first runs. When it reaches a host outside Cloudflare (Vercel, Netlify), check the deploy table's commands there and fix the skill where they don't hold.
 
 - **Reference-architecture level (docs/future-considerations.md):** revisit once a second real adoption in a different stack exists — not before.
 - **`/agent-eval` golden sets:** build one only once a skill has real usage history behind it, per the skill's own guardrail — not on day one for any new skill. First one built for `branch-cleanup` (AIPB-20 cycle); extend its "leave alone"/"no PR found"/"host unavailable" coverage the first time a real case of each occurs, don't invent examples to fill the gap early.
