@@ -4,6 +4,8 @@
 **Type:** Chore
 **Status:** done — [PR #49](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/49), closed 2026-10-30
 **Source:** written at the time
+**Worked example:** [examples/AIPB-24.md](../examples/AIPB-24.md)
+**Updated by:** AIPB-25
 
 ---
 

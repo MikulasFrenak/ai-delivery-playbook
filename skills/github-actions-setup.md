@@ -18,6 +18,8 @@ Run this when a repo on GitHub has no CI, or deploys by hand. It leaves the repo
 
 The deploy *shape* and the decisions it forces — build-time vs. runtime config, Git-connected builds and their failure modes — are in [`docs/deployment.md`](../docs/deployment.md). This skill is the GitHub Actions way to fill it in.
 
+How its first real adoption went, failures included, is traced in [`examples/AIPB-24.md`](../examples/AIPB-24.md).
+
 Not to be confused with Claude Code's `/install-github-app`. That one installs the Claude GitHub App and an `@claude` mention workflow. This skill builds the repo's own CI and deploy, and an opt-in review that needs no GitHub App.
 
 ---
@@ -317,6 +319,17 @@ jobs:
 
 It must say it is read-only: never push, approve, request changes, merge, label or edit.
 
+**The credential, and when the review won't run.**
+- **One credential, not both:** `CLAUDE_CODE_OAUTH_TOKEN` (the person's Claude subscription) or `ANTHROPIC_API_KEY` (billed per use). With both set, it's unclear which one ran and which one paid.
+- **`claude setup-token`** may not open the browser by itself; it then prints a link to open. The browser page shows a **one-time code**, to paste back into the terminal. The token is what the terminal prints *after* that: `sk-ant-…`, about 108 characters. The code is not the token.
+- **Store it with a shape check, from the clipboard.** Run the command from a Run button or type it, because copying the command replaces the token on the clipboard:
+  ```bash
+  T="$(pbpaste | tr -d '[:space:]')"; case "$T" in sk-ant-*) printf %s "$T" | gh secret set CLAUDE_CODE_OAUTH_TOKEN --repo <owner>/<repo> && echo "Saved a ${#T}-character token." && printf '' | pbcopy;; *) echo "The clipboard doesn't hold a Claude token. Nothing saved.";; esac; unset T
+  ```
+- **The signature of a refused credential:** the action's log shows a result with `"is_error": true` after one turn in a couple of seconds, with `"total_cost_usd": 0` and an empty `modelUsage`. Nothing reached the model and nothing was charged. Store the credential again.
+- **To see the action's own error message**, set `display_report: "true"`, which writes the report to the step summary. `show_full_output: "true"` prints everything to the log, possibly secrets too, so never use it on a public repo.
+- **Re-run it** by removing and re-adding the label. `gh run rerun` replays a run with its original commit's workflow file, so it won't pick up a workflow change. After a push, wait until the PR shows the new head before re-labelling, or the run uses the previous one.
+
 ### Step 6: Document it
 
 - **`docs/ci.md`:**
@@ -339,7 +352,7 @@ List exact steps, in order:
    - Then give one command that stores it safely (below), and plain `gh secret set <NAME> --repo <owner>/<repo>` for values that aren't secret-shaped, such as an account ID.
    - Always pass `--repo`: the person's terminal is often not in the repo, and `gh` then fails with "not a git repository".
 2. **The labels:** `gh label create no-tests-needed --description "…" --color <hex>` for hygiene, and the review label if chosen.
-3. **The AI credential** (one of the two), if the review was chosen.
+3. **The AI credential** (one of the two), if the review was chosen. Store it with the shape check in Step 5, not at a paste prompt.
 4. **The branch rule (optional):** Settings → Branches → require the checks named in `ci.yml` and `pr-hygiene.yml`.
 
 Without step 1 the first merge still runs the checks; the deploy job then fails on authentication and ships nothing. Say that, so a red deploy job isn't a surprise.

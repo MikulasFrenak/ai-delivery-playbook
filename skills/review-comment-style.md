@@ -65,6 +65,7 @@ _Not blocking._
 - **Every comment names the evidence and the fix.** No fix, no comment. A question is one short question tagged `[Question]`.
 - **Suggestion blocks only for exact, self-contained replacements** (same file, a few lines). Otherwise describe the fix in words.
 - **One finding per comment, under about 8 lines.**
+- **Anchor every inline comment on a line the PR changed.** Hosts accept inline comments only on lines in the diff. For a finding in unchanged code, put it on the changed line that causes it, and name the real location in the text (`see utils/geometry.ts:54`).
 - **Do not repeat what someone already raised** — link it instead (`see discussion_r<id>` or the thread URL).
 - **The summary lists a finding only if it has an inline comment or is cross-cutting** (missing tests, PR description mismatch).
 - **Never post.** After the blocks, say which review option to choose (Approve / Request changes / Comment) and which old threads should be resolved.
