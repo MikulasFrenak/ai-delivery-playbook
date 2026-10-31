@@ -77,6 +77,7 @@ ln -s "$PWD/node_modules" /tmp/pr-wt/node_modules      # only if the stack needs
 cd /tmp/pr-wt && <affected tests only>
 ```
 
+- Link only installed dependencies (`node_modules`) into the worktree, never folders a setup script generates (copied runtimes, downloaded models). The dev or test server's setup step then fails copying onto the link. Let the scripts create those in the worktree.
 - Run only the affected tests, not the whole suite.
 - Type-check/lint output: report only errors in files the PR changed; count the rest as environment noise.
 - Finish with `git worktree remove --force /tmp/pr-wt && git worktree prune`, delete temp files, and confirm `git status` of the clone is unchanged.
@@ -101,7 +102,7 @@ If something decisive was not verified (device behaviour, a design doc, existing
 4. **New findings** by severity (`Must` / `Low` / `Nit`), each with file and a concrete fix.
 5. **Not verified** — explicit list.
 6. **Verdict** and the comment drafts, written per [`review-comment-style`](./review-comment-style.md).
-7. Tell the user which review option to choose in the host UI and which old threads they should resolve. Ask before any follow-up that changes something.
+7. Tell the user which review option to choose in the host UI and which old threads they should resolve. On their own PR, GitHub allows only **Comment**: an author can't approve or request changes on their own PR. Ask before any follow-up that changes something.
 
 ---
 

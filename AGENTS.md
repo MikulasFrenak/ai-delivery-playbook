@@ -376,6 +376,21 @@ The "never write concurrently" rule above assumes every agent shares one working
 - If a CI step wraps the call in `curl -sf`, a bad token fails silently with just an opaque exit code and no response body in the log — a real case cost a manual reproduction to diagnose. Drop `-f` (or capture and print the body on failure) so the actual API error shows up in the Actions log.
 - To isolate "bad token" from "bad endpoint," reproduce the exact same call with a known-good credential (e.g. your own `gh api`) — if that succeeds, the problem is specifically the stored secret.
 
+### Secrets a person stores (tokens, API keys)
+
+These apply to any "paste your secret" step: `gh secret set`, `wrangler secret put`, `vercel env add`, a dashboard form. A real setup hit each of these in one evening (`examples/AIPB-24.md`).
+
+- **The agent names the secret and where it comes from; the person stores it.** It never goes through chat, a file the agent writes, or shell history. Tooling may block an agent from secret stores anyway.
+- **Prefer clipboard, check, stdin over a paste prompt.** Pasting into a terminal prompt can store invisible characters, and a value that "saved" fails later with a *format* error. So:
+  - start the command first, then copy the value (copying the command afterwards replaces the value on the clipboard);
+  - check the value's shape (a known prefix, a length) or check it against the API it's for;
+  - pipe it to the store, then clear the clipboard.
+
+  [`/github-actions-setup`](./skills/github-actions-setup.md) Steps 5 and 7 have ready one-liners.
+- **Know what you're copying.** A dashboard shows a new token once. An OAuth flow's browser page often shows a one-time *code* to paste back into the terminal, and the token comes after it. Never **roll** a token another project uses: rolling replaces its value everywhere.
+- **Keep each secret where its reader is.** CI's deploy credentials live in CI; an app's runtime secrets live in its host. A copy in the wrong store is extra exposure, and editing that store is how the right secret gets deleted. After any edit on a host's secrets page, list what's left.
+- **Name the target explicitly** (`--repo`, `--project-name`): the person's terminal is often in another folder.
+
 ### Cross-module navigation — example: micro-frontend architecture
 
 - Route to other modules via a shared enum/constants file — never hardcode path strings
