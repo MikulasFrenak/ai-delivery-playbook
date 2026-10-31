@@ -2,7 +2,7 @@
 
 **Ticket:** self-assigned (solo repo, no external tracker — see AGENTS.md "Ticket IDs for solo/no-tracker projects")
 **Type:** Chore
-**Status:** open
+**Status:** done — [PR #52](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/52), closed 2026-10-31
 **Source:** written at the time
 
 ---
@@ -23,39 +23,30 @@ The testing deploy per PR was a new requirement, so it went into the skill as St
 
 ## Acceptance Criteria
 
-- [ ] Every PR runs both MCP smoke tests and `.github/scripts/check-docs.mjs`: skill frontmatter, registration in
+- [x] Every PR runs both MCP smoke tests and `.github/scripts/check-docs.mjs`: skill frontmatter, registration in
       `AGENTS.md` and `architecture.md`, relative links. The check has tests that plant each mistake.
 - [ ] Every PR from this repo gets a testing deploy: the checked bundle as a preview version at
       `pr-<n>-ai-delivery-playbook.<subdomain>.workers.dev`, smoke-tested with one MCP call, and the real server untouched.
+      _Runs on PR #52 once this repo's Cloudflare secrets are stored; until then it's red by design._
 - [ ] A merge to `main` deploys the checked bundle to the real server and smoke-tests it; a failing check deploys
       nothing.
+      _First runs on PR #52's merge._
 - [ ] PR hygiene (AIPB IDs, branch, task file, description, tests for `mcp-server/` and `.github/scripts/` source) and
       the label-triggered Claude review run, the review for same-repo PRs only.
-- [ ] `docs/ci.md` says what runs when and gives the one-time setup; the server README, `docs/deployment.md` and
+      _Hygiene passed on PR #52's own run; the review first runs when the label is used, after its secret is stored._
+- [x] `docs/ci.md` says what runs when and gives the one-time setup; the server README, `docs/deployment.md` and
       `lifecycle/release.md` describe the new deploy shape; the skill has the testing-deploy step.
 
-## Plan
+## What was built
 
-- [ ] `.github/workflows/ci.yml`, `pr-hygiene.yml`, `claude-review.yml`; `.github/scripts/check-docs.mjs` (+ tests),
-      `smoke-test.sh`; `preview_urls = true`.
-- [ ] Docs as above; Updated-by on AIPB-12 and AIPB-24; `PLAN.md`.
-- [ ] `/public-repo-check`; PR; its own runs; close-out.
+Three workflows and two scripts. On every PR: MCP tests, a tested docs check and PR hygiene. On same-repo PRs: a testing
+deploy at the PR's own `pr-<n>` address. On merge: the real deploy from GitHub Actions. On a label: the Claude review.
+The skill gained Step 4b, a testing deploy per PR, from it.
 
-## Files to Touch
+## Open Questions — answers
 
-| File | Change |
-|---|---|
-| `.github/workflows/ci.yml`, `pr-hygiene.yml`, `claude-review.yml` | new |
-| `.github/scripts/check-docs.mjs`, `check-docs.test.mjs`, `smoke-test.sh` | new |
-| `mcp-server/remote/wrangler.toml`, `mcp-server/remote/README.md` | preview URLs; the deploy now from CI |
-| `docs/ci.md` (new), `docs/deployment.md`, `lifecycle/release.md` | what runs when; the two deploy shapes |
-| `skills/github-actions-setup.md` | Step 4b, a testing deploy per PR |
-| `AGENTS.md`, `CONTRIBUTING.md`, `PLAN.md`, `tasks/AIPB-12.md`, `tasks/AIPB-24.md` | layout, PR checks, status, Updated by |
-
-## Open Questions
-
-- **The testing and production deploys need this repo's own Cloudflare and Claude secrets.** Until the owner stores
-  them (`docs/ci.md`), the testing job on this PR goes red; a re-run after storing them proves it.
+- **This repo's secrets:** the owner's one-time step (`docs/ci.md`). The testing, production and review criteria stay
+  open until their first runs.
 
 ## Architecture Notes
 
