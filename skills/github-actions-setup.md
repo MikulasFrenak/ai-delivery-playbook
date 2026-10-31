@@ -38,7 +38,8 @@ Not to be confused with Claude Code's `/install-github-app`. That one installs t
 
 ## Guardrails
 
-- **Never see or write a secret.** Name each secret and say how to create it. The person stores it with `gh secret set <NAME>`, which prompts for the value, so it never passes through chat, a file or shell history. Setting a secret, a label or a branch rule is the person's step, not yours.
+- **Never see or write a secret.** Name each secret and say how to create it. The person stores it, so it never passes through chat, a file or shell history: piped into `gh secret set <NAME>` after checking it against the host (Step 7), or typed at its prompt. Setting a secret, a label or a branch rule is the person's step, not yours. Tooling may block you from it anyway.
+- **Deploy credentials are CI secrets only.** Never add them to the host's runtime secrets or variables as well: the app doesn't read them there. The host's secrets page is where an app's own secret (a site password, an API key) gets deleted by mistake while someone is adding the deploy ones. After any edit there, list the runtime secrets and check the app's are still present.
 - **Least privilege.** Use workflow-level `permissions: contents: read` and widen per job only where needed. A deploy token covers the one product it deploys to (e.g. a Pages-edit token, not an account-wide key).
 - **Deploy only from the production branch, only what was checked.** The deploy job runs on `push` to that branch, `needs` the check, and uploads the check's artifact rather than building again. Never deploy from `pull_request` events. They also get no secrets from forks, which is GitHub's protection, not a bug to work around.
 - **One deploy at a time.** The deploy job gets its own `concurrency` group with `cancel-in-progress: false`. PR runs may cancel superseded ones; runs on the production branch never do, or a merge would skip its deploy.
@@ -333,18 +334,41 @@ It must say it is read-only: never push, approve, request changes, merge, label 
 
 List exact steps, in order:
 
-1. **The deploy token:** where to click in the host's dashboard, and the exact permission. Then `gh secret set <NAME>` for each secret, one command per block.
+1. **The deploy token:** where to click in the host's dashboard, and the exact permission.
+   - Dashboards show a new token **once**. Say so, and warn against **rolling** an existing token another project uses: rolling replaces its value for every project.
+   - Then give one command that stores it safely (below), and plain `gh secret set <NAME> --repo <owner>/<repo>` for values that aren't secret-shaped, such as an account ID.
+   - Always pass `--repo`: the person's terminal is often not in the repo, and `gh` then fails with "not a git repository".
 2. **The labels:** `gh label create no-tests-needed --description "…" --color <hex>` for hygiene, and the review label if chosen.
 3. **The AI credential** (one of the two), if the review was chosen.
 4. **The branch rule (optional):** Settings → Branches → require the checks named in `ci.yml` and `pr-hygiene.yml`.
 
 Without step 1 the first merge still runs the checks; the deploy job then fails on authentication and ships nothing. Say that, so a red deploy job isn't a surprise.
 
+**Storing a token without a paste prompt.** Pasting into a terminal prompt can add invisible characters (bracketed-paste markers), and the secret is then stored malformed. Cloudflare reports that as `6111` "Invalid format for Authorization header". Another trap: if the person copies the command after copying the token, the clipboard holds the command. So give one line that:
+
+1. starts first, then waits for something token-shaped on the clipboard;
+2. checks it against the exact host endpoint the deploy calls;
+3. saves it only if the host accepts it, through stdin;
+4. prints the host's refusal otherwise (never the token), and clears the clipboard.
+
+Cloudflare Pages on macOS (`pbpaste`/`pbcopy`; on Linux, `wl-paste`/`xclip -o`):
+
+```bash
+echo "Waiting up to 2 minutes: click the dashboard's copy button next to the token now..."; for i in $(seq 120); do T="$(pbpaste | tr -d '[:space:]')"; [[ "$T" =~ ^[A-Za-z0-9_-]{30,}$ ]] && break; T=""; sleep 1; done; if [ -z "$T" ]; then echo "No token appeared on the clipboard."; else R="$(curl -s "https://api.cloudflare.com/client/v4/accounts/<account-id>/pages/projects/<project>" -H "Authorization: Bearer $T")"; if echo "$R" | grep -q '"success": *true'; then printf %s "$T" | gh secret set CLOUDFLARE_API_TOKEN --repo <owner>/<repo> && echo "Token works and is saved."; else echo "The host said:"; echo "$R" | head -c 400; echo; fi; fi; unset T R; printf '' | pbcopy
+```
+
+For another host, swap in its "read this project" endpoint and secret name. The check proves the token's validity, its permission and its account in one call, and it runs before anything is stored.
+
 ### Step 8: Open the PR and verify what can be verified
 
 1. Open the PR. Its own runs are the first real test of the check job and the hygiene check. The PR must itself follow the title, branch, task-file and description rules. Read the results once; if one fails, fix the workflow on the same branch.
 2. The task file and the PR tick only the check and hygiene criteria. The deploy and the review stay unticked, with "first runs on the first merge / first label".
-3. After the person merges with the secrets in place, confirm the host shows a production deployment at the merge commit, and the site answers. A follow-up close-out can tick the deploy then.
+3. After the person merges with the secrets in place, confirm the host shows a production deployment at the merge commit, and the site answers **as it did before** (a password-gated site still asks for its password, not a "not configured" fallback). A follow-up close-out can tick the deploy then.
+4. **If the first deploy fails, read the job log before changing anything**, then re-run only that job (`gh run rerun <run-id> --failed --repo <owner>/<repo>`; it reuses the run's artifact):
+   - an empty secret in the step's `env:` means it isn't set yet;
+   - a "format" error means the stored value isn't the bare token: store it again as above;
+   - an authentication or permission error means the token's permissions or account are wrong.
+5. **A change to the host's runtime secrets applies from the next deployment.** To apply one without a code change, re-run the deploy job (`gh run rerun --job <job-id>`).
 
 ---
 
