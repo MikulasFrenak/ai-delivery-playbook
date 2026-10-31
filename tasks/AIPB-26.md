@@ -25,12 +25,13 @@ The testing deploy per PR was a new requirement, so it went into the skill as St
 
 - [x] Every PR runs both MCP smoke tests and `.github/scripts/check-docs.mjs`: skill frontmatter, registration in
       `AGENTS.md` and `architecture.md`, relative links. The check has tests that plant each mistake.
-- [ ] Every PR from this repo gets a testing deploy: the checked bundle as a preview version at
+- [x] Every PR from this repo gets a testing deploy: the checked bundle as a preview version at
       `pr-<n>-ai-delivery-playbook.<subdomain>.workers.dev`, smoke-tested with one MCP call, and the real server untouched.
-      _Runs on PR #52 once this repo's Cloudflare secrets are stored; until then it's red by design._
-- [ ] A merge to `main` deploys the checked bundle to the real server and smoke-tests it; a failing check deploys
+      _PR #52's re-run on 2026-10-31, once the token was stored, uploaded version `d012c9a3` at
+      `pr-52-ai-delivery-playbook…workers.dev`, and the smoke test got the skill back._
+- [x] A merge to `main` deploys the checked bundle to the real server and smoke-tests it; a failing check deploys
       nothing.
-      _First runs on PR #52's merge._
+      _PR #52's merge deployed version `37b67eb5` to the real server, and its smoke test passed (2026-10-31)._
 - [ ] PR hygiene (AIPB IDs, branch, task file, description, tests for `mcp-server/` and `.github/scripts/` source) and
       the label-triggered Claude review run, the review for same-repo PRs only.
       _Hygiene passed on PR #52's own run; the review first runs when the label is used, after its secret is stored._
@@ -45,8 +46,9 @@ The skill gained Step 4b, a testing deploy per PR, from it.
 
 ## Open Questions — answers
 
-- **This repo's secrets:** the owner's one-time step (`docs/ci.md`). The testing, production and review criteria stay
-  open until their first runs.
+- **This repo's secrets:** the owner's one-time step (`docs/ci.md`). The Cloudflare token was stored on 2026-10-31,
+  and both deploys then ran. `CLOUDFLARE_ACCOUNT_ID` wasn't needed: wrangler found the account through the token.
+  The review stays open until its secret is stored and the label is used.
 
 ## Architecture Notes
 
