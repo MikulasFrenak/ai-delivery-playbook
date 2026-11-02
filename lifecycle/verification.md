@@ -17,6 +17,8 @@ status: documented
 - [`self-healing-selectors`](../skills/self-healing-selectors.md) — run when selector drift after UI changes is a recurring source of broken E2E tests at this stage, not on every pass through Verification; see [`docs/test-maintenance.md`](../docs/test-maintenance.md) for the architecture and for why this addresses only part of overall test flakiness
 - [`review-pr`](../skills/review-pr.md) — read-only, evidence-based review of someone else's PR/MR (verified vs. not verified, verdict, paste-ready comments); drafts are formatted by [`review-comment-style`](../skills/review-comment-style.md)
 
+For a native mobile app, `verify-browser` doesn't apply; [`docs/mobile-agent-loop.md`](../docs/mobile-agent-loop.md) lists what an agent has already run from chat (tests in a worktree, simulator, API checks) and what isn't proven yet (driving the UI, comparing with the design).
+
 Automated tests (unit/component) are technically run inside `implement-task` Steps 7–8, but that's a prerequisite check, not this stage — Verification is about actually exercising the feature the way a user would, which automated tests don't fully substitute for.
 
 **Artifacts:** Verification notes (what was checked and how), screenshots where DOM inspection wasn't sufficient.
