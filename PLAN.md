@@ -52,7 +52,8 @@
 
 ## Open questions / decisions needed
 
-- None right now.
+- **`verify-mobile`'s driver** (from [AIPB-27](./tasks/AIPB-27.md)): reuse a project's own device-test repo (driver, on-demand pipeline, accessibility audit) or bring Maestro, `idb` or a mobile MCP server? And does the agent call the driver directly or trigger the existing pipeline, and who owns the screen definition? Needs a live run, per [`docs/mobile-agent-loop.md`](./docs/mobile-agent-loop.md) → Not yet proven.
+- **Simulator screenshot to the model** (from AIPB-27): `xcrun simctl io booted screenshot` writes a file the agent can read, but the screenshot-vs-design comparison hasn't been run.
 
 ## Parked (noted, not active)
 
