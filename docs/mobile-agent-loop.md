@@ -112,11 +112,30 @@ user approves the text.
 | Simulator window is black | No device booted | `simctl list devices booted`; boot a named device |
 | A test accepts `[200, 401]` | It was written to pass against whatever the API did | One test, one status; if the API's answer isn't certain, probe it first |
 
+## Reuse what a device-test repo already has
+
+Many mobile projects keep a separate repo of device tests. Before an agent drives the app itself, look there for these pieces.
+None of them was run from an agent's chat in this run, so each is only a lead:
+
+| Piece to look for | Why it helps |
+|---|---|
+| A UI driver (for example Appium tests on a device farm) | The agent can trigger or reuse it instead of building its own driver |
+| An on-demand pipeline with inputs (suite, filter, app build, test branch) | One agent call can run the tests for the screens a change touched |
+| Failure diagnosis after a run (traceback, page source, logs) | The same context a healing step or a review needs |
+| An accessibility audit over the page source | Reports labels, target sizes, order and contrast for both platforms; partial by nature, it finds what a machine can find |
+| Emulator or simulator runs on the CI host | Device checks without a device farm |
+
+Two limits to check early. **App builds for a feature branch may not exist**: if builds come only from a manual or scheduled
+run, the pipeline's build input has nothing to point at. And **the test repo's screens are not the app's screens**: names,
+counts and folders differ, so a skill that picks scenarios from a diff needs a **screen definition**: for each screen, its
+source paths, the test screen object, the scenario, the platforms, the login it needs and whether it is native or web (a
+page-source audit works on native screens only).
+
 ## Not yet proven: what `verify-mobile` has to run first
 
 | Step | What it needs |
 |---|---|
-| Tap, scroll and type in the running app | A driver the agent can call: an Appium session, Maestro, `idb` or a mobile MCP server. None was run |
+| Tap, scroll and type in the running app | A driver the agent can call or trigger: reuse the device-test repo's, or Maestro, `idb` or a mobile MCP server. None was run |
 | Screenshot the screen | `xcrun simctl io booted screenshot <file>` writes it; the agent reads the file. Written down, not run |
 | Compare with the design | The design tool's MCP screenshot of the same frame against the simulator's, and a rule for what counts as a match (tokens, spacing, copy). Not run |
 | Android emulator and Android Studio | The same loop on the emulator: install, `adb reverse`, launch, screenshot. Not run |

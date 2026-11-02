@@ -43,7 +43,9 @@ what went wrong, and that separates it from what nobody has run yet: driving the
 
 ## Open Questions
 
-- Which driver should a `verify-mobile` skill use to tap and scroll (an Appium session, Maestro, `idb`, a mobile MCP
-  server)? Not decided; it needs a run.
+- Which driver should a `verify-mobile` skill use to tap and scroll? Reuse a project's own device-test repo (a driver, an
+  on-demand pipeline, an accessibility audit) or bring Maestro, `idb` or a mobile MCP server. The open question is whether the
+  agent calls the driver directly or triggers an existing pipeline, and who owns the screen definition. Not decided; it needs
+  a run.
 - Does the agent host expose a way to open the simulator window's screenshot to the model? `xcrun simctl io booted
   screenshot` writes a file and the host's image viewer can read it, but the comparison step hasn't been run.
