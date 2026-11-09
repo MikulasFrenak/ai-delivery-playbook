@@ -103,4 +103,7 @@ It posts with the `[Must]/[Low]/[Nit]/[Question]/[Pre-existing]` tags, a count l
 verdict. A break of a constitution must-rule is `[Must]`. It can't push, approve, label or merge. Each run is
 a paid session, so it runs only when asked.
 
+If it fails within seconds with "Environment variable validation failed", no Claude credential is stored: do step 2 of
+the one-time setup above, then re-add the label.
+
 If it fails within seconds at `$0`, the credential was refused. Store it again as in step 2.

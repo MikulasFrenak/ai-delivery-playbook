@@ -51,7 +51,7 @@
 
 ## Open questions / decisions needed
 
-- **The CI review's first real run** (from [AIPB-30](./tasks/AIPB-30.md)): the new prompt was checked only on the files. One `claude-review` label run (paid) on #57 or a later PR shows whether it reads the rules from `main`, writes the count line and `Reviewed <sha>`, and re-reviews only the delta when the label is re-added.
+- **The CI review's first real run** (from [AIPB-30](./tasks/AIPB-30.md)): the new prompt was checked only on the files. One `claude-review` label run (paid) on #57 or a later PR shows whether it reads the rules from `main`, writes the count line and `Reviewed <sha>`, and re-reviews only the delta when the label is re-added. First attempt, 2026-11-09: failed before any model call, because no Claude credential had ever been stored in this repo (the one-time setup from AIPB-26 was skipped).
 - **`verify-mobile`'s driver** (from [AIPB-27](./tasks/AIPB-27.md)): reuse a project's own device-test repo (driver, on-demand pipeline, accessibility audit) or bring Maestro, `idb` or a mobile MCP server? And does the agent call the driver directly or trigger the existing pipeline, and who owns the screen definition? Needs a live run, per [`docs/mobile-agent-loop.md`](./docs/mobile-agent-loop.md) → Not yet proven.
 - **Simulator screenshot to the model** (from AIPB-27): `xcrun simctl io booted screenshot` writes a file the agent can read, but the screenshot-vs-design comparison hasn't been run.
 
