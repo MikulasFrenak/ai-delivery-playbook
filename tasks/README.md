@@ -37,3 +37,4 @@ One file per ticket of this repo's own work. Each is the ticket's spec and plan 
 | [AIPB-26](./AIPB-26.md) | This repo's own CI: checks, a testing deploy per PR, the real deploy on merge | done | [#52](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/52) | written at the time |  |
 | [AIPB-27](./AIPB-27.md) | Document the mobile agent loop: tests, simulator and API checks from chat | done | [#54](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/54) | written at the time |  |
 | [AIPB-28](./AIPB-28.md) | Review rounds that converge: re-review, pre-existing findings, depth by risk | done | [#55](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/55) | reconstructed |  |
+| [AIPB-29](./AIPB-29.md) | Constitution: the principles every plan and PR is checked against | done | [#56](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/56) | written at the time |  |

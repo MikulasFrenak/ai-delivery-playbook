@@ -4,7 +4,7 @@
 **Type:** Chore
 **Status:** done — no PR: committed directly to `main` as `52841d7` on 2026-10-29 (also pushed as `chore/AIPB-21/review-pr-skills`), against this repo's own "every change via a PR" rule
 **Source:** reconstructed on 2026-10-29 from its single commit — not written at the time; no acceptance criteria were recorded
-**Updated by:** [AIPB-28](./AIPB-28.md) — re-review rounds, pre-existing findings and depth by risk in both review skills
+**Updated by:** [AIPB-28](./AIPB-28.md) — re-review rounds, pre-existing findings and depth by risk in both review skills, [AIPB-29](./AIPB-29.md) — `/review-pr` Step 4 checks a PR against `CONSTITUTION.md`
 
 ---
 

@@ -29,30 +29,29 @@
 
 ## Next up
 
-- **SDD — what's left after AIPB-22.** How the existing skills map onto spec-driven development's stages (stage names from GitHub Spec Kit; sources below):
+- **SDD — what's left.** How the existing skills map onto spec-driven development's stages. Command names are GitHub Spec Kit's, re-checked 2026-11-09 against v1.3.3 (sources below):
 
-  | SDD stage | Already here |
+  | SDD stage (Spec Kit) | Already here |
   |---|---|
-  | Constitution | `AGENTS.md` conventions + the parked Principles doc in `docs/future-considerations.md` — SDD is the real trigger to finally write it |
-  | Specify | `/analyze-story`, `lifecycle/requirements.md`; `/define-slo`, `/security-check` for non-functional requirements |
-  | Clarify | "Research Before Implementing" + Open questions |
-  | Plan | `/create-task`, `/design-brief`, `/diagram` |
-  | Tasks | `/analyze-story` subtasks, the task file's plan |
-  | Implement | `/implement-task` |
-  | Verify / analyze | `/verify-browser`, `/test-scaffold`, `/security-check`, `/review-pr`, `/agent-eval` |
-  | Living docs | `/code-doc`, `/plan-update` |
+  | Constitution (`/speckit.constitution`) | [`CONSTITUTION.md`](./CONSTITUTION.md) (AIPB-29), checked by `/create-task` and `/review-pr` |
+  | Specify (`/speckit.specify`) | `/analyze-story`, `lifecycle/requirements.md`; `/define-slo`, `/security-check` for non-functional requirements |
+  | Clarify (`/speckit.clarify`) | "Research Before Implementing" + Open questions |
+  | Plan (`/speckit.plan`) | `/create-task`, `/design-brief`, `/diagram` |
+  | Tasks (`/speckit.tasks`) | `/analyze-story` subtasks, the task file's plan |
+  | Implement (`/speckit.implement`) | `/implement-task` |
+  | Analyze (`/speckit.analyze`) / verify | `/verify-browser`, `/test-scaffold`, `/security-check`, `/review-pr`, `/agent-eval` |
+  | Living docs (no Spec Kit command) | `/code-doc`, `/plan-update` |
 
   Remaining:
-  - **Constitution:** write the Principles doc parked in `docs/future-considerations.md` — SDD is the real trigger it was waiting for. Keep it short and grounded in principles this repo already follows (human checkpoint, `disable-model-invocation` by default, research before implementing, no speculative features).
   - **Spec trail in practice:** the `Updated by` links only pay off once new tickets search `tasks/` for earlier specs (`/create-task` Step 5). Check after the next few tickets whether that search actually finds and links anything; tighten the step if not. First real run, AIPB-23: it found AIPB-22 (which had parked the `.postmortems` question) and linked it; `/postmortem` itself had no earlier spec, since it came in a `TRIVIAL` commit.
-  - Re-check Spec Kit's current command names against github.com/github/spec-kit before quoting them in any doc.
+  - **Two Spec Kit stages not mapped yet:** `/speckit.checklist` and `/speckit.converge`. Read what each does in Spec Kit's docs before deciding whether something here covers it.
 
 - **Release ≠ deploy** — `lifecycle/release.md` currently defines Release as "PR merged, ticket closed" with no rollout/rollback/flag-lifecycle content; feature flags exist only as an `implement-task` implementation mechanic (register + on/off check), not a release strategy. Candidate next ticket after AIPB-20: a `create-task` addition (or a `release-plan`-style skill, TBD) covering rollout/rollback decided before merge, flag lifecycle (a flag created without a removal ticket is debt), and why flags alone don't protect data (schema/API changes need expand-contract, not just a toggle) — this playbook's own mobile focus makes this sharper than it would be for web-only: a shipped app binary can't be rolled back, and old app versions keep calling the API for months.
 - **Vendor-neutral "context weight" descriptor per skill** — not "use Sonnet here," which would hard-code one vendor's model names into 19+ tool-agnostic skill files, but something like "judgment-heavy, needs broad context" vs. "mechanical, narrow context once a spec exists" as a skill-frontmatter or table descriptor, so whoever's running a skill (with whatever tool/model) can decide their own delegation. Not started — needs its own real trigger before building (same AIPB-02 bar), likely a real cheap-model-delegation experiment first, same as `/agent-eval`'s "run it for real before writing the doc" precedent from AIPB-19.
 
 ## Open questions / decisions needed
 
-- **CI review vs. the review skills** (from [AIPB-28](./tasks/AIPB-28.md)): `.github/workflows/claude-review.yml`'s prompt copies `review-pr`'s rules, and so probably does the AI-review template in `/github-actions-setup`. Neither has AIPB-28's rules (`[Pre-existing]`, count line, nit cap, delta re-review). Bring both in line, or have the prompt read the skill file instead of copying it?
+- **CI review vs. the review skills** (from [AIPB-28](./tasks/AIPB-28.md) and [AIPB-29](./tasks/AIPB-29.md)) — answer together with whether the CI review should also check PRs against [`CONSTITUTION.md`](./CONSTITUTION.md): `.github/workflows/claude-review.yml`'s prompt copies `review-pr`'s rules, and so probably does the AI-review template in `/github-actions-setup`. Neither has AIPB-28's rules (`[Pre-existing]`, count line, nit cap, delta re-review). Bring both in line, or have the prompt read the skill file instead of copying it?
 - **`verify-mobile`'s driver** (from [AIPB-27](./tasks/AIPB-27.md)): reuse a project's own device-test repo (driver, on-demand pipeline, accessibility audit) or bring Maestro, `idb` or a mobile MCP server? And does the agent call the driver directly or trigger the existing pipeline, and who owns the screen definition? Needs a live run, per [`docs/mobile-agent-loop.md`](./docs/mobile-agent-loop.md) → Not yet proven.
 - **Simulator screenshot to the model** (from AIPB-27): `xcrun simctl io booted screenshot` writes a file the agent can read, but the screenshot-vs-design comparison hasn't been run.
 
@@ -70,5 +69,6 @@ See [`docs/future-considerations.md`](./docs/future-considerations.md) — the e
 ## Sources
 
 Everything except the SDD item reflects this repo's own git history and current file state. For the SDD item:
+- [GitHub Spec Kit](https://github.com/github/spec-kit), its [Agentic SDD reference](https://github.github.io/spec-kit/reference/agentic-sdd.html) and [plan template](https://github.com/github/spec-kit/blob/main/templates/plan-template.md) — primary sources for the command names, the constitution's shape and the Constitution Check gate (v1.3.3, read 2026-11-09)
 - [Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl — Birgitta Böckeler, martinfowler.com](https://www.martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) — the spec-first / spec-anchored / spec-as-source distinction
-- [GitHub Spec Kit deep dive — constitution and slash commands (DEV Community)](https://dev.to/x4nent/github-spec-kit-deep-dive-spec-driven-development-the-constitution-speckit-slash-commands-1m71) and [GitHub Spec Kit practical guide (Augment Code)](https://www.augmentcode.com/guides/github-spec-kit-practical-guide-sdd-workflow) — stage names (constitution, specify, clarify, plan, tasks, implement, analyze). Third-party sources; re-check command names and current version against github.com/github/spec-kit before quoting them in the course.
+- [GitHub Spec Kit deep dive — constitution and slash commands (DEV Community)](https://dev.to/x4nent/github-spec-kit-deep-dive-spec-driven-development-the-constitution-speckit-slash-commands-1m71) and [GitHub Spec Kit practical guide (Augment Code)](https://www.augmentcode.com/guides/github-spec-kit-practical-guide-sdd-workflow) — stage names (constitution, specify, clarify, plan, tasks, implement, analyze). Third-party, and older than the primary sources above; the stage names they list are superseded by those.

@@ -169,6 +169,9 @@ Before writing the file, read enough code to give real answers. Do not fill in p
 - If this ticket changes behavior an earlier task file specified, list it on a `**Related:**` line in the new file, and add this ticket's ID to that earlier file's `**Updated by:**` line (or `**Superseded by:**` if this replaces its decision outright) as part of this ticket's own PR. Don't edit the earlier file's content — it records what was true then.
 - If this ticket is a corrective action from a post-mortem in `<package-root>/tasks/postmortems/`, add a `**Postmortem:**` line linking it, and put this ticket's ID and task-file link on that action's line in the post-mortem (per `AGENTS.md` → Task file lifecycle).
 
+**Always do — principles check** (only if the repo has a `CONSTITUTION.md`):
+- Check the plan against each principle's must-rules. If the plan breaks one, change the plan. If it can't comply, name the principle and why under Open Questions, so the person decides; changing the principle itself is an amendment with its own ticket.
+
 From this exploration, produce:
 - A concrete **Implementation Plan** (not placeholder bullets)
 - A **Files to Touch** table with real file paths and what each change is
