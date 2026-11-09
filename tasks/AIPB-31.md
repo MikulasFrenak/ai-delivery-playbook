@@ -2,7 +2,7 @@
 
 **Ticket:** self-assigned (solo repo, no external tracker — see AGENTS.md "Ticket IDs for solo/no-tracker projects")
 **Type:** Bugfix
-**Status:** open
+**Status:** done — [PR #58](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/58), closed 2026-11-09
 **Source:** written at the time
 **Related:** [AIPB-30](./AIPB-30.md) — introduced the re-review range; carries `Updated by: AIPB-31`
 
@@ -31,22 +31,17 @@ AIPB-30's step 2 matches on the heading text only. The bot's own comments come f
 
 ## Acceptance Criteria
 
-- [ ] `claude-review.yml` step 2 uses only a summary authored by `github-actions` and says why; otherwise it reviews the whole PR
-- [ ] `/github-actions-setup` Step 5 item 3 says the same for adopters (the workflow's own account)
-- [ ] `docs/ci.md` says only the review's own summaries count for a re-run
-- [ ] The two `[Nit]`s from the same review: the quoted "Environment variable validation failed" text cites the failed run, and the first-run record says what happened — in `PLAN.md`, since AIPB-30's task file is closed
-- [ ] Workflow YAML parses; `check-docs.mjs` and `/public-repo-check` pass
+- [x] `claude-review.yml` step 2 uses only a summary authored by `github-actions` and says why; otherwise it reviews the whole PR
+- [x] `/github-actions-setup` Step 5 item 3 says the same for adopters (the workflow's own account)
+- [x] `docs/ci.md` says only the review's own summaries count for a re-run
+- [x] The two `[Nit]`s from the same review: the quoted "Environment variable validation failed" text cites the failed run, and the first-run record says what happened — in `PLAN.md`, since AIPB-30's task file is closed
+- [x] Workflow YAML parses; `check-docs.mjs` and `/public-repo-check` pass
 
-## Plan
+## What was built
 
-1. Step 2 of the prompt in `.github/workflows/claude-review.yml`: author check, plus the reason.
-2. `skills/github-actions-setup.md` Step 5 item 3, and `docs/ci.md` → The Claude review.
-3. `PLAN.md`: replace the "first real run" item with what happened (failed runs and the passing one, linked); keep open only what is still unproven, the delta re-review.
-4. `Updated by` on AIPB-30; the `tasks/README.md` row.
-
-## Open Questions
-
-- none
+Step 2 of the CI review prompt takes the re-review range only from a summary authored by `github-actions`, and says why.
+`/github-actions-setup` Step 5 and `docs/ci.md` match. `PLAN.md` records the runs on #57 with links, and keeps the live
+delta re-review as the one thing still unproven.
 
 ## Architecture Notes
 
