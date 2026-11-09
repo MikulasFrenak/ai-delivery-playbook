@@ -5,7 +5,7 @@
 **Status:** done — [PR #49](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/49), closed 2026-10-30
 **Source:** written at the time
 **Worked example:** [examples/AIPB-24.md](../examples/AIPB-24.md)
-**Updated by:** AIPB-25, AIPB-26
+**Updated by:** AIPB-25, AIPB-26, [AIPB-30](./AIPB-30.md) — the AI-review prompt reads the review skills and `CONSTITUTION.md` from the base branch instead of copying them
 
 ---
 

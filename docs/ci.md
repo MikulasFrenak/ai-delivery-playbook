@@ -86,8 +86,11 @@ repo's own, even if another repo has the same names.
 
 ## The Claude review
 
-Add the `claude-review` label; remove and re-add it for another pass. It reads `AGENTS.md`, `CONTRIBUTING.md`, the task
-file and the diff, and looks for:
+Add the `claude-review` label; remove and re-add it for another pass. It follows `skills/review-pr.md`,
+`skills/review-comment-style.md` and `CONSTITUTION.md`, and reads `AGENTS.md` and `CONTRIBUTING.md`. It reads all five
+from `main`, not from the PR, so a PR can't change the rules it is reviewed by. A pass after new commits is a re-review:
+it reviews only the commits since the summary's "Reviewed" commit. Besides the skills' checks, it reads the task file and
+the diff and looks for:
 
 - contradictions between skills;
 - stale step numbers and cross-references;
@@ -96,7 +99,8 @@ file and the diff, and looks for:
 - anything unsafe to publish;
 - bugs in code.
 
-It posts with the `[Must]/[Low]/[Nit]/[Question]` tags and a verdict. It can't push, approve, label or merge. Each run is
+It posts with the `[Must]/[Low]/[Nit]/[Question]/[Pre-existing]` tags, a count line, the commit it reviewed and a
+verdict. A break of a constitution must-rule is `[Must]`. It can't push, approve, label or merge. Each run is
 a paid session, so it runs only when asked.
 
 If it fails within seconds at `$0`, the credential was refused. Store it again as in step 2.

@@ -360,19 +360,22 @@ jobs:
           claude_args: |
             --model <model-id>
             --max-turns 40
-            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(git log:*),Bash(git diff:*),Bash(git show:*),Read,Glob,Grep"
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(git log:*),Bash(git diff:*),Bash(git show:*),Bash(git blame:*),Bash(git merge-base:*),Read,Glob,Grep"
 ```
 
-**The prompt** carries `review-pr`'s and `review-comment-style`'s rules, adapted to a bot that can't run a worktree:
+**The prompt** points the reviewer at the repo's own review rules instead of copying them, because copies drift. It reads them from the **base branch**, not the checkout: the job checks out the PR, so a PR that edits a review skill or `CONSTITUTION.md` would otherwise be reviewed by its own edited rules.
 
-1. Read the repo's `AGENTS.md` (or equivalent) and the PR's task file, if any.
-2. Read the description and the existing comments, and don't repeat a point already raised.
-3. Read the whole diff and the code around each change. Look for bugs, new logic without tests, broken repo rules, and docs or numbers that don't match the code.
-4. Check every finding against the code and name the file and line. What the code can't show goes under "Not verified". The CI check runs the tests, so don't run them.
-5. Post one inline comment per finding on a changed line: `**[Must] / [Low] / [Nit] / [Question] <imperative title>**`, the evidence, and a concrete fix (a `suggestion` block only for an exact few-line replacement). Under ~8 lines each. `[Must]` only for broken behaviour, security, lost data or a broken repo rule.
-6. Finish with one summary comment: `### <AI> review: <Request changes | Approve with comment | Approve>`, then Verified / Must fix / Non-blocking / Not verified. A few real findings beat a long list.
+1. Read the rules with `git show origin/${{ github.base_ref }}:<path>`: the repo's [`review-pr`](./review-pr.md) and [`review-comment-style`](./review-comment-style.md) (wherever the repo keeps them), and `CONSTITUTION.md` and `AGENTS.md` if they exist. If the PR changes one of them, review that change as content, judged by the base version. Without a review skill in the repo, the core rules below are the whole prompt.
+2. State the CI differences inline. The bot posts the comments itself, though the skills say never post; its verdict is text in the summary, never an approval or a change request. It runs no tests, since the check job does. A change that breaks a `CONSTITUTION.md` must-rule is `[Must]` and names the principle.
+3. Make a re-run a re-review: find the last summary's reviewed commit (`gh pr view <n> --comments`). If it's still in the history, review only `git diff <that commit>..<head sha>` per `review-pr`'s "Re-review"; otherwise review the whole PR.
+4. Keep the core rules inline, as the fallback and for what the bot does differently:
+   - Read the description, the PR's task file if any, and the existing comments; don't repeat a point already raised.
+   - Read the whole diff and the code around each change. Look for bugs, new logic without tests, broken repo rules, and docs or numbers that don't match the code.
+   - Check every finding against the code and name the file and line. Check the base first (`git blame`, or the file at `git merge-base`): what the PR didn't introduce is `[Pre-existing]`, never `[Must]`. What the code can't show goes under "Not verified".
+   - One inline comment per finding on a changed line: `**[Must] / [Low] / [Nit] / [Question] / [Pre-existing] <imperative title>**`, the evidence, and a concrete fix (a `suggestion` block only for an exact few-line replacement). Under ~8 lines each. `[Must]` only for broken behaviour, security, lost data or a broken repo rule. At most three nits; group the rest in one line.
+   - One summary comment: `### <AI> review: <Request changes | Approve with comment | Approve>`, the count line, `Reviewed <short head sha>` (with the round and the range on a re-review), then Verified / Must fix / Non-blocking / Pre-existing / Not verified. "No findings" is a complete review.
 
-It must say it is read-only: never push, approve, request changes, merge, label or edit.
+It must say it is read-only: never push, approve, request changes, merge, label or edit. Reading rules from the base branch doesn't cover the workflow file itself: a same-repo PR runs its own copy of the workflow. That change shows in the diff; protect `.github/` with CODEOWNERS or branch protection if it matters.
 
 **The credential, and when the review won't run.**
 - **One credential, not both:** `CLAUDE_CODE_OAUTH_TOKEN` (the person's Claude subscription) or `ANTHROPIC_API_KEY` (billed per use). With both set, it's unclear which one ran and which one paid.
