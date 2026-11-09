@@ -89,7 +89,8 @@ repo's own, even if another repo has the same names.
 Add the `claude-review` label; remove and re-add it for another pass. It follows `skills/review-pr.md`,
 `skills/review-comment-style.md` and `CONSTITUTION.md`, and reads `AGENTS.md` and `CONTRIBUTING.md`. It reads all five
 from `main`, not from the PR, so a PR can't change the rules it is reviewed by. A pass after new commits is a re-review:
-it reviews only the commits since the summary's "Reviewed" commit. Besides the skills' checks, it reads the task file and
+it reviews only the commits since the "Reviewed" commit in its own last summary. A summary posted by anyone other than
+`github-actions` is ignored, so a fake one can't narrow the review. Besides the skills' checks, it reads the task file and
 the diff and looks for:
 
 - contradictions between skills;
