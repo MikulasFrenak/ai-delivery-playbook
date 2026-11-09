@@ -4,6 +4,7 @@
 **Type:** Chore
 **Status:** done — [PR #52](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/52), closed 2026-10-31
 **Source:** written at the time
+**Updated by:** [AIPB-30](./AIPB-30.md) — `claude-review.yml` follows the review skills and the constitution from the base branch, with delta re-review
 
 ---
 
