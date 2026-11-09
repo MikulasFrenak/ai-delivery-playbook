@@ -43,6 +43,9 @@ _Not blocking._
 ````md
 ### Review: <Approve with comment | Request changes | Approve | Comment>
 
+<Count line: "3 findings: 1 Must, 1 Low, 1 Nit", or "No findings".>
+Reviewed `<short-sha>` (round <N>, changes since `<last-sha>`). _Omit the round and range on a first review._
+
 **Verified**
 - <what was run or read, e.g. tests for X (N passed), lint and type-check clean on changed files>
 
@@ -52,6 +55,9 @@ _Not blocking._
 **Non-blocking**
 1. <finding, same words as the inline comment, or "see inline">
 
+**Pre-existing** (not introduced by this PR, never blocks)
+1. <finding, or omit the section>
+
 **Not verified**
 - <explicit list, or "nothing">
 ````
@@ -60,13 +66,16 @@ _Not blocking._
 
 ## Rules
 
-- **Severity tags in titles:** `[Must]` (blocks merge), `[Low]`, `[Nit]`, `[Question]`. Same words in the summary and the inline comment.
+- **Severity tags in titles:** `[Must]` (blocks merge), `[Low]`, `[Nit]`, `[Question]`, `[Pre-existing]`. Same words in the summary and the inline comment.
+- **`[Pre-existing]` means the base branch already has the problem**, checked with `git blame` or the file at the merge-base. It is never `[Must]`. Anchor it on the changed line that touches it and name the real location in the text.
+- **Cap the nits at three.** Group the rest in one line ("same pattern in `a.ts`, `b.ts`") instead of one comment each. A nit costs an author, or an agent, a commit and another round.
+- **The summary opens with the count and says plainly when there is nothing to fix.** "No findings" is a complete review.
 - **Title is a short imperative** (`Gate enabled on storeId`), not a verdict on the author. Polite, concrete, no sarcasm, no emojis, no headings inside inline comments.
 - **Every comment names the evidence and the fix.** No fix, no comment. A question is one short question tagged `[Question]`.
 - **Suggestion blocks only for exact, self-contained replacements** (same file, a few lines). Otherwise describe the fix in words.
 - **One finding per comment, under about 8 lines.**
 - **Anchor every inline comment on a line the PR changed.** Hosts accept inline comments only on lines in the diff. For a finding in unchanged code, put it on the changed line that causes it, and name the real location in the text (`see utils/geometry.ts:54`).
-- **Do not repeat what someone already raised** — link it instead (`see discussion_r<id>` or the thread URL).
+- **Do not repeat what someone already raised** — link it instead (`see discussion_r<id>` or the thread URL). On a re-review, report earlier points as Fixed / Not fixed / Answered in one line each, not as new comments.
 - **The summary lists a finding only if it has an inline comment or is cross-cutting** (missing tests, PR description mismatch).
 - **Never post.** After the blocks, say which review option to choose (Approve / Request changes / Comment) and which old threads should be resolved.
 - **Private details stay out of drafts that will be pasted publicly:** see the Private overlay in [`review-pr`](./review-pr.md).
