@@ -81,6 +81,7 @@ Reviews must converge. A reviewer and an author, human or agent, can keep each o
 - **New regex, util or branch** — does the existing test file have per-item cases (valid and invalid)? Flag missing ones.
 - **Naming and reuse** — misleading reuse of an existing screen or hook is a nit; ask about intent.
 - **State** — module-level vs. per-instance: read where the variable lives before claiming a stale-state bug.
+- **Principles** — if the repo has a `CONSTITUTION.md`, a change that breaks one of its must-rules is a `Must` finding; name the principle (`II. The spec comes first`). A pre-existing break is `Pre-existing`, like any other.
 - **Pre-existing or introduced?** Before you call something a finding, check the base (`git blame`, or read the file at the merge-base). A problem the PR did not introduce is tagged `Pre-existing`: it never goes under Must and never counts against the author.
 - **PR hygiene** — whatever the Project-specific section requires (title format, labels, template checklist). For a risky change, also check that the description says how it was tested and how to undo it. Mark as not verified if the PR page was unreadable.
 

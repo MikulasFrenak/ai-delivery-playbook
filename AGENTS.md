@@ -24,6 +24,7 @@ If you're using Claude Code specifically, also read `CLAUDE.md` — it's a thin 
 | `docs/` | Reference | Setup and tooling docs (e.g. `mcp-servers.md`, `mcp-governance.md`, `deployment.md`, `error-handling.md`, `sla-framework.md`, `test-maintenance.md`, `security.md`, `eval-framework.md`, `mobile-agent-loop.md`, `vocabulary.md`, `future-considerations.md`) |
 | `evals/` | Reference | Golden-set scorecards produced by [`/agent-eval`](./skills/agent-eval.md) — one `<skill-name>.md` per evaluated skill, kept durable so score history stays comparable over time |
 | `.github/` | Reference | This repo's CI: `workflows/` and `scripts/` for the checks, a testing deploy of the MCP server per PR, the real deploy on merge, PR hygiene and an on-demand Claude review. What runs when, and the one-time setup, is in [`docs/ci.md`](./docs/ci.md) |
+| `CONSTITUTION.md` | Reference | The principles every plan and PR is checked against — the first stage of spec-driven development. Above this file: where a convention here conflicts with a principle, the principle wins |
 | `tasks/` | Reference | One `AIPB-NN.md` per ticket of this repo's own work — durable records, not deleted on merge (see "Task file lifecycle" below). [`tasks/README.md`](./tasks/README.md) indexes them. Post-mortems for bugs that were incidents go in `tasks/postmortems/` |
 
 See [`architecture.md`](./architecture.md) for how these levels relate.
@@ -112,6 +113,19 @@ Adapt to your own team's actual policy, but decide and document explicitly:
 | `abap-review-agent` | `ABRA` | |
 | `sap-rap-case-study` | `SRAP` | |
 | `money-save` | *(opted out)* | Not a delivery-tracked software project in the same sense as the others — no branch/PR/ticket discipline applies there by design |
+
+---
+
+## CONSTITUTION.md — principles *(template)*
+
+The first stage of spec-driven development: a short, root-level list of the principles every plan and PR in the repo is checked against. [`/create-task`](./skills/create-task.md) checks a plan against it and [`/review-pr`](./skills/review-pr.md) checks a PR; a break is fixed in the plan or the change, not by weakening the principle.
+
+**This repo's own:** [`CONSTITUTION.md`](./CONSTITUTION.md). Don't copy it wholesale. Write five to eight principles your repo already follows, each with:
+- must-rules a reviewer can check;
+- a one-line rationale;
+- what enforces it today — a CI check, a skill step, or "review" when it's a person.
+
+Add governance: it outranks the other conventions, an amendment is its own ticket and PR, and a version with ratified and last-amended dates. A principle nothing enforces yet is a wish, not a principle — park it until it's real.
 
 ---
 

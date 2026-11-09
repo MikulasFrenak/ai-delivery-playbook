@@ -10,6 +10,8 @@ Not building this now — explicitly flagged by the reviewer as "not now, maybe 
 
 ## A Principles doc ("constitution")
 
+**Done in [AIPB-29](../tasks/AIPB-29.md):** written as [`CONSTITUTION.md`](../CONSTITUTION.md) once spec-driven development gave it a real trigger. Seven principles, each one a rule the repo already enforced; "observable" and "incremental adoption" from the list below stayed out, since nothing enforces them yet. The original note follows.
+
 Proposed principles: human in the loop, composable, tool-agnostic, reproducible, small skills, observable, incremental adoption. The idea is a short doc that every future PR gets checked against.
 
 Worth doing eventually — several of these principles are already *implicit* in how this playbook has been built (e.g. `disable-model-invocation: true` by default is "human in the loop"; the skill/workflow/lifecycle split is "composable"). Writing them down explicitly would make that intentional rather than incidental. Deferred because writing a constitution before the thing it constrains has had much real-world use risks describing principles that don't actually hold up once tested.
