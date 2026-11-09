@@ -5,6 +5,7 @@
 **Status:** done — [PR #57](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/57), closed 2026-11-09
 **Source:** written at the time
 **Related:** [AIPB-24](./AIPB-24.md) wrote `/github-actions-setup`'s AI-review template and [AIPB-26](./AIPB-26.md) this repo's `claude-review.yml` — both carry `Updated by: AIPB-30`. [AIPB-28](./AIPB-28.md) and [AIPB-29](./AIPB-29.md) parked the question this answers
+**Updated by:** [AIPB-31](./AIPB-31.md) — the re-review range is taken only from the workflow's own summary
 
 ---
 
