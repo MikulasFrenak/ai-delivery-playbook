@@ -51,7 +51,7 @@
 
 ## Open questions / decisions needed
 
-- **CI review vs. the review skills** (from [AIPB-28](./tasks/AIPB-28.md)): `.github/workflows/claude-review.yml`'s prompt copies `review-pr`'s rules, and so probably does the AI-review template in `/github-actions-setup`. Neither has AIPB-28's rules (`[Pre-existing]`, count line, nit cap, delta re-review). Bring both in line, or have the prompt read the skill file instead of copying it?
+- **CI review vs. the review skills** (from [AIPB-28](./tasks/AIPB-28.md) and [AIPB-29](./tasks/AIPB-29.md)) — answer together with whether the CI review should also check PRs against [`CONSTITUTION.md`](./CONSTITUTION.md): `.github/workflows/claude-review.yml`'s prompt copies `review-pr`'s rules, and so probably does the AI-review template in `/github-actions-setup`. Neither has AIPB-28's rules (`[Pre-existing]`, count line, nit cap, delta re-review). Bring both in line, or have the prompt read the skill file instead of copying it?
 - **`verify-mobile`'s driver** (from [AIPB-27](./tasks/AIPB-27.md)): reuse a project's own device-test repo (driver, on-demand pipeline, accessibility audit) or bring Maestro, `idb` or a mobile MCP server? And does the agent call the driver directly or trigger the existing pipeline, and who owns the screen definition? Needs a live run, per [`docs/mobile-agent-loop.md`](./docs/mobile-agent-loop.md) → Not yet proven.
 - **Simulator screenshot to the model** (from AIPB-27): `xcrun simctl io booted screenshot` writes a file the agent can read, but the screenshot-vs-design comparison hasn't been run.
 

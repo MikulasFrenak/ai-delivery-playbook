@@ -2,7 +2,7 @@
 
 **Ticket:** self-assigned (solo repo, no external tracker — see AGENTS.md "Ticket IDs for solo/no-tracker projects")
 **Type:** Chore
-**Status:** open
+**Status:** done — [PR #56](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/56), closed 2026-11-09
 **Source:** written at the time
 **Related:** [AIPB-06](./AIPB-06.md) parked the Principles doc; [AIPB-22](./AIPB-22.md) made SDD the working style and wrote `/create-task` Step 5; [AIPB-21](./AIPB-21.md) wrote `/review-pr`'s Step 4. Each carries `Updated by: AIPB-29`
 
@@ -18,22 +18,23 @@ Decided 2026-11-09 with the user: seven principles, at the repo root as `CONSTIT
 
 ## Acceptance Criteria
 
-- [ ] `CONSTITUTION.md` has seven principles. Each has must-rules, a rationale and where it is enforced, and every enforcement it claims is true today
-- [ ] Governance: where it sits relative to `AGENTS.md`, how it is amended (own ticket and PR), versioning, and how compliance is checked; a version line with ratified and last-amended dates
-- [ ] `/create-task` checks the plan against the constitution, if the repo has one; `/review-pr` treats breaking a principle's must-rule as `[Must]`
-- [ ] `AGENTS.md` lists `CONSTITUTION.md` in the Repo Layout and has a short template section for adopters; `docs/vocabulary.md` has the term
-- [ ] `docs/future-considerations.md`'s parked Principles doc points to the constitution; `PLAN.md`'s SDD mapping uses Spec Kit's current command names (re-checked against its repo and docs) and lists the stages it doesn't map yet
-- [ ] `node .github/scripts/check-docs.mjs` and `/public-repo-check` pass
+- [x] `CONSTITUTION.md` has seven principles. Each has must-rules, a rationale and where it is enforced, and every enforcement it claims is true today
+- [x] Governance: where it sits relative to `AGENTS.md`, how it is amended (own ticket and PR), versioning, and how compliance is checked; a version line with ratified and last-amended dates
+- [x] `/create-task` checks the plan against the constitution, if the repo has one; `/review-pr` treats breaking a principle's must-rule as `[Must]`
+- [x] `AGENTS.md` lists `CONSTITUTION.md` in the Repo Layout and has a short template section for adopters; `docs/vocabulary.md` has the term
+- [x] `docs/future-considerations.md`'s parked Principles doc points to the constitution; `PLAN.md`'s SDD mapping uses Spec Kit's current command names (re-checked against its repo and docs) and lists the stages it doesn't map yet
+- [x] `node .github/scripts/check-docs.mjs` and `/public-repo-check` pass
 
-## Plan
+## What was built
 
-1. Write `CONSTITUTION.md` from the existing rules, with a pointer to the enforcing check or doc for each.
-2. Wire it into `/create-task` (Step 5) and `/review-pr` (Step 4).
-3. Register it: `AGENTS.md` (layout row, template section), `docs/vocabulary.md`, `docs/future-considerations.md`.
-4. Update `PLAN.md`: the SDD mapping with current command names, the Remaining list, primary sources.
-5. Add `Updated by` lines to AIPB-06, AIPB-21 and AIPB-22; add the `tasks/README.md` row.
+`CONSTITUTION.md` with seven principles, each with must-rules, a rationale and what enforces it today, plus governance
+(authority over `AGENTS.md`, amendments as their own ticket, SemVer, v1.0.0). `/create-task` checks a plan against it and
+`/review-pr` a PR. It's registered in `AGENTS.md` with a template section for adopters, in `docs/vocabulary.md` and in
+`docs/future-considerations.md`. `PLAN.md`'s SDD mapping now uses Spec Kit's current command names.
 
 ## Open Questions
+
+Still open; **moved to `PLAN.md`** → Open questions, merged with AIPB-28's question about the same file.
 
 - Should the CI review (`claude-review.yml`) check PRs against the constitution too? It has its own copy of the review rules — the same question AIPB-28 parked in `PLAN.md`; answer both together.
 
