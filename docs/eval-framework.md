@@ -50,6 +50,18 @@ Write down, per skill: who has the authority to accept a regression on purpose, 
 
 ---
 
+## What to measure for a review skill
+
+A review skill is a good first candidate once it has history, because every comment it leaves gets a human response that is already a label:
+
+- **Sort each comment by outcome:** fixed, wrong, intended behaviour, or not worth it. The share that is "wrong" is the noise rate. It matters more than the catch rate, because noise costs the author a commit and another round, and an agent author acts on every nit.
+- **Run it on clean PRs** you know are fine, and count how often it reports something that would lead to a harmful change.
+- **Turn incidents and reverts into golden cases.** Take the PRs that caused one, have someone who knows the code confirm the bug and where it lived, and score the skill on whether it catches it. Each new incident adds a case.
+- **Track rounds to pass** next to recall. A reviewer that finds a few more old issues each round is not converging. See the "Re-review" section in [`review-pr`](../skills/review-pr.md).
+- **Fix repeated misses at the source** (the skill, the repo's review instructions, or a lint rule), then rescore when the prompt, tools or model change.
+
+---
+
 ## Where this fits
 
 Not tied to a single lifecycle stage the way Requirements/Architecture are — this runs **whenever a skill's prompt or logic changes**, and periodically for high-frequency skills even without a change, the same way a postmortem runs when triggered by an incident rather than on a fixed schedule. It's a standing practice, not a phase.
@@ -77,3 +89,4 @@ Better, following the steps above:
 
 - [OpenAI Evals](https://github.com/openai/evals) — open-source framework and worked examples for building golden-set-style evaluations of LLM-driven systems
 - [Anthropic — Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents) — evaluation as part of agent design, not an afterthought bolted on once something's already shipped
+- [How the Claude Code team does code review](https://claude.dev/blog/solving-code-review-at-anthropic/) — incidents as an eval set, noise measured by how people respond to comments, and review rounds that must converge

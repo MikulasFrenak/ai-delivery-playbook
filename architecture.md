@@ -57,6 +57,7 @@ Workflows
 feature-delivery
 bugfix
 design-system-update
+pr-review
 ...
 
 ↓

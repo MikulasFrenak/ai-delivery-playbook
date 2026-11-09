@@ -4,6 +4,7 @@
 **Type:** Chore
 **Status:** done — [PR #51](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/51), closed 2026-10-31
 **Source:** written at the time
+**Updated by:** [AIPB-28](./AIPB-28.md) — re-review rounds, pre-existing findings and depth by risk in `review-pr` / `review-comment-style`
 
 ---
 
