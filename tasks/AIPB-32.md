@@ -12,7 +12,7 @@
 
 The playbook can turn a vague "it has to be fast" into a measurable target (`/define-slo`, with server-side examples), but nothing measures a page against that target, and nothing covers a mobile app at all. The ask, 2026-11-10: a skill that runs the same measurement on every page of a site, so the result can be compared with the design's targets and the SLOs, and reused on client projects.
 
-The first real run was on the author's own portfolio site: mobile scored 54 while desktop scored 99, the cause was a 1.7 MB image plus render-blocking fonts, and the JavaScript was small. A skill that reports only a score would have missed that. This one reads the causes.
+The first real run was on the author's own portfolio site: mobile scored 60 (the median of three runs; the first single run said 54) while desktop scored 100, the cause was a 1.7 MB image plus render-blocking fonts, and the JavaScript was small. A skill that reports only a score would have missed that. This one reads the causes.
 
 The constitution's principle IV says a pattern runs live before it is written up as a skill. The measurement half has: pinned Lighthouse, mobile and desktop, several runs, median, on two live sites of different stacks. The CI gate and real-visitor data have not, and the skill and its doc say so, per step. The first live pass of both is the portfolio repo's follow-up ticket; a later ticket here updates the labels after it.
 
