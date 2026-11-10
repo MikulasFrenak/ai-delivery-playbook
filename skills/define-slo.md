@@ -64,6 +64,7 @@ For each SLI, produce:
 For each SLI, answer plainly: **does the telemetry to measure this already exist?**
 
 - If yes — name where (which dashboard/metric).
+- For the speed of a web page, a lab measurement exists: [`/perf-check`](./perf-check.md). It doesn't show whether the SLO is met for real visitors, so field data is still an instrumentation question.
 - If no — this is the actual first task this skill produces, before any code change aimed at hitting the target. Add it explicitly to the task file's Implementation Plan or Files to Touch, not as a footnote.
 
 An SLO with no instrumentation is not yet a working SLO — say this in the output rather than letting the number stand unqualified.
