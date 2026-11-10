@@ -15,6 +15,7 @@ status: documented
 **Skills used:**
 - [`verify-browser`](../skills/verify-browser.md) — drives the running app via Chrome DevTools MCP: console errors, DOM inspection, network calls, screenshots
 - [`self-healing-selectors`](../skills/self-healing-selectors.md) — run when selector drift after UI changes is a recurring source of broken E2E tests at this stage, not on every pass through Verification; see [`docs/test-maintenance.md`](../docs/test-maintenance.md) for the architecture and for why this addresses only part of overall test flakiness
+- [`perf-check`](../skills/perf-check.md) — measure every page of a site the same way against a budget or a `/define-slo` target, and read the causes; see [`docs/web-performance.md`](../docs/web-performance.md) for the thresholds and what's not yet proven (CI gate, real-visitor data, native mobile)
 - [`review-pr`](../skills/review-pr.md) — read-only, evidence-based review of someone else's PR/MR (verified vs. not verified, verdict, paste-ready comments); drafts are formatted by [`review-comment-style`](../skills/review-comment-style.md)
 
 For a native mobile app, `verify-browser` doesn't apply; [`docs/mobile-agent-loop.md`](../docs/mobile-agent-loop.md) lists what an agent has already run from chat (tests in a worktree, simulator, API checks) and what isn't proven yet (driving the UI, comparing with the design).

@@ -41,6 +41,7 @@ plan-update
 self-healing-selectors
 mcp-check
 security-check
+perf-check
 review-pr
 review-comment-style
 github-actions-setup
