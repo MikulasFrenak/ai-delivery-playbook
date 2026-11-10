@@ -74,10 +74,10 @@ run() {   # run <label> <url>
     npx --yes "$LH" "$2" --quiet --output=json --output-path="$OUT/$1-mobile-$i.json" \
       --only-categories=performance,accessibility,best-practices,seo \
       --chrome-flags="--headless=new --no-sandbox" >/dev/null 2>&1; echo "$1 mobile $i exit=$?"
+    npx --yes "$LH" "$2" --preset=desktop --quiet --output=json --output-path="$OUT/$1-desktop-$i.json" \
+      --only-categories=performance,accessibility,best-practices,seo \
+      --chrome-flags="--headless=new --no-sandbox" >/dev/null 2>&1; echo "$1 desktop $i exit=$?"
   done
-  npx --yes "$LH" "$2" --preset=desktop --quiet --output=json --output-path="$OUT/$1-desktop-1.json" \
-    --only-categories=performance,accessibility,best-practices,seo \
-    --chrome-flags="--headless=new --no-sandbox" >/dev/null 2>&1; echo "$1 desktop 1 exit=$?"
 }
 run home https://example.com/        # one line per page
 ```

@@ -60,14 +60,14 @@ The author's portfolio (a React single-page app) and browser game (React Native 
 
 | Page | Profile | Runs | Score | LCP | CLS | TBT | Weight | JS | Within the default budget |
 |---|---|---|---|---|---|---|---|---|---|
-| Portfolio | Desktop | 1 | 100 | 0.5 s | 0.022 | 0 ms | 1,940 KiB | 82 KiB | yes |
+| Portfolio | Desktop | 3 | 100 | 0.6 s | 0.021 | 0 ms | 1,940 KiB | 82 KiB | yes |
 | Portfolio | Mobile | 3 | 60 | 12.6 s | 0.270 | 0 ms | 1,940 KiB | 82 KiB | no: score, LCP, CLS |
-| Game | Desktop | 1 | 80 | 3.5 s | 0.006 | 8 ms | 3,654 KiB | 515 KiB | no: score, LCP |
+| Game | Desktop | 3 | 80 | 3.5 s | 0.006 | 2 ms | 3,654 KiB | 515 KiB | no: score, LCP |
 | Game | Mobile | 3 | 57 | 19.9 s | 0.010 | 403 ms | 3,654 KiB | 515 KiB | no: score, LCP, TBT |
 
 The default budget here is score ≥ 90, LCP ≤ 2.5 s, CLS ≤ 0.1 and TBT ≤ 200 ms. A client's own numbers would replace it.
 
-**Why several runs.** The portfolio's three mobile scores were 60, 60 and 59. The game's were **41, 59 and 57**. A single run of the game could have said 41 or 59. The portfolio's first single run read 54, and its median is 60.
+**Why several runs.** The portfolio's three mobile scores were 60, 60 and 59. The game's were **41, 59 and 57**. A single run of the game could have said 41 or 59. The portfolio's first single run read 54, and its median is 60. Desktop was steadier on both sites (100, 100, 99 and 80, 81, 80), so the spread is a mobile problem here. That's what these two sites showed, not a rule, and it's why desktop gets the same 3 runs: no page has been shown to be steady without them.
 
 **What the causes said.**
 - **Portfolio, mobile:** the score alone says "slow", and nothing about why. The largest element is the author's portrait, a 1,723 KiB PNG shown at 319 px wide. Lighthouse estimates the largest savings from a modern format and a correct size, and a smaller one from render-blocking fonts. The JavaScript is only 82 KiB, so a "make the code faster" ticket would have been wasted. The estimates overlap, so they aren't added together.
@@ -77,7 +77,7 @@ The default budget here is score ≥ 90, LCP ≤ 2.5 s, CLS ≤ 0.1 and TBT ≤ 
 
 | Part | Status | What would prove it |
 |---|---|---|
-| Lighthouse mobile ×3 and desktop ×1 on two live sites, one pinned version | **Proven**, run for this doc | — |
+| Lighthouse, 3 runs on each of mobile and desktop, on two live sites, one pinned version | **Proven**, run for this doc | — |
 | Median summary script, reading the LCP element and the biggest savings | **Proven**, run on the real reports above | — |
 | Run-to-run spread | **Observed**: scores 41 to 59 on one page | — |
 | CI gate: Lighthouse CI against a PR's testing deploy, failing over budget | **Not yet proven.** Its config format is documented ([configuration](https://github.com/GoogleChrome/lighthouse-ci/blob/main/docs/configuration.md)), but the assertions weren't run | One real PR where an over-budget change fails and a fixed one passes |

@@ -21,7 +21,7 @@ The constitution's principle IV says a pattern runs live before it is written up
 - [x] `skills/perf-check.md`: frontmatter per `CONTRIBUTING.md`; Inputs, Output, Guardrails; a workflow from scope to report: confirm scope and permission, build the page list, pin the method, run, summarise by median, compare with the budget, read the causes, state the field-data status, write the report
 - [x] Guardrails written from what the live run showed or what the sources say: never run against sites the user doesn't own or isn't allowed to test; a page that calls a metered third-party API (maps, payments) is run once or not at all; never run two reports at once on one machine; budgets are never invented; a lab score is not a field result
 - [x] `docs/web-performance.md`, paired with the skill: Core Web Vitals thresholds from their primary source, lab versus field, how a performance ask maps to `/define-slo`'s SLI, target and window, the method and why it is pinned, a worked example from the live run, and a proven / not-yet-proven table
-- [x] The commands in the skill ran for real in this ticket (pinned Lighthouse, mobile ×3 and desktop ×1 per page, the summary script on real output), and the doc's worked example uses that output
+- [x] The commands in the skill ran for real in this ticket (pinned Lighthouse, 3 runs per page on each of mobile and desktop, the summary script on real output), and the doc's worked example uses that output
 - [x] Registered: `AGENTS.md` skills table, `architecture.md` Level 1 list, `lifecycle/verification.md`; `/define-slo` points to it for web page speed
 - [x] `tasks/README.md` row, `PLAN.md` status; `check-docs.mjs` passes; added lines scanned for leaks
 
