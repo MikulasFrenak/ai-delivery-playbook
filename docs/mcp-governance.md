@@ -34,6 +34,42 @@ Grounded in what each server's own tool surface actually does, per `docs/mcp-ser
 | **Chrome DevTools MCP** | Write (scoped), confined to a local debug session | Can navigate, click, and fill forms in the attached Chrome instance, not just observe — but that instance is a disposable debug profile on `127.0.0.1:9222` the developer explicitly launched, not a shared or production browser. Blast radius is confined to that local session; the existing security note (never expose the port on `0.0.0.0`) is the actual control that matters here. |
 | **Code Quality MCP** (e.g. SonarQube) | Read-only | Queries existing issues; fixing them happens by editing code directly, not through a write call this server exposes. |
 
+## Unattended runs: the allowlist is the approval
+
+The tiers above assume a person is there: in an interactive session a write (scoped) call is confirmed per call. A cloud agent, a headless run and a scheduled job have no one to ask. Some clients then run every tool on the allowlist without a prompt (GitHub's cloud agent documents this for the MCP tools in a repository's configuration). So in an unattended run **an allowlist entry is a pre-approved call**, and the scope tier decides what may be on the list:
+
+| Scope tier | On an unattended allowlist? |
+|---|---|
+| **Read-only** | Yes, by tool name. A wildcard only if the whole server is read-only and its tool list was read |
+| **Write (scoped)** | Only a tool the run's own task needs, named, and behind a gate that is not a prompt (below). Otherwise leave it off and let a person do the write step |
+| **Write (destructive)** | Never |
+
+Three rules:
+
+1. **Name the tools, don't use a wildcard.** A server update that adds a tool must not add a permission.
+2. **Gate with something that runs without a person**: a deny rule, or a pre-tool-use hook, a script the client runs before each tool call that can allow, deny or change it. Keep the script in the repo and review it like code.
+3. **Find out what the client remembers.** Some clients save approvals per project folder and reuse them in later sessions, including unattended ones, so a run started with a narrow allow list can still run more than that list.
+
+What has been run and what has not (one client, 2026-11-12):
+
+| Claim | Status |
+|---|---|
+| A pre-tool-use hook denied `git push` although the same invocation explicitly allowed it; the agent reported the denial and did not look for a way round | Proven, one client (GitHub Copilot CLI 1.0.109, macOS) |
+| A deny flag for a command beat a saved approval for the same command | Proven, same client |
+| Approvals saved for the project folder were reused by a later non-interactive run: a run allowed only one command family also ran another | Proven, same client |
+| An error in a command hook denies the call, a timeout lets it through | Not yet proven: from the vendor's documentation. Keep hooks fast and don't count on a timeout to block |
+| A cloud agent runs allowlisted MCP tools without asking; secrets need a fixed name prefix; remote servers that need OAuth are not supported; for code review every tool must be marked read-only by its server | Not yet proven: from the vendor's documentation, no cloud run was done |
+| The same hook works in other clients | Not yet proven: the vendor documents Claude-style matchers for hooks, nothing was tested |
+
+Where each client reads its MCP configuration (all from documentation, not tested here):
+
+| Client | Where | Note |
+|---|---|---|
+| Claude Code | project `.mcp.json` | as in [`docs/mcp-servers.md`](./mcp-servers.md) |
+| GitHub Copilot CLI | user `~/.copilot/mcp-config.json`; project `.mcp.json` or `.github/mcp.json` | the project entry wins when names clash |
+| VS Code | `.vscode/mcp.json` | |
+| GitHub cloud agent and code review | repository settings, a JSON `mcpServers` object | one configuration shared by both; each server has a `tools` list |
+
 ## What this doesn't replace
 
 This table is a starting default, not a substitute for reading what a specific server's actual tool list does before connecting it — a server's product category (e.g. "observability") doesn't fully predict its blast radius (e.g. trigger management inside an otherwise read-heavy tool). Run [`/mcp-check`](../skills/mcp-check.md) against a server you're about to add for the first time on a project, even if it's already listed above, since a new version of that server (or a different vendor in the same category) can expose different tools than the ones assessed here.
@@ -44,3 +80,7 @@ This table is a starting default, not a substitute for reading what a specific s
 
 - [Salesforce 2026 Connectivity Benchmark — cited via industry coverage](https://www.barchart.com/story/news/1163379/belitsoft-report-2026-ai-agent-trends-enterprises-run-12-ai-agents-on-average-but-half-work-alone)
 - [Cequence & EMA Research, Aug 2026 — AI agent over-provisioning](https://www.globenewswire.com/news-release/2026/08/31/3353329/0/en/new-cequence-ema-research-94-of-enterprises-trust-their-ai-agents-aren-t-over-provisioned-only-33-actually-enforce-it.html)
+- [GitHub Docs — Configure MCP servers for your repository](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/extend-cloud-agent-with-mcp)
+- [GitHub Docs — Copilot hooks reference](https://docs.github.com/en/copilot/reference/hooks-reference)
+- [GitHub Docs — Copilot CLI configuration directory](https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-config-dir-reference)
+- [GitHub Docs — Configuring GitHub Copilot CLI (tool permissions)](https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/configure-copilot-cli)
