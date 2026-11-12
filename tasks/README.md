@@ -42,3 +42,4 @@ One file per ticket of this repo's own work. Each is the ticket's spec and plan 
 | [AIPB-31](./AIPB-31.md) | CI review trusts only its own summary when picking the re-review range | done | [#58](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/58) | written at the time |  |
 | [AIPB-32](./AIPB-32.md) | /perf-check: measure every page the same way, against a budget or an SLO | done | [#59](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/59) | written at the time |  |
 | [AIPB-33](./AIPB-33.md) | MCP governance for unattended agents: the allowlist is the approval | open |  | written at the time |  |
+| [AIPB-34](./AIPB-34.md) | /figma-plugin: draw a design brief into Figma without the MCP's limit | done | [#63](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/63) | written at the time |  |
