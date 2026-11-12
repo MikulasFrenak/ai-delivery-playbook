@@ -43,6 +43,16 @@ Not adding this:
 
 What the lifecycle-stage structure *is* still good for here: it's a real demonstration that the methodology generalizes past shippable features, which is worth knowing works — just not worth publishing the specific instance. A personal, no-ticket-discipline space (this repo's own `money-save` precedent, cited in `AGENTS.md`'s `PLAN.md` section) is the right home for that kind of log, not this repo.
 
+## Notes to pick up: measuring delivery, MCP per session, GitHub setup
+
+Short notes, not designs. None of this is built, and nothing here has been measured.
+
+**Measure the work delivered.** Candidates, all readable from the host's PR data: PRs merged by agent-assisted and by human-only work, PR merge rate (merged against closed without merging), review rounds per PR (see [`workflows/pr-review.md`](../workflows/pr-review.md)), time to merge, and findings raised before merge. Revert and incident rates are the guardrail, as in [`docs/eval-framework.md`](./eval-framework.md). Open choices before anyone builds it: what counts as an agent PR (a label, a bot author or a trailer), and whether "findings before merge" means review threads or comments.
+
+**Record which MCP servers a session had connected.** Tool lists cost context in every session, so which servers were connected is part of what a run needs to be reproducible. The note is to log the connected MCP servers per session, and to start a separate session per need (for example a browser or design session, a tracker session, a code session) instead of one session with every server connected. See [`docs/mcp-governance.md`](./mcp-governance.md) for scoping per server.
+
+**Enable GitHub Issues and custom agents on the repo.** Issues would hold the work items that today live only in task files, and custom agents would hold the role-specific setups, such as a reviewer, with their own tool lists. Not done: both decide how work is assigned and by whom, so they follow a real second user rather than lead it.
+
 ## Resolved: "Capability" reframing and README rewrite
 
 Both items previously tracked here — reframing Capability as an abstract, tool-agnostic unit of engineering behavior, and the README identity rewrite gated on that reframing — landed via the `AGENTS.md`/`CLAUDE.md` split (`/generate-agents-md`) once a real second consumer (review-spa, zensmash) existed to generalize from. `AGENTS.md` now carries the tool-agnostic framing and conventions; `CLAUDE.md` is a thin `@AGENTS.md` import plus only genuinely Claude Code-specific mechanics. (The "Capability" label this section refers to was itself retired in AIPB-08 — one concept, one name: **skill**.)
