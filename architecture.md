@@ -42,6 +42,7 @@ self-healing-selectors
 mcp-check
 security-check
 perf-check
+figma-plugin
 review-pr
 review-comment-style
 github-actions-setup
