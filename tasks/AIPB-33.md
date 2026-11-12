@@ -2,7 +2,7 @@
 
 **Ticket:** self-assigned (solo repo, no external tracker — see AGENTS.md "Ticket IDs for solo/no-tracker projects")
 **Type:** Feature
-**Status:** open — skill and doc written, checked statically; waiting for the PR
+**Status:** done — [PR #62](https://github.com/MikulasFrenak/ai-delivery-playbook/pull/62), closed 2026-11-12
 **Source:** written at the time
 **Related:** [`/design-brief`](../skills/design-brief.md) — the other direction (Figma to a brief). [AIPB-32](./AIPB-32.md) — the model for a skill that ran live first and says per step what is proven
 
